@@ -16,8 +16,6 @@ public class RunningTimerActivity extends AppCompatActivity {
 
     private ExerciseCoach coach;
 
-    private ExerciseTimer timer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,12 +23,18 @@ public class RunningTimerActivity extends AppCompatActivity {
 
         this.exercise = (Exercise) this.getIntent().getSerializableExtra(MainActivity.EXERCISE_TO_RUN);
         this.coach = new ExerciseCoach(this.exercise);
+        this.coach.addTimerUpdateConsumer(new ExerciseTimer.TimerUpdateConsumer() {
+            @Override
+            public void timerUpdate(long remainingTime) {
+                RunningTimerActivity.this.updateTextTimerTo(remainingTime);
+            }
+        });
 
         Button startButton = (Button) this.findViewById(R.id.StartTimerButton);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RunningTimerActivity.this.startTimer();
+                RunningTimerActivity.this.coach.start();
             }
         });
 
@@ -38,41 +42,14 @@ public class RunningTimerActivity extends AppCompatActivity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RunningTimerActivity.this.timer.stopTimer();
+                RunningTimerActivity.this.coach.stop();
             }
         });
-    }
-
-    private void startTimer()
-    {
-        this.timer = this.getTimerFromCurrentInterval();
-        this.timer.startTimer();
-    }
-
-    private void moveToNextInterval()
-    {
-        this.timer = this.getTimerFromCurrentInterval();
-        this.timer.startTimer();
     }
 
     private void updateTextTimerTo(long remaining)
     {
         TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
         secondsText.setText(Long.toString(remaining));
-    }
-
-    private ExerciseTimer getTimerFromCurrentInterval()
-    {
-        return this.coach.getTimerForCurrentInterval(new ExerciseTimer.TimerUpdateConsumer() {
-            @Override
-            public void timerUpdate(long remaining) {
-                RunningTimerActivity.this.updateTextTimerTo(remaining);
-            }
-        }, new ExerciseTimer.ExerciseFinishedConsumer() {
-            @Override
-            public void exerciseFinished() {
-                RunningTimerActivity.this.moveToNextInterval();
-            }
-        });
     }
 }

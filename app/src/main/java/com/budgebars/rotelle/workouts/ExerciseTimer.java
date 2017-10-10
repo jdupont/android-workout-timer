@@ -14,15 +14,22 @@ public class ExerciseTimer {
 
     private static final int NOTIFICATION_TICKS_MILLIS = 500;
 
+    private final Interval interval;
+
     private final CountDownTimer timer;
 
     private final List<TimerUpdateConsumer> onTickMethods;
 
     private final List<ExerciseFinishedConsumer> finishedMethods;
 
-    public ExerciseTimer(final int intervalLength) {
+    private final List<ExerciseStartedConsumer> startedMethods;
 
-        this.timer = new CountDownTimer(intervalLength * Units.SECONDS_TO_MILLIS_FACTOR, ExerciseTimer.NOTIFICATION_TICKS_MILLIS) {
+    private boolean isRunning = false;
+
+    public ExerciseTimer(final Interval interval) {
+
+        this.interval = interval;
+        this.timer = new CountDownTimer(this.interval.getLength() * Units.SECONDS_TO_MILLIS_FACTOR, ExerciseTimer.NOTIFICATION_TICKS_MILLIS) {
             @Override
             public void onTick(long l) {
 
@@ -43,6 +50,14 @@ public class ExerciseTimer {
 
         this.onTickMethods = new ArrayList<>();
         this.finishedMethods = new ArrayList<>();
+        this.startedMethods = new ArrayList<>();
+
+        this.finishedMethods.add(new ExerciseFinishedConsumer() {
+            @Override
+            public void exerciseFinished() {
+                ExerciseTimer.this.isRunning = false;
+            }
+        });
     }
 
     public void addUpdateConsumer(final TimerUpdateConsumer consumer)
@@ -50,19 +65,61 @@ public class ExerciseTimer {
         this.onTickMethods.add(consumer);
     }
 
+    public void addUpdateConsumer(final List<TimerUpdateConsumer> consumers)
+    {
+        this.onTickMethods.addAll(consumers);
+    }
+
+    public void addStartedConsumer(final ExerciseStartedConsumer consumer)
+    {
+        this.startedMethods.add(consumer);
+    }
+
+    public void addStartedConsumer(final List<ExerciseStartedConsumer> consumers)
+    {
+        this.startedMethods.addAll(consumers);
+    }
+
     public void addFinishedConsumer(final ExerciseFinishedConsumer consumer)
     {
         this.finishedMethods.add(consumer);
     }
 
+    public void addFinishedConsumer(final List<ExerciseFinishedConsumer> consumers)
+    {
+        this.finishedMethods.addAll(consumers);
+    }
+
     public void startTimer()
     {
+        if (this.isRunning)
+        {
+            throw new IllegalStateException("Timer is already running");
+        }
+
         this.timer.start();
+        this.isRunning = true;
+
+        for (ExerciseStartedConsumer consumer : this.startedMethods)
+        {
+            consumer.exerciseStarted(this.interval.getName(), this.interval.getLength());
+        }
     }
 
     public void stopTimer()
     {
+        if (!this.isRunning)
+        {
+            throw new IllegalStateException("Timer is not running");
+        }
+
         this.timer.cancel();
+        this.isRunning = false;
+    }
+
+    public boolean isRunning()
+    {
+        return this.isRunning;
     }
 
     public interface TimerUpdateConsumer
@@ -70,9 +127,13 @@ public class ExerciseTimer {
         public void timerUpdate(long remainingTime);
     }
 
+    public interface ExerciseStartedConsumer
+    {
+        public void exerciseStarted(final String exerciseName, final int exerciseLength);
+    }
+
     public interface ExerciseFinishedConsumer
     {
         public void exerciseFinished();
     }
-
 }
