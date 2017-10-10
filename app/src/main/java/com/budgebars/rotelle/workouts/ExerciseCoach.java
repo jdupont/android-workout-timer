@@ -23,7 +23,10 @@ public class ExerciseCoach {
 
     public ExerciseTimer getTimerForCurrentInterval(final ExerciseTimer.TimerUpdateConsumer onTickMethod, ExerciseTimer.ExerciseFinishedConsumer finishedMethod)
     {
-        return new ExerciseTimer(this.currentIntervalLength(), onTickMethod, finishedMethod);
+        ExerciseTimer timer = new ExerciseTimer(this.currentIntervalLength());
+        timer.addUpdateConsumer(onTickMethod);
+        timer.addFinishedConsumer(finishedMethod);
+        return timer;
     }
 
     public int currentIntervalLength()

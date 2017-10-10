@@ -38,7 +38,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         stopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RunningTimerActivity.this.stopTimer();
+                RunningTimerActivity.this.timer.stopTimer();
             }
         });
     }
@@ -46,18 +46,13 @@ public class RunningTimerActivity extends AppCompatActivity {
     private void startTimer()
     {
         this.timer = this.getTimerFromCurrentInterval();
-        this.timer.start();
+        this.timer.startTimer();
     }
 
     private void moveToNextInterval()
     {
         this.timer = this.getTimerFromCurrentInterval();
-        this.timer.start();
-    }
-
-    private void stopTimer()
-    {
-        this.timer.cancel();
+        this.timer.startTimer();
     }
 
     private void updateTextTimerTo(long remaining)
