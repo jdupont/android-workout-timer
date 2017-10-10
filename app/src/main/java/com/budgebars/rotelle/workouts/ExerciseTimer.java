@@ -102,7 +102,7 @@ public class ExerciseTimer {
 
         for (ExerciseStartedConsumer consumer : this.startedMethods)
         {
-            consumer.exerciseStarted(this.interval.getName(), this.interval.getLength());
+            consumer.exerciseStarted();
         }
     }
 
@@ -129,7 +129,7 @@ public class ExerciseTimer {
 
     public interface ExerciseStartedConsumer
     {
-        public void exerciseStarted(final String exerciseName, final int exerciseLength);
+        public void exerciseStarted();
     }
 
     public interface ExerciseFinishedConsumer

@@ -29,6 +29,20 @@ public class RunningTimerActivity extends AppCompatActivity {
                 RunningTimerActivity.this.updateTextTimerTo(remainingTime);
             }
         });
+        this.coach.addChangedConsumer(new ExerciseCoach.ExerciseChangedConsumer() {
+            @Override
+            public void exerciseChanged(String exerciseName, int exerciseLength) {
+                RunningTimerActivity.this.exerciseChangedUpdate(exerciseName, exerciseLength);
+            }
+        });
+        this.coach.addDoneConsumer(new ExerciseCoach.ExerciseDoneConsumer() {
+            @Override
+            public void exerciseDone() {
+                RunningTimerActivity.this.exerciseDone();
+            }
+        });
+
+        this.exerciseChangedUpdate(this.coach.currentIntervalName(), this.coach.currentIntervalLength());
 
         Button startButton = (Button) this.findViewById(R.id.StartTimerButton);
         startButton.setOnClickListener(new View.OnClickListener() {
@@ -51,5 +65,23 @@ public class RunningTimerActivity extends AppCompatActivity {
     {
         TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
         secondsText.setText(Long.toString(remaining));
+    }
+
+    private void exerciseChangedUpdate(final String exerciseName, final int totalLength)
+    {
+        TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
+        secondsText.setText(Long.toString(totalLength));
+
+        TextView exerciseNameText = (TextView) this.findViewById(R.id.CurrentIntervalName);
+        exerciseNameText.setText(exerciseName);
+    }
+
+    private void exerciseDone()
+    {
+        TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
+        secondsText.setText(Long.toString(0));
+
+        TextView exerciseNameText = (TextView) this.findViewById(R.id.CurrentIntervalName);
+        exerciseNameText.setText("Done.");
     }
 }
