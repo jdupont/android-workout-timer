@@ -91,6 +91,18 @@ public class RunningTimerActivity extends AppCompatActivity {
         this.setNotRunningConfiguration();
     }
 
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        this.openingBell.release();
+        this.openingBell = null;
+
+        this.closingBell.release();
+        this.closingBell = null;
+    }
+
     private void updateTextTimerTo(long remaining)
     {
         TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
