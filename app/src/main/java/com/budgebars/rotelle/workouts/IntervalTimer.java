@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Jules on 10/9/2017.
  */
 
-public class ExerciseTimer {
+public class IntervalTimer {
 
     private static final int NOTIFICATION_TICKS_MILLIS = 500;
 
@@ -20,20 +20,21 @@ public class ExerciseTimer {
 
     private final List<TimerUpdateConsumer> onTickMethods;
 
-    private final List<ExerciseFinishedConsumer> finishedMethods;
+    private final List<IntervalFinishedConsumer> finishedMethods;
 
-    private final List<ExerciseStartedConsumer> startedMethods;
+    private final List<IntervalStartedConsumer> startedMethods;
 
     private boolean isRunning = false;
 
-    public ExerciseTimer(final Interval interval) {
+    public IntervalTimer(final Interval interval) {
 
         this.interval = interval;
-        this.timer = new CountDownTimer(this.interval.getLength() * Units.SECONDS_TO_MILLIS_FACTOR, ExerciseTimer.NOTIFICATION_TICKS_MILLIS) {
+        this.timer = new CountDownTimer(this.interval.getLength() * Units.SECONDS_TO_MILLIS_FACTOR,
+                IntervalTimer.NOTIFICATION_TICKS_MILLIS) {
             @Override
             public void onTick(long l) {
 
-                for (TimerUpdateConsumer consumer : ExerciseTimer.this.onTickMethods)
+                for (TimerUpdateConsumer consumer : IntervalTimer.this.onTickMethods)
                 {
                     consumer.timerUpdate(l / Units.SECONDS_TO_MILLIS_FACTOR);
                 }
@@ -41,9 +42,9 @@ public class ExerciseTimer {
 
             @Override
             public void onFinish() {
-                for (ExerciseFinishedConsumer consumer : ExerciseTimer.this.finishedMethods)
+                for (IntervalFinishedConsumer consumer : IntervalTimer.this.finishedMethods)
                 {
-                    consumer.exerciseFinished();
+                    consumer.intervalFinished();
                 }
             }
         };
@@ -52,10 +53,10 @@ public class ExerciseTimer {
         this.finishedMethods = new ArrayList<>();
         this.startedMethods = new ArrayList<>();
 
-        this.finishedMethods.add(new ExerciseFinishedConsumer() {
+        this.finishedMethods.add(new IntervalFinishedConsumer() {
             @Override
-            public void exerciseFinished() {
-                ExerciseTimer.this.isRunning = false;
+            public void intervalFinished() {
+                IntervalTimer.this.isRunning = false;
             }
         });
     }
@@ -70,22 +71,22 @@ public class ExerciseTimer {
         this.onTickMethods.addAll(consumers);
     }
 
-    public void addStartedConsumer(final ExerciseStartedConsumer consumer)
+    public void addStartedConsumer(final IntervalStartedConsumer consumer)
     {
         this.startedMethods.add(consumer);
     }
 
-    public void addStartedConsumer(final List<ExerciseStartedConsumer> consumers)
+    public void addStartedConsumer(final List<IntervalStartedConsumer> consumers)
     {
         this.startedMethods.addAll(consumers);
     }
 
-    public void addFinishedConsumer(final ExerciseFinishedConsumer consumer)
+    public void addFinishedConsumer(final IntervalFinishedConsumer consumer)
     {
         this.finishedMethods.add(consumer);
     }
 
-    public void addFinishedConsumer(final List<ExerciseFinishedConsumer> consumers)
+    public void addFinishedConsumer(final List<IntervalFinishedConsumer> consumers)
     {
         this.finishedMethods.addAll(consumers);
     }
@@ -100,9 +101,9 @@ public class ExerciseTimer {
         this.timer.start();
         this.isRunning = true;
 
-        for (ExerciseStartedConsumer consumer : this.startedMethods)
+        for (IntervalStartedConsumer consumer : this.startedMethods)
         {
-            consumer.exerciseStarted();
+            consumer.intervalStarted();
         }
     }
 
@@ -127,13 +128,13 @@ public class ExerciseTimer {
         public void timerUpdate(long remainingTime);
     }
 
-    public interface ExerciseStartedConsumer
+    public interface IntervalStartedConsumer
     {
-        public void exerciseStarted();
+        public void intervalStarted();
     }
 
-    public interface ExerciseFinishedConsumer
+    public interface IntervalFinishedConsumer
     {
-        public void exerciseFinished();
+        public void intervalFinished();
     }
 }

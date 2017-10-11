@@ -9,27 +9,27 @@ import java.util.List;
 
 public class ExerciseCoach {
 
-    private static final int NOTIFICATION_INTERVAL_MILLIS = 500;
-
     private final Exercise exercise;
 
     private int intervalIndex;
 
     private Interval currentInterval;
 
-    private ExerciseTimer currentTimer;
+    private IntervalTimer currentTimer;
 
     private boolean isFinished;
 
-    private final List<ExerciseTimer.TimerUpdateConsumer> timerUpdateConsumers  = new ArrayList<>();;
+    private final List<IntervalTimer.TimerUpdateConsumer> timerUpdateConsumers  = new ArrayList<>();;
 
-    private final List<ExerciseTimer.ExerciseFinishedConsumer> finishedConsumers = new ArrayList<>();
+    private final List<IntervalTimer.IntervalFinishedConsumer> finishedConsumers = new ArrayList<>();
 
-    private final List<ExerciseTimer.ExerciseStartedConsumer> startedConsumers = new ArrayList<>();
+    private final List<IntervalTimer.IntervalStartedConsumer> intervalStartedConsumers = new ArrayList<>();
 
-    private final List<ExerciseChangedConsumer> changedConsumers = new ArrayList<>();
+    private final List<IntervalChangedConsumer> changedConsumers = new ArrayList<>();
 
     private final List<ExerciseDoneConsumer> doneConsumers = new ArrayList<>();
+
+    private final List<ExerciseStartedConsumer> exerciseStartedConsumers = new ArrayList<>();
 
     public ExerciseCoach(final Exercise exercise)
     {
@@ -40,9 +40,9 @@ public class ExerciseCoach {
 
         this.currentTimer = this.makeTimerForCurrentInterval();
 
-        this.addFinishedConsumer(new ExerciseTimer.ExerciseFinishedConsumer() {
+        this.addFinishedConsumer(new IntervalTimer.IntervalFinishedConsumer() {
             @Override
-            public void exerciseFinished() {
+            public void intervalFinished() {
 
                 if (!ExerciseCoach.this.isFinished) {
                     if (ExerciseCoach.this.advanceToNextInterval()) {
@@ -63,21 +63,21 @@ public class ExerciseCoach {
         return this.currentInterval.getLength();
     }
 
-    public void addTimerUpdateConsumer(final ExerciseTimer.TimerUpdateConsumer consumer)
+    public void addTimerUpdateConsumer(final IntervalTimer.TimerUpdateConsumer consumer)
     {
         this.timerUpdateConsumers.add(consumer);
         this.currentTimer.addUpdateConsumer(consumer);
     }
 
-    public void addFinishedConsumer(final ExerciseTimer.ExerciseFinishedConsumer consumer)
+    public void addFinishedConsumer(final IntervalTimer.IntervalFinishedConsumer consumer)
     {
         this.finishedConsumers.add(consumer);
         this.currentTimer.addFinishedConsumer(consumer);
     }
 
-    public void addStartedConsumer(final ExerciseTimer.ExerciseStartedConsumer consumer)
+    public void addIntervalStartedConsumer(final IntervalTimer.IntervalStartedConsumer consumer)
     {
-        this.startedConsumers.add(consumer);
+        this.intervalStartedConsumers.add(consumer);
         this.currentTimer.addStartedConsumer(consumer);
     }
 
@@ -86,24 +86,30 @@ public class ExerciseCoach {
         this.doneConsumers.add(consumer);
     }
 
-    public void addChangedConsumer(final ExerciseChangedConsumer consumer)
+    public void addExerciseStartedConsumer(final ExerciseStartedConsumer consumer)
+    {
+        this.exerciseStartedConsumers.add(consumer);
+    }
+
+    public void addChangedConsumer(final IntervalChangedConsumer consumer)
     {
         this.changedConsumers.add(consumer);
     }
 
     public void start()
     {
-        if (this.currentTimer.isRunning())
+        if (this.isRunning())
         {
             throw new IllegalStateException("Already running");
         }
 
+        this.notifyExerciseStarted();
         this.currentTimer.startTimer();
     }
 
     public void stop()
     {
-        if (!this.currentTimer.isRunning())
+        if (!this.isRunning())
         {
             throw new IllegalStateException("Not currently running");
         }
@@ -120,11 +126,7 @@ public class ExerciseCoach {
             this.currentInterval = this.exercise.getIntervalAt(this.intervalIndex);
             this.currentTimer = this.makeTimerForCurrentInterval();
 
-            for (ExerciseChangedConsumer consumer : this.changedConsumers)
-            {
-                consumer.exerciseChanged(this.currentInterval.getName(), this.currentInterval.getLength());
-            }
-
+            this.notifyIntervalChanged();
 
             return true;
         }
@@ -149,18 +151,58 @@ public class ExerciseCoach {
         }
     }
 
-    private ExerciseTimer makeTimerForCurrentInterval()
+    private IntervalTimer makeTimerForCurrentInterval()
     {
-        ExerciseTimer timer = new ExerciseTimer(this.currentInterval);
-        timer.addStartedConsumer(this.startedConsumers);
+        IntervalTimer timer = new IntervalTimer(this.currentInterval);
+        timer.addStartedConsumer(this.intervalStartedConsumers);
         timer.addFinishedConsumer(this.finishedConsumers);
         timer.addUpdateConsumer(this.timerUpdateConsumers);
         return timer;
     }
 
-    public interface ExerciseChangedConsumer
+    private boolean isRunning()
     {
-        public void exerciseChanged(final String exerciseName, final int exerciseLength);
+        return this.currentTimer.isRunning();
+    }
+
+    public void reset()
+    {
+        if (this.isRunning())
+        {
+            this.stop();
+        }
+
+        this.intervalIndex = 0;
+        this.currentInterval = this.exercise.getIntervalAt(this.intervalIndex);
+        this.makeTimerForCurrentInterval();
+
+        this.notifyIntervalChanged();
+    }
+
+    private void notifyIntervalChanged()
+    {
+        for (IntervalChangedConsumer consumer : this.changedConsumers)
+        {
+            consumer.intervalChanged(this.currentInterval.getName(), this.currentInterval.getLength());
+        }
+    }
+
+    private void notifyExerciseStarted()
+    {
+        for (ExerciseStartedConsumer consumer : this.exerciseStartedConsumers)
+        {
+            consumer.exerciseStarted();
+        }
+    }
+
+    public interface IntervalChangedConsumer
+    {
+        public void intervalChanged(final String intervalName, final int intervalLength);
+    }
+
+    public interface ExerciseStartedConsumer
+    {
+        public void exerciseStarted();
     }
 
     public interface ExerciseDoneConsumer
