@@ -14,8 +14,6 @@ public class IntervalTimer {
 
     private static final int NOTIFICATION_TICKS_MILLIS = 500;
 
-    private final Interval interval;
-
     private final CountDownTimer timer;
 
     private final List<TimerUpdateConsumer> onTickMethods;
@@ -27,9 +25,12 @@ public class IntervalTimer {
     private boolean isRunning = false;
 
     public IntervalTimer(final Interval interval) {
+        this(interval.getLength());
+    }
 
-        this.interval = interval;
-        this.timer = new CountDownTimer(this.interval.getLength() * Units.SECONDS_TO_MILLIS_FACTOR,
+    public IntervalTimer(final long intervalLength)
+    {
+        this.timer = new CountDownTimer(intervalLength * Units.SECONDS_TO_MILLIS_FACTOR,
                 IntervalTimer.NOTIFICATION_TICKS_MILLIS) {
             @Override
             public void onTick(long l) {

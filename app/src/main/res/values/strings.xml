@@ -2,6 +2,6 @@
     <string name="app_name">Rotelle</string>
     <string name="all_purpose_button_label">Run mock workout.</string>
     <string name="start_timer_label">Start Exercise</string>
-    <string name="stop_timer_label">Stop Exercise</string>
+    <string name="stop_timer_label">Pause Exercise</string>
     <string name="reset_timer_label">Reset Timer</string>
 </resources>

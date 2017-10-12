@@ -72,11 +72,11 @@ public class RunningTimerActivity extends AppCompatActivity {
             }
         });
 
-        Button stopButton = (Button) this.findViewById(R.id.StopTimerButton);
-        stopButton.setOnClickListener(new View.OnClickListener() {
+        Button pauseButton = (Button) this.findViewById(R.id.PauseTimerButton);
+        pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RunningTimerActivity.this.coach.stop();
+                RunningTimerActivity.this.coach.pause();
             }
         });
 
@@ -138,14 +138,14 @@ public class RunningTimerActivity extends AppCompatActivity {
 
     private void setRunningConfiguration()
     {
-        this.enableButton((Button) this.findViewById(R.id.StopTimerButton));
+        this.enableButton((Button) this.findViewById(R.id.PauseTimerButton));
         this.disableButton((Button) this.findViewById(R.id.StartTimerButton));
     }
 
     private void setNotRunningConfiguration()
     {
         this.enableButton((Button) this.findViewById(R.id.StartTimerButton));
-        this.disableButton((Button) this.findViewById(R.id.StopTimerButton));
+        this.disableButton((Button) this.findViewById(R.id.PauseTimerButton));
     }
 
     private void enableButton(final Button button)
