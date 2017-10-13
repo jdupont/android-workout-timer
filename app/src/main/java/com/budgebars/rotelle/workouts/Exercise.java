@@ -51,9 +51,9 @@ public class Exercise implements Serializable {
     {
         List<Interval> intervals = new ArrayList<Interval>();
 
-        intervals.add(new Interval("Warmup", 5));
-        intervals.add(new Interval("Bench 1", 5));
-        intervals.add(new Interval("Rest 1", 5));
+        intervals.add(new Interval("Warmup", 15));
+        intervals.add(new Interval("Bench 1", 15));
+        intervals.add(new Interval("Rest 1", 15));
 
         return new Exercise("Sample Bench Workout", intervals);
     }

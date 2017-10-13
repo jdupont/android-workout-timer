@@ -36,8 +36,8 @@ public class RunningTimerActivity extends AppCompatActivity {
         this.exercise = (Exercise) this.getIntent().getSerializableExtra(MainActivity.EXERCISE_TO_RUN);
         this.coach = new ExerciseCoach(this.exercise);
 
-        this.openingBell = MediaPlayer.create(this, R.raw.openingbell);
-        this.closingBell = MediaPlayer.create(this, R.raw.closingbell);
+        this.openingBell = MediaPlayer.create(this, R.raw.opening_bell_trimmed);
+        this.closingBell = MediaPlayer.create(this, R.raw.closing_bell_trimmed);
 
         this.coach.addTimerUpdateConsumer(new TimerUpdateConsumer() {
             @Override
