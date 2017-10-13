@@ -9,7 +9,14 @@ import android.widget.TextView;
 
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.ExerciseCoach;
-import com.budgebars.rotelle.workouts.IntervalTimer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseDoneConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExercisePausedConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseResetConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseResumedConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseStartedConsumer;
+import com.budgebars.rotelle.workouts.consumers.IntervalChangedConsumer;
+import com.budgebars.rotelle.workouts.consumers.IntervalStartedConsumer;
+import com.budgebars.rotelle.workouts.consumers.TimerUpdateConsumer;
 
 public class RunningTimerActivity extends AppCompatActivity {
 
@@ -32,49 +39,49 @@ public class RunningTimerActivity extends AppCompatActivity {
         this.openingBell = MediaPlayer.create(this, R.raw.openingbell);
         this.closingBell = MediaPlayer.create(this, R.raw.closingbell);
 
-        this.coach.addTimerUpdateConsumer(new IntervalTimer.TimerUpdateConsumer() {
+        this.coach.addTimerUpdateConsumer(new TimerUpdateConsumer() {
             @Override
             public void timerUpdate(long remainingTime) {
                 RunningTimerActivity.this.updateTextTimerTo(remainingTime);
             }
         });
-        this.coach.addChangedConsumer(new ExerciseCoach.IntervalChangedConsumer() {
+        this.coach.addIntervalChangedConsumer(new IntervalChangedConsumer() {
             @Override
             public void intervalChanged(String intervalName, int intervalLength) {
                 RunningTimerActivity.this.intervalChangedUpdate(intervalName, intervalLength);
             }
         });
-        this.coach.addExerciseDoneConsumer(new ExerciseCoach.ExerciseDoneConsumer() {
+        this.coach.addExerciseDoneConsumer(new ExerciseDoneConsumer() {
             @Override
             public void exerciseDone() {
                 RunningTimerActivity.this.exerciseDone();
             }
         });
-        this.coach.addIntervalStartedConsumer(new IntervalTimer.IntervalStartedConsumer() {
+        this.coach.addIntervalStartedConsumer(new IntervalStartedConsumer() {
             @Override
             public void intervalStarted() {
                 RunningTimerActivity.this.intervalStarted();
             }
         });
-        this.coach.addExerciseStartedConsumer(new ExerciseCoach.ExerciseStartedConsumer() {
+        this.coach.addExerciseStartedConsumer(new ExerciseStartedConsumer() {
             @Override
             public void exerciseStarted() {
                 RunningTimerActivity.this.setRunningConfiguration();
             }
         });
-        this.coach.addExercisePausedConsumer(new ExerciseCoach.ExercisePausedConsumer() {
+        this.coach.addExercisePausedConsumer(new ExercisePausedConsumer() {
             @Override
             public void exercisePaused() {
                 RunningTimerActivity.this.setPausedConfiguration();
             }
         });
-        this.coach.addExerciseResumedConsumer(new ExerciseCoach.ExerciseResumedConsumer() {
+        this.coach.addExerciseResumedConsumer(new ExerciseResumedConsumer() {
             @Override
             public void exerciseResumed() {
                 RunningTimerActivity.this.setRunningConfiguration();
             }
         });
-        this.coach.addExerciseResetConsumer(new ExerciseCoach.ExerciseResetConsumer() {
+        this.coach.addExerciseResetConsumer(new ExerciseResetConsumer() {
             @Override
             public void exerciseReset() {
                 RunningTimerActivity.this.setReadyConfiguration();

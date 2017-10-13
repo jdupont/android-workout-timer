@@ -2,6 +2,16 @@ package com.budgebars.rotelle.workouts;
 
 import android.util.Log;
 
+import com.budgebars.rotelle.workouts.consumers.ExerciseDoneConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExercisePausedConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseResetConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseResumedConsumer;
+import com.budgebars.rotelle.workouts.consumers.ExerciseStartedConsumer;
+import com.budgebars.rotelle.workouts.consumers.IntervalChangedConsumer;
+import com.budgebars.rotelle.workouts.consumers.IntervalFinishedConsumer;
+import com.budgebars.rotelle.workouts.consumers.IntervalStartedConsumer;
+import com.budgebars.rotelle.workouts.consumers.TimerUpdateConsumer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,13 +36,13 @@ public class ExerciseCoach {
 
     private final Exercise exercise;
 
-    private final List<IntervalTimer.TimerUpdateConsumer> timerUpdateConsumers  = new ArrayList<>();;
+    private final List<TimerUpdateConsumer> timerUpdateConsumers  = new ArrayList<>();;
 
-    private final List<IntervalTimer.IntervalFinishedConsumer> finishedConsumers = new ArrayList<>();
+    private final List<IntervalFinishedConsumer> intervalFinishedConsumers = new ArrayList<>();
 
-    private final List<IntervalTimer.IntervalStartedConsumer> intervalStartedConsumers = new ArrayList<>();
+    private final List<IntervalStartedConsumer> intervalStartedConsumers = new ArrayList<>();
 
-    private final List<IntervalChangedConsumer> changedConsumers = new ArrayList<>();
+    private final List<IntervalChangedConsumer> intervalChangedConsumers = new ArrayList<>();
 
     private final List<ExerciseStartedConsumer> exerciseStartedConsumers = new ArrayList<>();
 
@@ -40,7 +50,7 @@ public class ExerciseCoach {
 
     private final List<ExerciseResumedConsumer> exerciseResumedConsumers = new ArrayList<>();
 
-    private final List<ExerciseDoneConsumer> doneConsumers = new ArrayList<>();
+    private final List<ExerciseDoneConsumer> exerciseDoneConsumers = new ArrayList<>();
 
     private final List<ExerciseResetConsumer> exerciseResetConsumers = new ArrayList<>();
 
@@ -54,7 +64,7 @@ public class ExerciseCoach {
         this.currentTimer = this.makeTimerForCurrentInterval();
         this.state = ExerciseState.READY;
 
-        this.addTimerUpdateConsumer(new IntervalTimer.TimerUpdateConsumer() {
+        this.addTimerUpdateConsumer(new TimerUpdateConsumer() {
             @Override
             public void timerUpdate(long remainingTime) {
                 ExerciseCoach.this.timeRemainingInCurrentInterval = remainingTime;
@@ -62,7 +72,7 @@ public class ExerciseCoach {
             }
         });
 
-        this.addFinishedConsumer(new IntervalTimer.IntervalFinishedConsumer() {
+        this.addIntervalFinishedConsumer(new IntervalFinishedConsumer() {
             @Override
             public void intervalFinished() {
 
@@ -85,19 +95,19 @@ public class ExerciseCoach {
         return this.currentInterval.getLength();
     }
 
-    public void addTimerUpdateConsumer(final IntervalTimer.TimerUpdateConsumer consumer)
+    public void addTimerUpdateConsumer(final TimerUpdateConsumer consumer)
     {
         this.timerUpdateConsumers.add(consumer);
         this.currentTimer.addUpdateConsumer(consumer);
     }
 
-    public void addFinishedConsumer(final IntervalTimer.IntervalFinishedConsumer consumer)
+    public void addIntervalFinishedConsumer(final IntervalFinishedConsumer consumer)
     {
-        this.finishedConsumers.add(consumer);
+        this.intervalFinishedConsumers.add(consumer);
         this.currentTimer.addFinishedConsumer(consumer);
     }
 
-    public void addIntervalStartedConsumer(final IntervalTimer.IntervalStartedConsumer consumer)
+    public void addIntervalStartedConsumer(final IntervalStartedConsumer consumer)
     {
         this.intervalStartedConsumers.add(consumer);
         this.currentTimer.addStartedConsumer(consumer);
@@ -125,12 +135,12 @@ public class ExerciseCoach {
 
     public void addExerciseDoneConsumer(final ExerciseDoneConsumer consumer)
     {
-        this.doneConsumers.add(consumer);
+        this.exerciseDoneConsumers.add(consumer);
     }
 
-    public void addChangedConsumer(final IntervalChangedConsumer consumer)
+    public void addIntervalChangedConsumer(final IntervalChangedConsumer consumer)
     {
-        this.changedConsumers.add(consumer);
+        this.intervalChangedConsumers.add(consumer);
     }
 
     private boolean advanceToNextInterval()
@@ -167,7 +177,7 @@ public class ExerciseCoach {
     {
         IntervalTimer timer = new IntervalTimer(timerLength);
         timer.addStartedConsumer(this.intervalStartedConsumers);
-        timer.addFinishedConsumer(this.finishedConsumers);
+        timer.addFinishedConsumer(this.intervalFinishedConsumers);
         timer.addUpdateConsumer(this.timerUpdateConsumers);
         return timer;
     }
@@ -285,7 +295,7 @@ public class ExerciseCoach {
 
     private void notifyIntervalChanged()
     {
-        for (IntervalChangedConsumer consumer : this.changedConsumers)
+        for (IntervalChangedConsumer consumer : this.intervalChangedConsumers)
         {
             consumer.intervalChanged(this.currentInterval.getName(), this.currentInterval.getLength());
         }
@@ -317,7 +327,7 @@ public class ExerciseCoach {
 
     private void notifyExerciseDone()
     {
-        for (ExerciseDoneConsumer consumer : this.doneConsumers)
+        for (ExerciseDoneConsumer consumer : this.exerciseDoneConsumers)
         {
             consumer.exerciseDone();
         }
@@ -329,35 +339,5 @@ public class ExerciseCoach {
         {
             consumer.exerciseReset();
         }
-    }
-
-    public interface IntervalChangedConsumer
-    {
-        public void intervalChanged(final String intervalName, final int intervalLength);
-    }
-
-    public interface ExerciseStartedConsumer
-    {
-        public void exerciseStarted();
-    }
-
-    public interface ExercisePausedConsumer
-    {
-        public void exercisePaused();
-    }
-
-    public interface ExerciseResumedConsumer
-    {
-        public void exerciseResumed();
-    }
-
-    public interface ExerciseResetConsumer
-    {
-        public void exerciseReset();
-    }
-
-    public interface ExerciseDoneConsumer
-    {
-        public void exerciseDone();
     }
 }

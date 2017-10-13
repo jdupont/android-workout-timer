@@ -3,6 +3,10 @@ package com.budgebars.rotelle.workouts;
 import android.os.CountDownTimer;
 import android.util.Log;
 
+import com.budgebars.rotelle.workouts.consumers.IntervalFinishedConsumer;
+import com.budgebars.rotelle.workouts.consumers.IntervalStartedConsumer;
+import com.budgebars.rotelle.workouts.consumers.TimerUpdateConsumer;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,25 +124,5 @@ public class IntervalTimer {
 
         this.timer.cancel();
         this.isRunning = false;
-    }
-
-    public boolean isRunning()
-    {
-        return this.isRunning;
-    }
-
-    public interface TimerUpdateConsumer
-    {
-        public void timerUpdate(long remainingTime);
-    }
-
-    public interface IntervalStartedConsumer
-    {
-        public void intervalStarted();
-    }
-
-    public interface IntervalFinishedConsumer
-    {
-        public void intervalFinished();
     }
 }
