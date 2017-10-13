@@ -1,0 +1,19 @@
+<exercise>
+    <name>Bench Press</name>
+    <type>CustomInterval</type>
+    <version>0.1</version>
+    <intervals>
+        <interval>
+            <name>Warmup</name>
+            <length>300</length>
+        </interval>
+        <interval>
+            <name>Bench Set 1</name>
+            <length>60</length>
+        </interval>
+        <interval>
+            <name>Rest 1</name>
+            <length>60</length>
+        </interval>
+    </intervals>
+</exercise>
