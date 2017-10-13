@@ -26,11 +26,12 @@ public class RunningTimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running_timer_activty);
 
+        this.exercise = (Exercise) this.getIntent().getSerializableExtra(MainActivity.EXERCISE_TO_RUN);
+        this.coach = new ExerciseCoach(this.exercise);
+
         this.openingBell = MediaPlayer.create(this, R.raw.openingbell);
         this.closingBell = MediaPlayer.create(this, R.raw.closingbell);
 
-        this.exercise = (Exercise) this.getIntent().getSerializableExtra(MainActivity.EXERCISE_TO_RUN);
-        this.coach = new ExerciseCoach(this.exercise);
         this.coach.addTimerUpdateConsumer(new IntervalTimer.TimerUpdateConsumer() {
             @Override
             public void timerUpdate(long remainingTime) {
@@ -43,7 +44,7 @@ public class RunningTimerActivity extends AppCompatActivity {
                 RunningTimerActivity.this.intervalChangedUpdate(intervalName, intervalLength);
             }
         });
-        this.coach.addDoneConsumer(new ExerciseCoach.ExerciseDoneConsumer() {
+        this.coach.addExerciseDoneConsumer(new ExerciseCoach.ExerciseDoneConsumer() {
             @Override
             public void exerciseDone() {
                 RunningTimerActivity.this.exerciseDone();
@@ -61,24 +62,28 @@ public class RunningTimerActivity extends AppCompatActivity {
                 RunningTimerActivity.this.setRunningConfiguration();
             }
         });
+        this.coach.addExercisePausedConsumer(new ExerciseCoach.ExercisePausedConsumer() {
+            @Override
+            public void exercisePaused() {
+                RunningTimerActivity.this.setPausedConfiguration();
+            }
+        });
+        this.coach.addExerciseResumedConsumer(new ExerciseCoach.ExerciseResumedConsumer() {
+            @Override
+            public void exerciseResumed() {
+                RunningTimerActivity.this.setRunningConfiguration();
+            }
+        });
+        this.coach.addExerciseResetConsumer(new ExerciseCoach.ExerciseResetConsumer() {
+            @Override
+            public void exerciseReset() {
+                RunningTimerActivity.this.setReadyConfiguration();
+                RunningTimerActivity.this.intervalChangedUpdate(RunningTimerActivity.this.coach.currentIntervalName(),
+                        RunningTimerActivity.this.coach.currentIntervalLength());
+            }
+        });
 
         this.intervalChangedUpdate(this.coach.currentIntervalName(), this.coach.currentIntervalLength());
-
-        Button startButton = (Button) this.findViewById(R.id.StartTimerButton);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RunningTimerActivity.this.coach.start();
-            }
-        });
-
-        Button pauseButton = (Button) this.findViewById(R.id.PauseTimerButton);
-        pauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                RunningTimerActivity.this.coach.pause();
-            }
-        });
 
         Button resetButton = (Button) this.findViewById(R.id.ResetTimerButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +93,7 @@ public class RunningTimerActivity extends AppCompatActivity {
             }
         });
 
-        this.setNotRunningConfiguration();
+        this.setReadyConfiguration();
     }
 
     @Override
@@ -126,7 +131,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         TextView exerciseNameText = (TextView) this.findViewById(R.id.CurrentIntervalName);
         exerciseNameText.setText("Done.");
 
-        this.setNotRunningConfiguration();
+        this.setDoneConfiguration();
 
         this.closingBell.start();
     }
@@ -136,16 +141,56 @@ public class RunningTimerActivity extends AppCompatActivity {
         this.openingBell.start();
     }
 
-    private void setRunningConfiguration()
+    private void setReadyConfiguration()
     {
-        this.enableButton((Button) this.findViewById(R.id.PauseTimerButton));
-        this.disableButton((Button) this.findViewById(R.id.StartTimerButton));
+        Button startPauseResumeButton = (Button) this.findViewById(R.id.StartPauseResumeButton);
+        this.enableButton(startPauseResumeButton);
+        startPauseResumeButton.setText(R.string.start_timer_label);
+        startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RunningTimerActivity.this.coach.start();
+            }
+        });
+
+        this.disableButton((Button) this.findViewById(R.id.ResetTimerButton));
     }
 
-    private void setNotRunningConfiguration()
+    private void setRunningConfiguration()
     {
-        this.enableButton((Button) this.findViewById(R.id.StartTimerButton));
-        this.disableButton((Button) this.findViewById(R.id.PauseTimerButton));
+        Button startPauseResumeButton = (Button) this.findViewById(R.id.StartPauseResumeButton);
+        this.enableButton(startPauseResumeButton);
+        startPauseResumeButton.setText(R.string.pause_timer_label);
+        startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RunningTimerActivity.this.coach.pause();
+            }
+        });
+
+        this.enableButton((Button) this.findViewById(R.id.ResetTimerButton));
+    }
+
+    private void setPausedConfiguration()
+    {
+        Button startPauseResumeButton = (Button) this.findViewById(R.id.StartPauseResumeButton);
+        this.enableButton(startPauseResumeButton);
+        startPauseResumeButton.setText(R.string.resume_timer_label);
+        startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RunningTimerActivity.this.coach.resume();
+            }
+        });
+
+        this.enableButton((Button) this.findViewById(R.id.ResetTimerButton));
+    }
+
+    private void setDoneConfiguration()
+    {
+        this.disableButton((Button) this.findViewById(R.id.StartPauseResumeButton));
+
+        this.enableButton((Button) this.findViewById(R.id.ResetTimerButton));
     }
 
     private void enableButton(final Button button)

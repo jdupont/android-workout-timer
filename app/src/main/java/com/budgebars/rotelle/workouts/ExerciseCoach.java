@@ -1,5 +1,7 @@
 package com.budgebars.rotelle.workouts;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +34,15 @@ public class ExerciseCoach {
 
     private final List<IntervalChangedConsumer> changedConsumers = new ArrayList<>();
 
+    private final List<ExerciseStartedConsumer> exerciseStartedConsumers = new ArrayList<>();
+
+    private final List<ExercisePausedConsumer> exercisePausedConsumers = new ArrayList<>();
+
+    private final List<ExerciseResumedConsumer> exerciseResumedConsumers = new ArrayList<>();
+
     private final List<ExerciseDoneConsumer> doneConsumers = new ArrayList<>();
 
-    private final List<ExerciseStartedConsumer> exerciseStartedConsumers = new ArrayList<>();
+    private final List<ExerciseResetConsumer> exerciseResetConsumers = new ArrayList<>();
 
     public ExerciseCoach(final Exercise exercise)
     {
@@ -43,10 +51,14 @@ public class ExerciseCoach {
         this.currentInterval = this.exercise.getIntervalAt(this.intervalIndex);
         this.timeRemainingInCurrentInterval = this.currentInterval.getLength();
 
+        this.currentTimer = this.makeTimerForCurrentInterval();
+        this.state = ExerciseState.READY;
+
         this.addTimerUpdateConsumer(new IntervalTimer.TimerUpdateConsumer() {
             @Override
             public void timerUpdate(long remainingTime) {
                 ExerciseCoach.this.timeRemainingInCurrentInterval = remainingTime;
+                Log.e("WTF", remainingTime + " blank seconds remaining");
             }
         });
 
@@ -61,9 +73,6 @@ public class ExerciseCoach {
                 }
             }
         });
-
-        this.currentTimer = this.makeTimerForCurrentInterval();
-        this.state = ExerciseState.READY;
     }
 
     public String currentIntervalName()
@@ -94,19 +103,73 @@ public class ExerciseCoach {
         this.currentTimer.addStartedConsumer(consumer);
     }
 
-    public void addDoneConsumer(final ExerciseDoneConsumer consumer)
-    {
-        this.doneConsumers.add(consumer);
-    }
-
     public void addExerciseStartedConsumer(final ExerciseStartedConsumer consumer)
     {
         this.exerciseStartedConsumers.add(consumer);
     }
 
+    public void addExercisePausedConsumer(final ExercisePausedConsumer consumer)
+    {
+        this.exercisePausedConsumers.add(consumer);
+    }
+
+    public void addExerciseResumedConsumer(final ExerciseResumedConsumer consumer)
+    {
+        this.exerciseResumedConsumers.add(consumer);
+    }
+
+    public void addExerciseResetConsumer(final ExerciseResetConsumer consumer)
+    {
+        this.exerciseResetConsumers.add(consumer);
+    }
+
+    public void addExerciseDoneConsumer(final ExerciseDoneConsumer consumer)
+    {
+        this.doneConsumers.add(consumer);
+    }
+
     public void addChangedConsumer(final IntervalChangedConsumer consumer)
     {
         this.changedConsumers.add(consumer);
+    }
+
+    private boolean advanceToNextInterval()
+    {
+        this.intervalIndex = this.intervalIndex + 1;
+
+        if (this.intervalIndex < this.exercise.numberOfIntervals())
+        {
+            this.currentInterval = this.exercise.getIntervalAt(this.intervalIndex);
+            this.currentTimer = this.makeTimerForCurrentInterval();
+            this.timeRemainingInCurrentInterval = this.currentInterval.getLength();
+
+            this.notifyIntervalChanged();
+
+            return true;
+        }
+        else if (this.intervalIndex == this.exercise.numberOfIntervals())
+        {
+            this.done();
+            return false;
+        }
+        else
+        {
+            throw new ArrayIndexOutOfBoundsException("The requested interval does not exist");
+        }
+    }
+
+    private IntervalTimer makeTimerForCurrentInterval()
+    {
+        return this.makeTimerForCurrentInterval(this.currentIntervalLength());
+    }
+
+    private IntervalTimer makeTimerForCurrentInterval(final long timerLength)
+    {
+        IntervalTimer timer = new IntervalTimer(timerLength);
+        timer.addStartedConsumer(this.intervalStartedConsumers);
+        timer.addFinishedConsumer(this.finishedConsumers);
+        timer.addUpdateConsumer(this.timerUpdateConsumers);
+        return timer;
     }
 
     /**
@@ -138,6 +201,7 @@ public class ExerciseCoach {
             throw new IllegalStateException("Not currently running. Current state: " + this.state.toString());
         }
 
+        this.notifyExercisePaused();
         this.currentTimer.stopTimer();
         this.state = ExerciseState.PAUSED;
     }
@@ -153,7 +217,8 @@ public class ExerciseCoach {
             throw new IllegalStateException("Not currently paused. Current state: " + this.state.toString());
         }
 
-        this.makeTimerForCurrentInterval(this.timeRemainingInCurrentInterval);
+        this.notifyExerciseResumed();
+        this.currentTimer = this.makeTimerForCurrentInterval(this.timeRemainingInCurrentInterval);
         this.currentTimer.startTimer();
         this.state = ExerciseState.RUNNING;
     }
@@ -173,7 +238,9 @@ public class ExerciseCoach {
         this.currentInterval = this.exercise.getIntervalAt(this.intervalIndex);
         this.makeTimerForCurrentInterval();
 
+        this.state = ExerciseState.READY;
         this.notifyIntervalChanged();
+        this.notifyExerciseReset();
     }
 
     /**
@@ -186,7 +253,7 @@ public class ExerciseCoach {
         {
             throw new IllegalStateException("Timer not currently running. Current state: " + this.state);
         }
-        else if (this.intervalIndex == this.exercise.numberOfIntervals())
+        else if (this.intervalIndex != this.exercise.numberOfIntervals())
         {
             throw new IllegalStateException("The interval index does not indicate that the exercise" +
                     "has been run all the way through.");
@@ -194,31 +261,6 @@ public class ExerciseCoach {
 
         this.state = ExerciseState.DONE;
         this.notifyExerciseDone();
-    }
-
-    private boolean advanceToNextInterval()
-    {
-        this.intervalIndex = this.intervalIndex + 1;
-
-        if (this.intervalIndex < this.exercise.numberOfIntervals())
-        {
-            this.currentInterval = this.exercise.getIntervalAt(this.intervalIndex);
-            this.currentTimer = this.makeTimerForCurrentInterval();
-            this.timeRemainingInCurrentInterval = this.currentInterval.getLength();
-
-            this.notifyIntervalChanged();
-
-            return true;
-        }
-        else if (this.intervalIndex == this.exercise.numberOfIntervals())
-        {
-            this.done();
-            return false;
-        }
-        else
-        {
-            throw new ArrayIndexOutOfBoundsException("The requested interval does not exist");
-        }
     }
 
     private boolean isReady()
@@ -241,20 +283,6 @@ public class ExerciseCoach {
         return this.state == ExerciseState.DONE;
     }
 
-    private IntervalTimer makeTimerForCurrentInterval()
-    {
-        return this.makeTimerForCurrentInterval(this.currentIntervalLength());
-    }
-
-    private IntervalTimer makeTimerForCurrentInterval(final long timerLength)
-    {
-        IntervalTimer timer = new IntervalTimer(timerLength);
-        timer.addStartedConsumer(this.intervalStartedConsumers);
-        timer.addFinishedConsumer(this.finishedConsumers);
-        timer.addUpdateConsumer(this.timerUpdateConsumers);
-        return timer;
-    }
-
     private void notifyIntervalChanged()
     {
         for (IntervalChangedConsumer consumer : this.changedConsumers)
@@ -271,11 +299,35 @@ public class ExerciseCoach {
         }
     }
 
+    private void notifyExercisePaused()
+    {
+        for (ExercisePausedConsumer consumer : this.exercisePausedConsumers)
+        {
+            consumer.exercisePaused();
+        }
+    }
+
+    private void notifyExerciseResumed()
+    {
+        for (ExerciseResumedConsumer consumer : this.exerciseResumedConsumers)
+        {
+            consumer.exerciseResumed();
+        }
+    }
+
     private void notifyExerciseDone()
     {
         for (ExerciseDoneConsumer consumer : this.doneConsumers)
         {
             consumer.exerciseDone();
+        }
+    }
+
+    private void notifyExerciseReset()
+    {
+        for (ExerciseResetConsumer consumer : this.exerciseResetConsumers)
+        {
+            consumer.exerciseReset();
         }
     }
 
@@ -287,6 +339,21 @@ public class ExerciseCoach {
     public interface ExerciseStartedConsumer
     {
         public void exerciseStarted();
+    }
+
+    public interface ExercisePausedConsumer
+    {
+        public void exercisePaused();
+    }
+
+    public interface ExerciseResumedConsumer
+    {
+        public void exerciseResumed();
+    }
+
+    public interface ExerciseResetConsumer
+    {
+        public void exerciseReset();
     }
 
     public interface ExerciseDoneConsumer

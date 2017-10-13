@@ -22,16 +22,10 @@
         android:id="@+id/CurrentIntervalName" />
 
     <Button
-        android:id="@+id/StartTimerButton"
+        android:id="@+id/StartPauseResumeButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/start_timer_label" />
-
-    <Button
-        android:id="@+id/PauseTimerButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/stop_timer_label" />
 
     <Button
         android:id="@+id/ResetTimerButton"
