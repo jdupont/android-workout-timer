@@ -37,6 +37,11 @@ public class Exercise implements Serializable {
         return total;
     }
 
+    public String name()
+    {
+        return this.name;
+    }
+
     public int numberOfIntervals()
     {
         return this.intervals.size();
@@ -45,6 +50,12 @@ public class Exercise implements Serializable {
     public Interval getIntervalAt(int index)
     {
         return this.intervals.get(index);
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.name;
     }
 
     public static Exercise createMockExercise()

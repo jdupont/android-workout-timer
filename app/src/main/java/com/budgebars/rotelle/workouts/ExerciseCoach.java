@@ -1,7 +1,5 @@
 package com.budgebars.rotelle.workouts;
 
-import android.util.Log;
-
 import com.budgebars.rotelle.workouts.consumers.ExerciseDoneConsumer;
 import com.budgebars.rotelle.workouts.consumers.ExercisePausedConsumer;
 import com.budgebars.rotelle.workouts.consumers.ExerciseResetConsumer;
@@ -68,7 +66,6 @@ public class ExerciseCoach {
             @Override
             public void timerUpdate(long remainingTime) {
                 ExerciseCoach.this.timeRemainingInCurrentInterval = remainingTime;
-                Log.e("WTF", remainingTime + " blank seconds remaining");
             }
         });
 

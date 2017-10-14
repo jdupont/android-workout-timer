@@ -27,4 +27,10 @@ public class Interval implements Serializable {
     {
         return this.name;
     }
+
+    @Override
+    public String toString()
+    {
+        return this.name + " (" + this.length + ")";
+    }
 }

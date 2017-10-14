@@ -1,7 +1,6 @@
 package com.budgebars.rotelle.workouts;
 
 import android.os.CountDownTimer;
-import android.util.Log;
 
 import com.budgebars.rotelle.workouts.consumers.IntervalFinishedConsumer;
 import com.budgebars.rotelle.workouts.consumers.IntervalStartedConsumer;
@@ -35,8 +34,6 @@ public class IntervalTimer {
 
     public IntervalTimer(final long intervalLength)
     {
-        Log.e("WTF", "Making timer with interval length: " + intervalLength);
-
         this.timer = new CountDownTimer(intervalLength * Units.SECONDS_TO_MILLIS_FACTOR,
                 IntervalTimer.NOTIFICATION_TICKS_MILLIS) {
             @Override

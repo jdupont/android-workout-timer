@@ -3,11 +3,10 @@ package com.budgebars.rotelle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import com.budgebars.rotelle.files.WorkoutParser;
+import com.budgebars.rotelle.files.ExerciseParser;
 import com.budgebars.rotelle.workouts.Exercise;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,15 +25,15 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.runAllPurposeButton();
             }
         });
-
-        WorkoutParser parser = new WorkoutParser();
-        Log.e("testing", parser.readFileContents(this));
     }
 
     private void runAllPurposeButton()
     {
+        ExerciseParser parser = new ExerciseParser();
+        Exercise exercise = parser.readExerciseFromFile(this);
+
         Intent intent = new Intent(this, RunningTimerActivity.class);
-        intent.putExtra(MainActivity.EXERCISE_TO_RUN, Exercise.createMockExercise());
+        intent.putExtra(MainActivity.EXERCISE_TO_RUN, exercise);
         startActivity(intent);
     }
 }
