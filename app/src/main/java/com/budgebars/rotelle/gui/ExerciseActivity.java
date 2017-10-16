@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.workouts.Exercise;
@@ -21,6 +22,9 @@ public class ExerciseActivity extends AppCompatActivity {
         this.exercise = (Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN);
 
         this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ")");
+
+        ListView list = (ListView) findViewById(R.id.ExerciseDisplayView);
+        list.setAdapter(new IntervalAdapter(this.exercise, this));
 
         Button startExerciseButton = (Button) this.findViewById(R.id.StartExerciseButton);
         startExerciseButton.setOnClickListener(new View.OnClickListener() {
