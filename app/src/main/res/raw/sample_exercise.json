@@ -4,7 +4,7 @@
 	"Version": "0.1",
 	"intervals": [
 		{"name": "Warmup", "length": "15"},
-              	{"name": "Bench Set 1", "length": "15"},
-              	{"name": "Rest 1", "length": "15"}
-        ]
+          	{"name": "Bench Set 1", "length": "15"},
+          	{"name": "Rest 1", "length": "15"}
+      ]
 }}

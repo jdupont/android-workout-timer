@@ -25,13 +25,13 @@ public class Exercise implements Serializable {
         this.intervals = intervals;
     }
 
-    public int totalLength()
+    public Duration totalLength()
     {
-        int total = 0;
+        Duration total = Duration.ZERO();
 
         for (Interval interval : this.intervals)
         {
-            total = total + interval.getLength();
+            total = total.add(interval.getLength());
         }
 
         return total;
@@ -62,9 +62,9 @@ public class Exercise implements Serializable {
     {
         List<Interval> intervals = new ArrayList<Interval>();
 
-        intervals.add(new Interval("Warmup", 15));
-        intervals.add(new Interval("Bench 1", 15));
-        intervals.add(new Interval("Rest 1", 15));
+        intervals.add(new Interval("Warmup", Duration.fromSeconds(15)));
+        intervals.add(new Interval("Bench 1", Duration.fromSeconds(15)));
+        intervals.add(new Interval("Rest 1", Duration.fromSeconds(15)));
 
         return new Exercise("Sample Bench Workout", intervals);
     }

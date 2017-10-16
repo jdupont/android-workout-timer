@@ -3,6 +3,7 @@ package com.budgebars.rotelle.files;
 import android.content.Context;
 
 import com.budgebars.rotelle.R;
+import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.Interval;
 
@@ -93,7 +94,7 @@ public class ExerciseParser {
                 String name = oneObject.getString(ExerciseParser.INTERVAL_NAME_TAG);
                 int length = oneObject.getInt(ExerciseParser.INTERVAL_LENGTH_TAG);
 
-                intervals.add(new Interval(name, length));
+                intervals.add(new Interval(name, Duration.fromSeconds(length)));
             }
             catch (JSONException e)
             {

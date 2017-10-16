@@ -9,20 +9,20 @@ import android.widget.Button;
 import com.budgebars.rotelle.files.ExerciseParser;
 import com.budgebars.rotelle.workouts.Exercise;
 
-public class MainActivity extends AppCompatActivity {
+public class ExerciseListingActivity extends AppCompatActivity {
 
     public static final String EXERCISE_TO_RUN = "EXERCISE_EXTRA";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_exercise_listing);
 
         Button allPurpose = (Button) this.findViewById(R.id.AllPurposeButton);
         allPurpose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivity.this.runAllPurposeButton();
+                ExerciseListingActivity.this.runAllPurposeButton();
             }
         });
     }
@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity {
         ExerciseParser parser = new ExerciseParser();
         Exercise exercise = parser.readExerciseFromFile(this);
 
-        Intent intent = new Intent(this, RunningTimerActivity.class);
-        intent.putExtra(MainActivity.EXERCISE_TO_RUN, exercise);
+        Intent intent = new Intent(this, ExerciseActivity.class);
+        intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, exercise);
         startActivity(intent);
     }
 }

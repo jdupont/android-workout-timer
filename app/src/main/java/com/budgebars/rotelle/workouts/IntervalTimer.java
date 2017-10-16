@@ -8,6 +8,7 @@ import com.budgebars.rotelle.workouts.consumers.TimerUpdateConsumer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -16,7 +17,7 @@ import java.util.List;
 
 public class IntervalTimer {
 
-    private static final int NOTIFICATION_TICKS_MILLIS = 250;
+    private static final Duration NOTIFICATION_TICKS_MILLIS = Duration.fromMilliSeconds(250);
 
     private final CountDownTimer timer;
 
@@ -32,16 +33,16 @@ public class IntervalTimer {
         this(interval.getLength());
     }
 
-    public IntervalTimer(final long intervalLength)
+    public IntervalTimer(final Duration intervalLength)
     {
-        this.timer = new CountDownTimer(intervalLength * Units.SECONDS_TO_MILLIS_FACTOR,
-                IntervalTimer.NOTIFICATION_TICKS_MILLIS) {
+        this.timer = new CountDownTimer(intervalLength.get(TimeUnit.MILLISECONDS),
+                IntervalTimer.NOTIFICATION_TICKS_MILLIS.get(TimeUnit.MILLISECONDS)) {
             @Override
-            public void onTick(long l) {
+            public void onTick(final long milliseconds) {
 
                 for (TimerUpdateConsumer consumer : IntervalTimer.this.onTickMethods)
                 {
-                    consumer.timerUpdate(l / Units.SECONDS_TO_MILLIS_FACTOR);
+                    consumer.timerUpdate(Duration.fromMilliSeconds(milliseconds));
                 }
             }
 

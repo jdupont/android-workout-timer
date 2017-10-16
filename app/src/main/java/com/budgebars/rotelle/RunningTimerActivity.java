@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.ExerciseCoach;
 import com.budgebars.rotelle.workouts.consumers.ExerciseDoneConsumer;
@@ -17,6 +18,8 @@ import com.budgebars.rotelle.workouts.consumers.ExerciseStartedConsumer;
 import com.budgebars.rotelle.workouts.consumers.IntervalChangedConsumer;
 import com.budgebars.rotelle.workouts.consumers.IntervalStartedConsumer;
 import com.budgebars.rotelle.workouts.consumers.TimerUpdateConsumer;
+
+import java.util.concurrent.TimeUnit;
 
 public class RunningTimerActivity extends AppCompatActivity {
 
@@ -33,7 +36,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_running_timer_activty);
 
-        this.exercise = (Exercise) this.getIntent().getSerializableExtra(MainActivity.EXERCISE_TO_RUN);
+        this.exercise = (Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN);
         this.coach = new ExerciseCoach(this.exercise);
 
         this.openingBell = MediaPlayer.create(this, R.raw.opening_bell_trimmed);
@@ -41,13 +44,13 @@ public class RunningTimerActivity extends AppCompatActivity {
 
         this.coach.addTimerUpdateConsumer(new TimerUpdateConsumer() {
             @Override
-            public void timerUpdate(long remainingTime) {
+            public void timerUpdate(final Duration remainingTime) {
                 RunningTimerActivity.this.updateTextTimerTo(remainingTime);
             }
         });
         this.coach.addIntervalChangedConsumer(new IntervalChangedConsumer() {
             @Override
-            public void intervalChanged(String intervalName, int intervalLength) {
+            public void intervalChanged(String intervalName, final Duration intervalLength) {
                 RunningTimerActivity.this.intervalChangedUpdate(intervalName, intervalLength);
             }
         });
@@ -115,16 +118,16 @@ public class RunningTimerActivity extends AppCompatActivity {
         this.closingBell = null;
     }
 
-    private void updateTextTimerTo(long remaining)
+    private void updateTextTimerTo(final Duration remaining)
     {
         TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(Long.toString(remaining));
+        secondsText.setText(Long.toString(remaining.get(TimeUnit.SECONDS)));
     }
 
-    private void intervalChangedUpdate(final String intervalName, final int totalLength)
+    private void intervalChangedUpdate(final String intervalName, final Duration totalLength)
     {
         TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(Long.toString(totalLength));
+        secondsText.setText(Long.toString(totalLength.get(TimeUnit.SECONDS)));
 
         TextView exerciseNameText = (TextView) this.findViewById(R.id.CurrentIntervalName);
         exerciseNameText.setText(intervalName);

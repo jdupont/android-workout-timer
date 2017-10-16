@@ -10,15 +10,15 @@ public class Interval implements Serializable {
 
     private final String name;
 
-    private final int length;
+    private final Duration length;
 
-    public Interval(final String name, final int length)
+    public Interval(final String name, final Duration length)
     {
         this.name = name;
         this.length = length;
     }
 
-    public int getLength()
+    public Duration getLength()
     {
         return this.length;
     }

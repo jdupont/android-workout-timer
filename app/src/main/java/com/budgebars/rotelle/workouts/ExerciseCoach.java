@@ -28,7 +28,7 @@ public class ExerciseCoach {
      * Saves state of current interval which is necessary during pauses (since Android timer does
      * not offer pause functionality out of the box).
      */
-    private long timeRemainingInCurrentInterval;
+    private Duration timeRemainingInCurrentInterval;
 
     private ExerciseState state;
 
@@ -64,7 +64,7 @@ public class ExerciseCoach {
 
         this.addTimerUpdateConsumer(new TimerUpdateConsumer() {
             @Override
-            public void timerUpdate(long remainingTime) {
+            public void timerUpdate(final Duration remainingTime) {
                 ExerciseCoach.this.timeRemainingInCurrentInterval = remainingTime;
             }
         });
@@ -87,7 +87,7 @@ public class ExerciseCoach {
         return this.currentInterval.getName();
     }
 
-    public int currentIntervalLength()
+    public Duration currentIntervalLength()
     {
         return this.currentInterval.getLength();
     }
@@ -170,7 +170,7 @@ public class ExerciseCoach {
         return this.makeTimerForCurrentInterval(this.currentIntervalLength());
     }
 
-    private IntervalTimer makeTimerForCurrentInterval(final long timerLength)
+    private IntervalTimer makeTimerForCurrentInterval(final Duration timerLength)
     {
         IntervalTimer timer = new IntervalTimer(timerLength);
         timer.addStartedConsumer(this.intervalStartedConsumers);
