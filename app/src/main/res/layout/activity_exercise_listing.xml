@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.budgebars.rotelle.ExerciseListingActivity">
+    tools:context="com.budgebars.rotelle.gui.ExerciseListingActivity">
     
     <Button
         android:id="@+id/AllPurposeButton"

@@ -1,4 +1,4 @@
-package com.budgebars.rotelle;
+package com.budgebars.rotelle.gui;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.files.ExerciseParser;
 import com.budgebars.rotelle.workouts.Exercise;
 

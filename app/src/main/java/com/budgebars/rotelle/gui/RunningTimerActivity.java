@@ -1,4 +1,4 @@
-package com.budgebars.rotelle;
+package com.budgebars.rotelle.gui;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.ExerciseCoach;
