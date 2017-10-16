@@ -40,7 +40,9 @@ public class ExerciseActivity extends AppCompatActivity {
         editExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                throw new UnsupportedOperationException("Not yet implemented");
+                Intent intent = new Intent(ExerciseActivity.this, EditExerciseActivity.class);
+                intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
+                startActivity(intent);
             }
         });
     }
