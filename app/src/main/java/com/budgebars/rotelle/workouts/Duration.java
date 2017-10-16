@@ -28,6 +28,31 @@ public class Duration implements Serializable {
         return unit.convert(milliseconds, Duration.UNIT);
     }
 
+    private boolean hasHours()
+    {
+        return (Duration.this.UNIT.toHours(this.milliseconds) > 0);
+    }
+
+    private boolean hasMinutes()
+    {
+        return (Duration.this.UNIT.toMinutes(this.milliseconds) > 0);
+    }
+
+    private boolean hasSeconds()
+    {
+        return (Duration.this.UNIT.toSeconds(this.milliseconds) > 0);
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%02dm%02ds",
+                Duration.UNIT.toMinutes(this.milliseconds),
+                Duration.UNIT.toSeconds(this.milliseconds) -
+                        TimeUnit.MINUTES.toSeconds(Duration.UNIT.toMinutes(this.milliseconds))
+        );
+    }
+
     public static Duration ZERO()
     {
         return new Duration(0, Duration.UNIT);
