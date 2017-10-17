@@ -12,11 +12,39 @@
         android:layout_height="wrap_content">
     </EditText>
 
-    <EditText
-        android:id="@+id/IntervalLengthEdit"
-        android:layout_alignParentEnd="true"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </EditText>
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true">
+
+        <EditText
+            android:id="@+id/IntervalLengthEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        </EditText>
+
+        <ImageButton
+            android:id="@+id/UpIntervalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/arrow_up_float"/>
+
+        <ImageButton
+            android:id="@+id/DownIntervalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/arrow_down_float"/>
+
+        <ImageButton
+            android:id="@+id/DeleteIntervalButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_delete"/>
+
+    </LinearLayout>
+
+
+
+
 
 </RelativeLayout>

@@ -41,7 +41,7 @@ public class IntervalAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int i) {
-        throw new NoSuchMethodError("No unique ID available for intervals.");
+        return i;
     }
 
     @Override
