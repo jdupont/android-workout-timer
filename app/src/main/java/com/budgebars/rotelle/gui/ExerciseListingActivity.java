@@ -12,7 +12,6 @@ import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.files.ExerciseFile;
 import com.budgebars.rotelle.files.InternalFileManager;
 import com.budgebars.rotelle.gui.adapters.FileAdapter;
-import com.budgebars.rotelle.workouts.Exercise;
 
 import java.io.File;
 import java.util.List;
@@ -49,16 +48,16 @@ public class ExerciseListingActivity extends AppCompatActivity {
             }
         });
 
-        Button allPurpose = (Button) this.findViewById(R.id.AllPurposeButton);
+        Button allPurpose = (Button) this.findViewById(R.id.CreateExerciseButton);
         allPurpose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ExerciseListingActivity.this.runAllPurposeButton(exercises.get(0).getExercise());
+                ExerciseListingActivity.this.runAllPurposeButton();
             }
         });
     }
 
-    private void runAllPurposeButton(final Exercise exercise)
+    private void runAllPurposeButton()
     {
         throw new UnsupportedOperationException("Have not implemented create yet.");
     }
