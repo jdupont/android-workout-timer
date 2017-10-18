@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
+import com.budgebars.rotelle.gui.adapters.EditIntervalAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
 
 public class EditExerciseActivity extends AppCompatActivity {

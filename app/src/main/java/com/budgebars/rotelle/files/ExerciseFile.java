@@ -37,6 +37,11 @@ public class ExerciseFile {
         return ExerciseParser.readExerciseFromFile(file);
     }
 
+    public String name()
+    {
+        return this.exercise.name();
+    }
+
     public Exercise getExercise()
     {
         return this.exercise;

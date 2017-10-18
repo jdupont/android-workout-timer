@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
+import com.budgebars.rotelle.gui.adapters.IntervalAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
 
 public class ExerciseActivity extends AppCompatActivity {

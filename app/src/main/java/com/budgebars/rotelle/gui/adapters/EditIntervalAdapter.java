@@ -1,4 +1,4 @@
-package com.budgebars.rotelle.gui;
+package com.budgebars.rotelle.gui.adapters;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.files.ExerciseFile;
 import com.budgebars.rotelle.files.InternalFileManager;
+import com.budgebars.rotelle.gui.adapters.FileAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
 
 import java.io.File;
@@ -34,10 +36,18 @@ public class ExerciseListingActivity extends AppCompatActivity {
         File[] exerciseFiles = files.getExerciseFiles();
         final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
 
-        TextView listing = (TextView) this.findViewById(R.id.ListingTextView);
+        ListView listing = (ListView) this.findViewById(R.id.FileListView);
+        listing.setAdapter(new FileAdapter(exercises, this));
+        listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                ExerciseFile exerciseFile = (ExerciseFile) adapterView.getItemAtPosition(position);
 
-        // TODO -- ACTUAL DISPLAY OF FILES
-        listing.setText("Number of exercises found: " + exercises.size());
+                Intent intent = new Intent(ExerciseListingActivity.this, ExerciseActivity.class);
+                intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, exerciseFile.getExercise());
+                startActivity(intent);
+            }
+        });
 
         Button allPurpose = (Button) this.findViewById(R.id.AllPurposeButton);
         allPurpose.setOnClickListener(new View.OnClickListener() {
@@ -50,8 +60,6 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
     private void runAllPurposeButton(final Exercise exercise)
     {
-        Intent intent = new Intent(this, ExerciseActivity.class);
-        intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, exercise);
-        startActivity(intent);
+        throw new UnsupportedOperationException("Have not implemented create yet.");
     }
 }
