@@ -25,10 +25,16 @@
             android:text="Add Interval"/>
 
         <Button
-            android:id="@+id/SaveExerciseButton"
+            android:id="@+id/SaveNewExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Save"/>
+            android:text="Save As New"/>
+
+        <Button
+            android:id="@+id/OverwriteExerciseButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Save As Overwrite"/>
 
     </LinearLayout>
 

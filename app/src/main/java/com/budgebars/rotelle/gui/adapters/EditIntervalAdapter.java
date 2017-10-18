@@ -8,8 +8,12 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.budgebars.rotelle.R;
-import com.budgebars.rotelle.workouts.Exercise;
-import com.budgebars.rotelle.workouts.Interval;
+import com.budgebars.rotelle.workouts.consumers.ExerciseEditedConsumer;
+import com.budgebars.rotelle.workouts.editable.EditableExercise;
+import com.budgebars.rotelle.workouts.editable.EditableInterval;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Jules on 10/16/2017.
@@ -17,16 +21,36 @@ import com.budgebars.rotelle.workouts.Interval;
 
 public class EditIntervalAdapter  extends BaseAdapter {
 
-    private final Exercise exercise;
+    private final EditableExercise exercise;
 
     private final Activity parent;
 
-    public EditIntervalAdapter(final Exercise exercise, final Activity parent)
+    private final List<IntervalAddedConsumer> intervalAddedConsumers = new ArrayList<>();
+
+    public EditIntervalAdapter(final EditableExercise exercise, final Activity parent)
     {
         super();
 
         this.exercise = exercise;
         this.parent = parent;
+
+        this.exercise.addExerciseEditedConsumer(new ExerciseEditedConsumer() {
+            @Override
+            public void exerciseEdited(final EditAction action) {
+
+                EditIntervalAdapter.this.notifyDataSetChanged();
+
+                if (action == EditAction.ADD_INTERVAL)
+                {
+                    EditIntervalAdapter.this.notifyIntervalAdded();
+                }
+            }
+        });
+    }
+
+    public void addItemAddedConsumer(final IntervalAddedConsumer item)
+    {
+        this.intervalAddedConsumers.add(item);
     }
 
     @Override
@@ -51,15 +75,27 @@ public class EditIntervalAdapter  extends BaseAdapter {
             convertView = inflater.inflate(R.layout.item_interval_list_edit, container, false);
         }
 
-        Interval current = (Interval) this.getItem(position);
+        EditableInterval current = (EditableInterval) this.getItem(position);
 
         TextView nameView = convertView.findViewById(R.id.IntervalNameEdit);
-        nameView.setText(current.getName());
+        nameView.setText(current.name());
 
         TextView lengthView = convertView.findViewById(R.id.IntervalLengthEdit);
-        lengthView.setText(current.getLength().toString());
+        lengthView.setText(current.length().toString());
 
         return convertView;
     }
 
+    private void notifyIntervalAdded()
+    {
+        for (IntervalAddedConsumer consumer : this.intervalAddedConsumers)
+        {
+            consumer.intervalAddedToAdapter();
+        }
+    }
+
+    public interface IntervalAddedConsumer
+    {
+        public void intervalAddedToAdapter();
+    }
 }
