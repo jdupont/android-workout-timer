@@ -10,6 +10,7 @@ public interface ExerciseEditedConsumer {
     public enum EditAction
     {
         ADD_INTERVAL,
+        MOVE_INTERVAL,
         TITLE_EDITED;
     }
 }

@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.budgebars.rotelle.R;
@@ -98,6 +99,24 @@ public class EditIntervalAdapter  extends BaseAdapter {
 
         TextView lengthView = convertView.findViewById(R.id.IntervalLengthEdit);
         lengthView.setText(current.length().toString());
+
+        ImageButton upButton = convertView.findViewById(R.id.UpIntervalButton);
+        upButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditIntervalAdapter.this.exercise.moveInterval(position, position - 1);
+            }
+        });
+        upButton.setEnabled(position != 0); // Can move up unless its the first item
+
+        ImageButton downButton = convertView.findViewById(R.id.DownIntervalButton);
+        downButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditIntervalAdapter.this.exercise.moveInterval(position, position + 1);
+            }
+        });
+        downButton.setEnabled(position != this.getCount() - 1);
 
         return convertView;
     }

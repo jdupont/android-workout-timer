@@ -61,10 +61,29 @@ public class EditableExercise {
         {
             throw new IndexOutOfBoundsException("To index was out of bounds: " + from);
         }
+        else if (to == from)
+        {
+            throw new IllegalArgumentException("Why are you trying to move an interval back to the same place?");
+        }
 
-        this.notifyExerciseEditConsumers(null);
+        EditableInterval moving = this.getIntervalAt(from);
 
-        throw new UnsupportedOperationException("Not yet implemented");
+        if (to < from)
+        {
+            // From greater than to so removing from will not affect position of to
+            this.intervals.remove(from);
+            this.intervals.add(to, moving);
+        }
+        else
+        {
+            // To is greater than from. So, if we remove from, we're going to affect the position of
+            // to making the requested operation wrong.
+            // So, remove, then subtract
+            this.intervals.remove(from);
+            this.intervals.add(to, moving);
+        }
+
+        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.MOVE_INTERVAL);
     }
 
     public void addInterval()
@@ -94,6 +113,11 @@ public class EditableExercise {
 
     private void notifyExerciseEditConsumers(final ExerciseEditedConsumer.EditAction action)
     {
+        if (action == null)
+        {
+            throw new IllegalArgumentException("Must be a valid EditAction");
+        }
+
         for (ExerciseEditedConsumer consumers : this.editedConsumers)
         {
             consumers.exerciseEdited(action);
