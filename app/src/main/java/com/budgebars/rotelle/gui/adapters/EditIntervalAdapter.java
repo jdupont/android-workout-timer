@@ -1,10 +1,12 @@
 package com.budgebars.rotelle.gui.adapters;
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.budgebars.rotelle.R;
@@ -69,16 +71,26 @@ public class EditIntervalAdapter  extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup container) {
+    public View getView(final int position, View convertView, final ViewGroup container) {
         if (convertView == null) {
             LayoutInflater inflater = this.parent.getLayoutInflater();
             convertView = inflater.inflate(R.layout.item_interval_list_edit, container, false);
         }
 
-        EditableInterval current = (EditableInterval) this.getItem(position);
+        final EditableInterval current = (EditableInterval) this.getItem(position);
 
-        TextView nameView = convertView.findViewById(R.id.IntervalNameEdit);
+        final EditText nameView = convertView.findViewById(R.id.IntervalNameEdit);
         nameView.setText(current.name());
+        nameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+
+                if (!hasFocus) {
+                    EditText editor = (EditText) view;
+                    current.changeName(editor.getText().toString());
+                }
+            }
+        });
 
         TextView lengthView = convertView.findViewById(R.id.IntervalLengthEdit);
         lengthView.setText(current.length().toString());

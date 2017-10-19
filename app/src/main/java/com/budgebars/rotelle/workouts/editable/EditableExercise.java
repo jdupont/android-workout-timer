@@ -50,13 +50,6 @@ public class EditableExercise {
         this.notifyExerciseEditConsumers(null);
     }
 
-    public void changeIntervalName(final int intervalPosition, final String updated)
-    {
-        this.notifyExerciseEditConsumers(null);
-
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
     public void moveInterval(final int from, final int to)
     {
         if (from < 0 || from >= this.intervals.size())
@@ -76,8 +69,12 @@ public class EditableExercise {
     public void addInterval()
     {
         this.intervals.add(EditableInterval.getDefaultInterval());
-
         this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.ADD_INTERVAL);
+    }
+
+    public Exercise toExercise()
+    {
+        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     public void addExerciseEditedConsumer(final ExerciseEditedConsumer consumer)

@@ -18,7 +18,8 @@
         </activity>
         <activity android:name=".gui.RunningTimerActivity" />
         <activity android:name=".gui.ExerciseActivity" />
-        <activity android:name=".gui.EditExerciseActivity"></activity>
+        <activity android:name=".gui.EditExerciseActivity"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

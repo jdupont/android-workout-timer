@@ -25,6 +25,8 @@ public class EditExerciseActivity extends AppCompatActivity {
         this.setTitle(this.editableExercise.name());
 
         final ListView list = (ListView) findViewById(R.id.EditDisplayView);
+        list.setItemsCanFocus(true);
+
         final EditIntervalAdapter adapter = new EditIntervalAdapter(this.editableExercise, this);
         list.setAdapter(adapter);
 
