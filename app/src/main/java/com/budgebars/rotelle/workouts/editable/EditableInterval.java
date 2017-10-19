@@ -46,9 +46,9 @@ public class EditableInterval {
         this.length = updated;
     }
 
-    public void toInterval()
+    public Interval toInterval()
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new Interval(this.name(), this.length());
     }
 
     public static EditableInterval getDefaultInterval()

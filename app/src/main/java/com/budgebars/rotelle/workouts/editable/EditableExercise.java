@@ -1,6 +1,7 @@
 package com.budgebars.rotelle.workouts.editable;
 
 import com.budgebars.rotelle.workouts.Exercise;
+import com.budgebars.rotelle.workouts.Interval;
 import com.budgebars.rotelle.workouts.consumers.ExerciseEditedConsumer;
 
 import java.util.ArrayList;
@@ -47,7 +48,7 @@ public class EditableExercise {
     {
         this.name = updated;
 
-        this.notifyExerciseEditConsumers(null);
+        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.TITLE_EDITED);
     }
 
     public void moveInterval(final int from, final int to)
@@ -74,7 +75,16 @@ public class EditableExercise {
 
     public Exercise toExercise()
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        List<Interval> intervals = new ArrayList<>();
+
+        for (EditableInterval editable : this.intervals)
+        {
+            intervals.add(editable.toInterval());
+        }
+
+        Exercise exercise = new Exercise(this.name(), intervals);
+
+        return exercise;
     }
 
     public void addExerciseEditedConsumer(final ExerciseEditedConsumer consumer)

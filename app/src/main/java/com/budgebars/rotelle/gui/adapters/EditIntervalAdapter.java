@@ -1,7 +1,6 @@
 package com.budgebars.rotelle.gui.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,7 +39,12 @@ public class EditIntervalAdapter  extends BaseAdapter {
             @Override
             public void exerciseEdited(final EditAction action) {
 
-                EditIntervalAdapter.this.notifyDataSetChanged();
+                if (action != EditAction.TITLE_EDITED)
+                {
+                    // Title is outside of the list view so only need to re-render the
+                    // list view when something other than the title has changed
+                    EditIntervalAdapter.this.notifyDataSetChanged();
+                }
 
                 if (action == EditAction.ADD_INTERVAL)
                 {

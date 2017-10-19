@@ -18,13 +18,13 @@ public class ExerciseFile {
 
     private Exercise exercise;
 
-    public ExerciseFile(final File exerciseFile)
+    public ExerciseFile(final File file)
     {
-        this.source = exerciseFile;
+        this.source = file;
 
         if (this.source.exists())
         {
-            this.exercise = getExercise(this.source);
+            this.exercise = this.getExercise(this.source);
         }
         else
         {

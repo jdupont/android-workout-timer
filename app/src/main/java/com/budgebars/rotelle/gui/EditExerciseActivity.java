@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
@@ -20,9 +21,23 @@ public class EditExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
 
+        this.setTitle("Editing an Exercise");
+
         this.editableExercise = new EditableExercise((Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN));
 
-        this.setTitle(this.editableExercise.name());
+        EditText titleEditor = (EditText) this.findViewById(R.id.EditTitleView);
+        titleEditor.setText(this.editableExercise.name());
+        titleEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (!hasFocus)
+                {
+                    EditText titleText = (EditText) view;
+                    String updated = titleText.getText().toString();
+                    EditExerciseActivity.this.editableExercise.changeName(updated);
+                }
+            }
+        });
 
         final ListView list = (ListView) findViewById(R.id.EditDisplayView);
         list.setItemsCanFocus(true);
@@ -45,16 +60,8 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
         });
 
-        Button overwriteButton = (Button) this.findViewById(R.id.OverwriteExerciseButton);
-        overwriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                throw new UnsupportedOperationException("Not yet implemented");
-            }
-        });
-
-        Button saveNewButton = (Button) this.findViewById(R.id.SaveNewExerciseButton);
-        saveNewButton.setOnClickListener(new View.OnClickListener() {
+        Button saveButton = (Button) this.findViewById(R.id.SaveExerciseButton);
+        saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 throw new UnsupportedOperationException("Not yet implemented");
