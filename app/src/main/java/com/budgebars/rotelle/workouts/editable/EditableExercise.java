@@ -86,6 +86,13 @@ public class EditableExercise {
         this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.MOVE_INTERVAL);
     }
 
+    public void removeInterval(final int position)
+    {
+        this.intervals.remove(position);
+
+        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.DELETE_INTERVAL);
+    }
+
     public void addInterval()
     {
         this.intervals.add(EditableInterval.getDefaultInterval());

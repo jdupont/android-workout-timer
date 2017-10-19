@@ -118,6 +118,14 @@ public class EditIntervalAdapter  extends BaseAdapter {
         });
         downButton.setEnabled(position != this.getCount() - 1);
 
+        ImageButton deleteButton = convertView.findViewById(R.id.DeleteIntervalButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                EditIntervalAdapter.this.exercise.removeInterval(position);
+            }
+        });
+
         return convertView;
     }
 
