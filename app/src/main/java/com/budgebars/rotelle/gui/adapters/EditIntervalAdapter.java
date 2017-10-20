@@ -10,12 +10,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.budgebars.rotelle.R;
+import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.consumers.ExerciseEditedConsumer;
 import com.budgebars.rotelle.workouts.editable.EditableExercise;
 import com.budgebars.rotelle.workouts.editable.EditableInterval;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jules on 10/16/2017.
@@ -98,7 +100,17 @@ public class EditIntervalAdapter  extends BaseAdapter {
         });
 
         TextView lengthView = convertView.findViewById(R.id.IntervalLengthEdit);
-        lengthView.setText(current.length().toString());
+        lengthView.setText(Long.toString(current.length().get(TimeUnit.SECONDS)));
+        lengthView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean hasFocus) {
+
+                if (!hasFocus) {
+                    EditText editor = (EditText) view;
+                    current.changeDuration(Duration.fromSeconds(Long.parseLong(editor.getText().toString())));
+                }
+            }
+        });
 
         ImageButton upButton = convertView.findViewById(R.id.UpIntervalButton);
         upButton.setOnClickListener(new View.OnClickListener() {
