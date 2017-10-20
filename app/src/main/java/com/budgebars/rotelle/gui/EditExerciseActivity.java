@@ -29,7 +29,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
         this.setTitle("Editing an Exercise");
 
-        this.editableExercise = new EditableExercise((Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN));
+        this.editableExercise = (EditableExercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
 
         EditText titleEditor = (EditText) this.findViewById(R.id.EditTitleView);
         titleEditor.setText(this.editableExercise.name());
@@ -38,7 +38,9 @@ public class EditExerciseActivity extends AppCompatActivity {
             public void onFocusChange(View view, boolean hasFocus) {
                 if (!hasFocus)
                 {
-                    EditExerciseActivity.this.commitTitleChanges();
+                    EditText titleText = (EditText) view;
+                    String updated = titleText.getText().toString();
+                    EditExerciseActivity.this.editableExercise.changeName(updated);
                 }
             }
         });
@@ -73,6 +75,20 @@ public class EditExerciseActivity extends AppCompatActivity {
                 //EditExerciseActivity.this.commitAllChanges();
                 EditExerciseActivity.this.getCurrentFocus().clearFocus();
                 saveButton.requestFocus();
+
+                if (EditExerciseActivity.this.isTitleEmpty())
+                {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
+                    builder.setMessage("Cannot have an empty exercise title.")
+                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    // Do nothing -- just return to activity so the user can add a title.
+                                }
+                            });
+
+                    builder.create().show();
+                    return;
+                }
 
                 final Exercise saveTarget = EditExerciseActivity.this.editableExercise.toExercise();
 
@@ -111,15 +127,9 @@ public class EditExerciseActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void commitAllChanges()
-    {
-        this.commitTitleChanges();
-    }
-
-    private void commitTitleChanges()
+    private boolean isTitleEmpty()
     {
         EditText titleText = (EditText) this.findViewById(R.id.EditTitleView);
-        String updated = titleText.getText().toString();
-        EditExerciseActivity.this.editableExercise.changeName(updated);
+        return titleText.getText().toString().trim().isEmpty();
     }
 }

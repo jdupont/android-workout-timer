@@ -20,6 +20,10 @@ public class Exercise implements Serializable {
         {
             throw new IllegalArgumentException("Cannot create an exercise with no intervals.");
         }
+        else if (name.trim().isEmpty())
+        {
+            throw new IllegalArgumentException("Cannot have an empty name.");
+        }
 
         this.name = name;
         this.intervals = intervals;

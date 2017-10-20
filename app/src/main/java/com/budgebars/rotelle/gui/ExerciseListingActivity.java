@@ -12,6 +12,7 @@ import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.files.ExerciseFile;
 import com.budgebars.rotelle.files.InternalFileManager;
 import com.budgebars.rotelle.gui.adapters.FileAdapter;
+import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
 import java.io.File;
 import java.util.List;
@@ -19,6 +20,8 @@ import java.util.List;
 public class ExerciseListingActivity extends AppCompatActivity {
 
     public static final String EXERCISE_TO_RUN = "EXERCISE_EXTRA";
+
+    public static final String EDITABLE_EXERCISE = "EDITABLE_EXTRA";
 
     private FileAdapter adapter;
 
@@ -52,11 +55,11 @@ public class ExerciseListingActivity extends AppCompatActivity {
             }
         });
 
-        Button allPurpose = (Button) this.findViewById(R.id.CreateExerciseButton);
-        allPurpose.setOnClickListener(new View.OnClickListener() {
+        Button createButton = (Button) this.findViewById(R.id.CreateExerciseButton);
+        createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ExerciseListingActivity.this.runAllPurposeButton();
+                ExerciseListingActivity.this.createExercise();
             }
         });
     }
@@ -78,8 +81,12 @@ public class ExerciseListingActivity extends AppCompatActivity {
         this.adapter.updateFileList(exercises);
     }
 
-    private void runAllPurposeButton()
+    private void createExercise()
     {
-        throw new UnsupportedOperationException("Have not implemented create yet.");
+        EditableExercise blank = EditableExercise.blankEditableExercise();
+
+        Intent intent = new Intent(ExerciseListingActivity.this, EditExerciseActivity.class);
+        intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, blank);
+        startActivity(intent);
     }
 }

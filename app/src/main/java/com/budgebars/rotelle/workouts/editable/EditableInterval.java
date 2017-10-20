@@ -3,13 +3,14 @@ package com.budgebars.rotelle.workouts.editable;
 import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.Interval;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Jules on 10/18/2017.
  */
 
-public class EditableInterval {
+public class EditableInterval implements Serializable {
 
     private String name;
 

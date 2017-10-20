@@ -94,6 +94,11 @@ public class InternalFileManager {
 
     private File getFileForExerciseName(final String exerciseName)
     {
+        if (exerciseName.trim().isEmpty())
+        {
+            throw new IllegalArgumentException("Cannot have a blank exercise name");
+        }
+
         return new File(this.exercisesDirectory,
                 exerciseName + ExerciseFile.EXERCISE_FILE_EXTENSION);
     }

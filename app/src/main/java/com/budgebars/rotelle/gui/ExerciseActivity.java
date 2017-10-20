@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.gui.adapters.IntervalAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
+import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -42,7 +43,7 @@ public class ExerciseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ExerciseActivity.this, EditExerciseActivity.class);
-                intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
+                intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, new EditableExercise(ExerciseActivity.this.exercise));
                 startActivity(intent);
             }
         });

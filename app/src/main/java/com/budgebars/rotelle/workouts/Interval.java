@@ -14,6 +14,11 @@ public class Interval implements Serializable {
 
     public Interval(final String name, final Duration length)
     {
+        if (name.trim().isEmpty())
+        {
+            throw new IllegalArgumentException("Cannot have an empty name.");
+        }
+
         this.name = name;
         this.length = length;
     }

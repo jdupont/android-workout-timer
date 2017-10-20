@@ -4,6 +4,7 @@ import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.Interval;
 import com.budgebars.rotelle.workouts.consumers.ExerciseEditedConsumer;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * Created by Jules on 10/18/2017.
  */
 
-public class EditableExercise {
+public class EditableExercise implements Serializable {
 
     private String name;
 
@@ -19,14 +20,24 @@ public class EditableExercise {
 
     private final List<ExerciseEditedConsumer> editedConsumers = new ArrayList<>();
 
-    public EditableExercise(final Exercise base)
-    {
+    public EditableExercise(final Exercise base) {
         this.name = base.name();
 
         this.intervals = new ArrayList<>();
         for (int i = 0; i < base.numberOfIntervals(); ++i) {
             this.intervals.add(new EditableInterval(base.getIntervalAt(i)));
         }
+    }
+
+    private EditableExercise()
+    {
+        this.name = "";
+        this.intervals = new ArrayList<>();
+    }
+
+    public static EditableExercise blankEditableExercise()
+    {
+        return new EditableExercise();
     }
 
     public String name()

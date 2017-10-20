@@ -1,7 +1,6 @@
 package com.budgebars.rotelle.gui.adapters;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,6 +66,5 @@ public class FileAdapter extends BaseAdapter {
         this.exercise.addAll(exerciseFiles);
 
         this.notifyDataSetChanged();
-        Log.e("Fired", "Trump");
     }
 }
