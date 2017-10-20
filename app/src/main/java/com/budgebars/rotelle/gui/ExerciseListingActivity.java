@@ -20,12 +20,14 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
     public static final String EXERCISE_TO_RUN = "EXERCISE_EXTRA";
 
+    private FileAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise_listing);
 
-        InternalFileManager files = new InternalFileManager(this.getFilesDir());
+        InternalFileManager files = new InternalFileManager(this);
         if (!files.hasExercisesDirectory())
         {
             files.createExercisesDirectory();
@@ -36,7 +38,9 @@ public class ExerciseListingActivity extends AppCompatActivity {
         final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
 
         ListView listing = (ListView) this.findViewById(R.id.FileListView);
-        listing.setAdapter(new FileAdapter(exercises, this));
+        this.adapter = new FileAdapter(exercises, this);
+        listing.setAdapter(this.adapter);
+
         listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -55,6 +59,23 @@ public class ExerciseListingActivity extends AppCompatActivity {
                 ExerciseListingActivity.this.runAllPurposeButton();
             }
         });
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        this.populateExerciseListing();
+    }
+
+    private void populateExerciseListing()
+    {
+        InternalFileManager files = new InternalFileManager(this);
+
+        File[] exerciseFiles = files.getExerciseFiles();
+        final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
+
+        this.adapter.updateFileList(exercises);
     }
 
     private void runAllPurposeButton()

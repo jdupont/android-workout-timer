@@ -1,11 +1,17 @@
 package com.budgebars.rotelle.files;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.budgebars.rotelle.workouts.Exercise;
 
+import org.json.JSONObject;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 
 /**
  * Created by Jules on 10/17/2017.
@@ -17,13 +23,13 @@ public class InternalFileManager {
 
     private final File exercisesDirectory;
 
-    public InternalFileManager(final File internalStorageDirectory)
+    public InternalFileManager(final Activity context)
     {
-        this.exercisesDirectory = new File(internalStorageDirectory, InternalFileManager.EXERCISE_FILE_DIRECTORY);;
+        this.exercisesDirectory = new File(context.getFilesDir(), InternalFileManager.EXERCISE_FILE_DIRECTORY);;
     }
 
     /**
-     * Creates the exercises directory inside the directory that was passed to the consutrctor of this class
+     * Creates the exercises directory inside the directory that was passed to the constructor of this class
      */
     public void createExercisesDirectory()
     {
@@ -42,14 +48,25 @@ public class InternalFileManager {
 
     public void addSampleExerciseFile(final Context context)
     {
+        if (!this.hasExercisesDirectory())
+        {
+            throw new IllegalStateException("No exercises directory to place sample file into.");
+        }
+
         Exercise sample = ExerciseParser.readSampleExercise(context);
-        ExerciseFileHelper.writeExerciseToFile(sample, new File(this.exercisesDirectory,
-                "sample" + ExerciseFile.EXERCISE_FILE_EXTENSION));
+        InternalFileManager.writeExerciseToFile(sample, this.getFileForExerciseName("sample"), false);
     }
 
     public boolean hasExercisesDirectory()
     {
         return this.exercisesDirectory.exists();
+    }
+
+    public boolean hasFileForExerciseName(final String exerciseName)
+    {
+        File file = this.getFileForExerciseName(exerciseName);
+
+        return file.exists();
     }
 
     public File[] getExerciseFiles()
@@ -67,5 +84,43 @@ public class InternalFileManager {
         });
 
         return files;
+    }
+
+    public void writeExerciseToFile(final Exercise exercise, boolean overwrite)
+    {
+        File file = this.getFileForExerciseName(exercise.name());
+        InternalFileManager.writeExerciseToFile(exercise, file, overwrite);
+    }
+
+    private File getFileForExerciseName(final String exerciseName)
+    {
+        return new File(this.exercisesDirectory,
+                exerciseName + ExerciseFile.EXERCISE_FILE_EXTENSION);
+    }
+
+    private static void writeExerciseToFile(final Exercise exercise, final File file, boolean overwriteIfExists)
+    {
+        if (file.exists() && !overwriteIfExists)
+        {
+            throw new IllegalStateException("File already exists but overwrite is not set.");
+        }
+
+        JSONObject json = ExerciseParser.jsonFromExercise(exercise);
+
+        try {
+            FileOutputStream outputStream = new FileOutputStream(file);
+
+            outputStream.write(json.toString().getBytes());
+
+            outputStream.close();
+        }
+        catch (FileNotFoundException e)
+        {
+            throw new RuntimeException(e);
+        }
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }
