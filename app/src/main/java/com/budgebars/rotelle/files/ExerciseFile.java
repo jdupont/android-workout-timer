@@ -47,6 +47,19 @@ public class ExerciseFile {
         return this.exercise;
     }
 
+    public void delete()
+    {
+        if (!this.source.exists())
+        {
+            throw new IllegalArgumentException("Cannot delete a nonexistant file.");
+        }
+
+        if (!this.source.delete())
+        {
+            throw new IllegalStateException("File was not succesfully deleted.");
+        }
+    }
+
     public static List<ExerciseFile> fromFiles(final File[] files)
     {
         List<ExerciseFile> parsed = new ArrayList<>();

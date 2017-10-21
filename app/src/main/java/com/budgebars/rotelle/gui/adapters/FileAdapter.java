@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.budgebars.rotelle.R;
@@ -46,16 +47,26 @@ public class FileAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup container) {
+    public View getView(final int position, View convertView, ViewGroup container) {
         if (convertView == null) {
             LayoutInflater inflater = this.parent.getLayoutInflater();
             convertView = inflater.inflate(R.layout.item_file_list, container, false);
         }
 
-        ExerciseFile current = (ExerciseFile) this.getItem(position);
+        final ExerciseFile current = (ExerciseFile) this.getItem(position);
 
         TextView nameView = convertView.findViewById(R.id.ExerciseFileName);
         nameView.setText(current.name());
+
+        ImageButton deleteButton = convertView.findViewById(R.id.DeleteExerciseFileButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                current.delete();
+                FileAdapter.this.exercise.remove(position);
+                FileAdapter.this.notifyDataSetChanged();
+            }
+        });
 
         return convertView;
     }
