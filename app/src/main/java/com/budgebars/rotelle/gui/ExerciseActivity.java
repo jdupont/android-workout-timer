@@ -1,18 +1,27 @@
 package com.budgebars.rotelle.gui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.budgebars.rotelle.R;
+import com.budgebars.rotelle.files.ExerciseFile;
 import com.budgebars.rotelle.gui.adapters.IntervalAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
+import java.io.File;
+
 public class ExerciseActivity extends AppCompatActivity {
+
+    private ExerciseFile exerciseFile;
 
     private Exercise exercise;
 
@@ -21,7 +30,8 @@ public class ExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exercise);
 
-        this.exercise = (Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN);
+        this.exerciseFile = (ExerciseFile) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
+        this.exercise = this.exerciseFile.getExercise();
 
         this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ")");
 
@@ -47,5 +57,45 @@ public class ExerciseActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button emailExerciseButton = (Button) this.findViewById(R.id.EmailExerciseButton);
+        emailExerciseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ExerciseActivity.this.startEmailIntent();
+            }
+        });
+    }
+
+    private void startEmailIntent()
+    {
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
+
+        File requestFile = this.exerciseFile.source();
+        Uri fileUri = null;
+        try {
+            fileUri = FileProvider.getUriForFile(this, "com.budgebars.rotelle.fileprovider", requestFile);
+        } catch (IllegalArgumentException e) {
+            Log.e("File Selector", "The selected file can't be shared: " + requestFile);
+            throw new RuntimeException(e);
+        }
+
+        Log.e("Testing", this.getContentResolver().getType(fileUri));
+
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri); //, this.getContentResolver().getType(fileUri));
+
+        String title = "Share exercise file:";
+        Intent chooser = Intent.createChooser(emailIntent, title);
+
+        if (emailIntent.resolveActivity(getPackageManager()) != null) {
+            this.startActivity(chooser);
+        }
+        else
+        {
+            Toast.makeText(this, "No sharing app found.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

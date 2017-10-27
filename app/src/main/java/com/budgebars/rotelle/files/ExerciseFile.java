@@ -3,6 +3,7 @@ package com.budgebars.rotelle.files;
 import com.budgebars.rotelle.workouts.Exercise;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by Jules on 10/17/2017.
  */
 
-public class ExerciseFile {
+public class ExerciseFile implements Serializable {
 
     public static final String EXERCISE_FILE_EXTENSION = ".exercise";
 
@@ -58,6 +59,11 @@ public class ExerciseFile {
         {
             throw new IllegalStateException("File was not succesfully deleted.");
         }
+    }
+
+    public File source()
+    {
+        return this.source;
     }
 
     public static List<ExerciseFile> fromFiles(final File[] files)

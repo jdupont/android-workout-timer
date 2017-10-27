@@ -22,16 +22,18 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
     public static final String TAG = "TestingTag";
 
-    public static final String EXERCISE_TO_RUN = "EXERCISE_EXTRA";
+    public static final String EXERCISE_FILE = "EXERCISE_FILE";
 
     public static final String EDITABLE_EXERCISE = "EDITABLE_EXTRA";
+
+    public static final String EXERCISE_TO_RUN = "EXERCISE_TO_RUN";
 
     private FileAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise_listing);
+        this.setContentView(R.layout.activity_exercise_listing);
 
         InternalFileManager files = new InternalFileManager(this);
         if (!files.hasExercisesDirectory())
@@ -55,7 +57,7 @@ public class ExerciseListingActivity extends AppCompatActivity {
                 ExerciseFile exerciseFile = (ExerciseFile) adapterView.getItemAtPosition(position);
 
                 Intent intent = new Intent(ExerciseListingActivity.this, ExerciseActivity.class);
-                intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, exerciseFile.getExercise());
+                intent.putExtra(ExerciseListingActivity.EXERCISE_FILE, exerciseFile);
                 startActivity(intent);
             }
         });

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.budgebars.rotelle">
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -16,21 +16,33 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".gui.RunningTimerActivity" />
+        <activity android:name=".gui.ExerciseActivity" />
+        <activity android:name=".gui.EditExerciseActivity"
+            android:windowSoftInputMode="adjustPan">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.OPENABLE" />
                 <data android:scheme="file" />
                 <data android:mimeType="*/*" />
                 <data android:pathPattern=".*\\.exercise" />
                 <data android:host="*" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".gui.RunningTimerActivity" />
-        <activity android:name=".gui.ExerciseActivity" />
-        <activity android:name=".gui.EditExerciseActivity"
-            android:windowSoftInputMode="adjustPan"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.budgebars.rotelle.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
 
     </application>
 
