@@ -1,7 +1,5 @@
 package com.budgebars.rotelle.files;
 
-import android.net.Uri;
-
 import com.budgebars.rotelle.workouts.Exercise;
 
 import java.io.File;
@@ -63,9 +61,9 @@ public class ExerciseFile implements Serializable {
         }
     }
 
-    public Uri uri()
+    public File source()
     {
-        return Uri.fromFile(this.source);
+        return this.source;
     }
 
     public static List<ExerciseFile> fromFiles(final File[] files)

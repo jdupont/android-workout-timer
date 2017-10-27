@@ -1,7 +1,9 @@
 package com.budgebars.rotelle.gui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +16,8 @@ import com.budgebars.rotelle.files.ExerciseFile;
 import com.budgebars.rotelle.gui.adapters.IntervalAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.editable.EditableExercise;
+
+import java.io.File;
 
 public class ExerciseActivity extends AppCompatActivity {
 
@@ -69,10 +73,21 @@ public class ExerciseActivity extends AppCompatActivity {
         emailIntent.setType("text/plain");
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
 
-        // TODO -- ATTACHING EXERCISE FILE DOES NOT WORK -- FIX THIS.
-        emailIntent.putExtra(Intent.EXTRA_STREAM, this.exerciseFile.uri());
+        File requestFile = this.exerciseFile.source();
+        Uri fileUri = null;
+        try {
+            fileUri = FileProvider.getUriForFile(this, "com.budgebars.rotelle.fileprovider", requestFile);
+        } catch (IllegalArgumentException e) {
+            Log.e("File Selector", "The selected file can't be shared: " + requestFile);
+            throw new RuntimeException(e);
+        }
 
-        String title = "Email exercise file:";
+        Log.e("Testing", this.getContentResolver().getType(fileUri));
+
+        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri); //, this.getContentResolver().getType(fileUri));
+
+        String title = "Share exercise file:";
         Intent chooser = Intent.createChooser(emailIntent, title);
 
         if (emailIntent.resolveActivity(getPackageManager()) != null) {
@@ -80,7 +95,7 @@ public class ExerciseActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "No email app found.", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "No sharing app found.", Toast.LENGTH_SHORT).show();
         }
     }
 }
