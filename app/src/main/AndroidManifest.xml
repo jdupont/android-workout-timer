@@ -16,6 +16,11 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".gui.RunningTimerActivity" />
+        <activity android:name=".gui.ExerciseActivity" />
+        <activity android:name=".gui.EditExerciseActivity"
+            android:windowSoftInputMode="adjustPan">
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -26,11 +31,8 @@
                 <data android:pathPattern=".*\\.exercise" />
                 <data android:host="*" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".gui.RunningTimerActivity" />
-        <activity android:name=".gui.ExerciseActivity" />
-        <activity android:name=".gui.EditExerciseActivity"
-            android:windowSoftInputMode="adjustPan"/>
 
     </application>
 

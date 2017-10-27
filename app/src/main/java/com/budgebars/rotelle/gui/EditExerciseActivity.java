@@ -1,7 +1,9 @@
 package com.budgebars.rotelle.gui;
 
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
+import com.budgebars.rotelle.files.IncomingFileManager;
 import com.budgebars.rotelle.files.InternalFileManager;
 import com.budgebars.rotelle.gui.adapters.EditIntervalAdapter;
 import com.budgebars.rotelle.workouts.Exercise;
@@ -27,9 +30,16 @@ public class EditExerciseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_exercise);
 
-        this.setTitle("Editing an Exercise");
+        Intent intent = this.getIntent();
+        if (intent.getScheme() != null && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+            this.setTitle("Import Exercise");
 
-        this.editableExercise = (EditableExercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
+            this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
+        }
+        else {
+            this.setTitle("Edit Exercise");
+            this.editableExercise = (EditableExercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
+        }
 
         EditText titleEditor = (EditText) this.findViewById(R.id.EditTitleView);
         titleEditor.setText(this.editableExercise.name());
@@ -131,5 +141,15 @@ public class EditExerciseActivity extends AppCompatActivity {
     {
         EditText titleText = (EditText) this.findViewById(R.id.EditTitleView);
         return titleText.getText().toString().trim().isEmpty();
+    }
+
+    private Exercise retrieveExerciseFromPassedDocument(final Intent intent)
+    {
+        Uri data = intent.getData();
+
+        IncomingFileManager manager = new IncomingFileManager(this);
+        Exercise exercise = manager.fromUri(data);
+
+        return exercise;
     }
 }
