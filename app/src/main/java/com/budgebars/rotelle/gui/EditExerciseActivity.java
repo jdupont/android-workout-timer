@@ -145,10 +145,10 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     private Exercise retrieveExerciseFromPassedDocument(final Intent intent)
     {
-        Uri data = intent.getData();
+        Uri uri = intent.getData();
 
         IncomingFileManager manager = new IncomingFileManager(this);
-        Exercise exercise = manager.fromUri(data);
+        Exercise exercise = manager.fromUri(uri);
 
         return exercise;
     }
