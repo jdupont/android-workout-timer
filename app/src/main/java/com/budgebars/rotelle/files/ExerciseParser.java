@@ -121,7 +121,7 @@ public class ExerciseParser {
         return context.getResources().openRawResource(R.raw.sample_exercise);
     }
 
-    private static Exercise parse(final String jsonAsString)
+    public static Exercise parse(final String jsonAsString)
     {
         try
         {

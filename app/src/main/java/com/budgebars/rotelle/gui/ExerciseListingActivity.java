@@ -1,6 +1,8 @@
 package com.budgebars.rotelle.gui;
 
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -11,8 +13,10 @@ import android.widget.ListView;
 
 import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.files.ExerciseFile;
+import com.budgebars.rotelle.files.IncomingFileManager;
 import com.budgebars.rotelle.files.InternalFileManager;
 import com.budgebars.rotelle.gui.adapters.FileAdapter;
+import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
 import java.io.File;
@@ -31,7 +35,12 @@ public class ExerciseListingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise_listing);
+        this.setContentView(R.layout.activity_exercise_listing);
+
+        Intent intent = this.getIntent();
+        if (intent.getScheme() != null && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+            this.handlePassedDocument(intent);
+        }
 
         InternalFileManager files = new InternalFileManager(this);
         if (!files.hasExercisesDirectory())
@@ -93,5 +102,15 @@ public class ExerciseListingActivity extends AppCompatActivity {
         Intent intent = new Intent(ExerciseListingActivity.this, EditExerciseActivity.class);
         intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, blank);
         startActivity(intent);
+    }
+
+    private void handlePassedDocument(final Intent intent)
+    {
+        Uri data = intent.getData();
+
+        IncomingFileManager manager = new IncomingFileManager(this);
+        Exercise exercise = manager.fromUri(data);
+
+        
     }
 }
