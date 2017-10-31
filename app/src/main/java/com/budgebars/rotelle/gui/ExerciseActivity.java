@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -78,11 +77,8 @@ public class ExerciseActivity extends AppCompatActivity {
         try {
             fileUri = FileProvider.getUriForFile(this, "com.budgebars.rotelle.fileprovider", requestFile);
         } catch (IllegalArgumentException e) {
-            Log.e("File Selector", "The selected file can't be shared: " + requestFile);
             throw new RuntimeException(e);
         }
-
-        Log.e("Testing", this.getContentResolver().getType(fileUri));
 
         emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri); //, this.getContentResolver().getType(fileUri));
