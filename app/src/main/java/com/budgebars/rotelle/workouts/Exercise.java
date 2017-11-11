@@ -64,7 +64,7 @@ public class Exercise implements Serializable {
 
     public static Exercise createMockExercise()
     {
-        List<Interval> intervals = new ArrayList<Interval>();
+        List<Interval> intervals = new ArrayList<>();
 
         intervals.add(new Interval("Warmup", Duration.fromSeconds(15)));
         intervals.add(new Interval("Bench 1", Duration.fromSeconds(15)));

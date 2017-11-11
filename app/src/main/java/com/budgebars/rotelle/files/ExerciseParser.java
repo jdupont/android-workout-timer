@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Jules on 10/13/2017.
  */
-public class ExerciseParser {
+public final class ExerciseParser {
 
     private static final String EXERCISE_TAG = "exercise";
 
@@ -45,6 +45,11 @@ public class ExerciseParser {
     private static final String TYPE = "CustomInterval";
 
     private static final String VERSION = "0.1";
+
+    private ExerciseParser()
+    {
+        // Prevent instantiation of utility class.
+    }
 
     public static JSONObject jsonFromExercise(final Exercise exercise)
     {

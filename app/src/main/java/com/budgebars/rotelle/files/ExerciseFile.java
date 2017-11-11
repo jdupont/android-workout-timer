@@ -52,12 +52,12 @@ public class ExerciseFile implements Serializable {
     {
         if (!this.source.exists())
         {
-            throw new IllegalArgumentException("Cannot delete a nonexistant file.");
+            throw new IllegalArgumentException("Cannot delete a nonexistent file.");
         }
 
         if (!this.source.delete())
         {
-            throw new IllegalStateException("File was not succesfully deleted.");
+            throw new IllegalStateException("File was not successfully deleted.");
         }
     }
 
