@@ -78,7 +78,7 @@ public class InternalFileManager {
 
         File[] files = this.exercisesDirectory.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(File dir, String name) {
+            public boolean accept(final File dir, final String name) {
                 return ExerciseFile.checkExerciseFileExtension(name);
             }
         });
@@ -86,7 +86,7 @@ public class InternalFileManager {
         return files;
     }
 
-    public void writeExerciseToFile(final Exercise exercise, boolean overwrite)
+    public void writeExerciseToFile(final Exercise exercise, final boolean overwrite)
     {
         File file = this.getFileForExerciseName(exercise.name());
         InternalFileManager.writeExerciseToFile(exercise, file, overwrite);
@@ -103,7 +103,7 @@ public class InternalFileManager {
                 exerciseName + ExerciseFile.EXERCISE_FILE_EXTENSION);
     }
 
-    private static void writeExerciseToFile(final Exercise exercise, final File file, boolean overwriteIfExists)
+    private static void writeExerciseToFile(final Exercise exercise, final File file, final boolean overwriteIfExists)
     {
         if (file.exists() && !overwriteIfExists)
         {

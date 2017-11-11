@@ -26,9 +26,9 @@ public class EditExerciseActivity extends AppCompatActivity {
     private EditIntervalAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_exercise);
+        this.setContentView(R.layout.activity_edit_exercise);
 
         Intent intent = this.getIntent();
         if (intent.getScheme() != null && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
@@ -45,7 +45,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         titleEditor.setText(this.editableExercise.name());
         titleEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean hasFocus) {
+            public void onFocusChange(final View view, final boolean hasFocus) {
                 if (!hasFocus)
                 {
                     EditText titleText = (EditText) view;
@@ -55,16 +55,16 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
         });
 
-        final ListView list = (ListView) findViewById(R.id.IntervalListView);
+        final ListView list = (ListView) this.findViewById(R.id.IntervalListView);
         list.setItemsCanFocus(true);
 
         this.adapter = new EditIntervalAdapter(this.editableExercise, this);
-        list.setAdapter(adapter);
+        list.setAdapter(this.adapter);
 
-        adapter.addItemAddedConsumer(new EditIntervalAdapter.IntervalAddedConsumer() {
+        this.adapter.addItemAddedConsumer(new EditIntervalAdapter.IntervalAddedConsumer() {
             @Override
             public void intervalAddedToAdapter() {
-                list.setSelection(adapter.getCount() - 1);
+                list.setSelection(com.budgebars.rotelle.gui.EditExerciseActivity.this.adapter.getCount() - 1);
             }
         });
 
@@ -134,7 +134,7 @@ public class EditExerciseActivity extends AppCompatActivity {
     private void goBackToListingActivity()
     {
         Intent intent = new Intent(this, ExerciseListingActivity.class);
-        startActivity(intent);
+        this.startActivity(intent);
     }
 
     private boolean isTitleEmpty()

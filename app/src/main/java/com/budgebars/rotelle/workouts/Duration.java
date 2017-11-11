@@ -25,7 +25,7 @@ public class Duration implements Serializable {
 
     public long get(final TimeUnit unit)
     {
-        return unit.convert(milliseconds, Duration.UNIT);
+        return unit.convert(this.milliseconds, Duration.UNIT);
     }
 
     private boolean hasHours()

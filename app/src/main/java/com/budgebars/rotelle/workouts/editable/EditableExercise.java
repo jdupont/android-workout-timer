@@ -50,7 +50,7 @@ public class EditableExercise implements Serializable {
         return this.intervals.size();
     }
 
-    public EditableInterval getIntervalAt(int i)
+    public EditableInterval getIntervalAt(final int i)
     {
         return this.intervals.get(i);
     }

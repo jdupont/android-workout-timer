@@ -31,7 +31,7 @@ public class ExerciseListingActivity extends AppCompatActivity {
     private FileAdapter adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_exercise_listing);
 
@@ -51,21 +51,21 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
         listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
                 Log.e(ExerciseListingActivity.TAG, "activated");
 
                 ExerciseFile exerciseFile = (ExerciseFile) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(ExerciseListingActivity.this, ExerciseActivity.class);
                 intent.putExtra(ExerciseListingActivity.EXERCISE_FILE, exerciseFile);
-                startActivity(intent);
+                com.budgebars.rotelle.gui.ExerciseListingActivity.this.startActivity(intent);
             }
         });
 
         Button createButton = (Button) this.findViewById(R.id.CreateExerciseButton);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 ExerciseListingActivity.this.createExercise();
             }
         });
@@ -94,6 +94,6 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
         Intent intent = new Intent(ExerciseListingActivity.this, EditExerciseActivity.class);
         intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, blank);
-        startActivity(intent);
+        this.startActivity(intent);
     }
 }

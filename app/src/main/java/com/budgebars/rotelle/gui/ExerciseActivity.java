@@ -25,42 +25,42 @@ public class ExerciseActivity extends AppCompatActivity {
     private Exercise exercise;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise);
+		this.setContentView(R.layout.activity_exercise);
 
         this.exerciseFile = (ExerciseFile) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
         this.exercise = this.exerciseFile.getExercise();
 
         this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ")");
 
-        ListView list = (ListView) findViewById(R.id.ExerciseDisplayView);
+        ListView list = (ListView) this.findViewById(R.id.ExerciseDisplayView);
         list.setAdapter(new IntervalAdapter(this.exercise, this));
 
         Button startExerciseButton = (Button) this.findViewById(R.id.StartExerciseButton);
         startExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 Intent intent = new Intent(ExerciseActivity.this, RunningTimerActivity.class);
                 intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
-                startActivity(intent);
+				com.budgebars.rotelle.gui.ExerciseActivity.this.startActivity(intent);
             }
         });
 
         Button editExerciseButton = (Button) this.findViewById(R.id.EditExerciseButton);
         editExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 Intent intent = new Intent(ExerciseActivity.this, EditExerciseActivity.class);
                 intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, new EditableExercise(ExerciseActivity.this.exercise));
-                startActivity(intent);
+				com.budgebars.rotelle.gui.ExerciseActivity.this.startActivity(intent);
             }
         });
 
         Button emailExerciseButton = (Button) this.findViewById(R.id.EmailExerciseButton);
         emailExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 ExerciseActivity.this.startEmailIntent();
             }
         });
@@ -86,7 +86,7 @@ public class ExerciseActivity extends AppCompatActivity {
         String title = "Share exercise file:";
         Intent chooser = Intent.createChooser(emailIntent, title);
 
-        if (emailIntent.resolveActivity(getPackageManager()) != null) {
+        if (emailIntent.resolveActivity(this.getPackageManager()) != null) {
             this.startActivity(chooser);
         }
         else

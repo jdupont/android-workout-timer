@@ -33,9 +33,9 @@ public class RunningTimerActivity extends AppCompatActivity {
     private MediaPlayer closingBell;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_running_timer_activty);
+        this.setContentView(R.layout.activity_running_timer_activty);
 
         this.exercise = (Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN);
         this.coach = new ExerciseCoach(this.exercise);
@@ -51,7 +51,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         });
         this.coach.addIntervalChangedConsumer(new IntervalChangedConsumer() {
             @Override
-            public void intervalChanged(String intervalName, final Duration intervalLength) {
+            public void intervalChanged(final String intervalName, final Duration intervalLength) {
                 RunningTimerActivity.this.intervalChangedUpdate(intervalName, intervalLength);
             }
         });
@@ -99,7 +99,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         Button resetButton = (Button) this.findViewById(R.id.ResetTimerButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 RunningTimerActivity.this.coach.reset();
             }
         });
@@ -159,7 +159,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         startPauseResumeButton.setText(R.string.start_timer_label);
         startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 RunningTimerActivity.this.coach.start();
             }
         });
@@ -174,7 +174,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         startPauseResumeButton.setText(R.string.pause_timer_label);
         startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 RunningTimerActivity.this.coach.pause();
             }
         });
@@ -189,7 +189,7 @@ public class RunningTimerActivity extends AppCompatActivity {
         startPauseResumeButton.setText(R.string.resume_timer_label);
         startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 RunningTimerActivity.this.coach.resume();
             }
         });

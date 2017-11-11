@@ -17,7 +17,7 @@ public class ExerciseFile implements Serializable {
 
     private final File source;
 
-    private Exercise exercise;
+    private final Exercise exercise;
 
     public ExerciseFile(final File file)
     {

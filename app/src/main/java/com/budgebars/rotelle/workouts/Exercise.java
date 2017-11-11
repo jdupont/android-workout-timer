@@ -51,7 +51,7 @@ public class Exercise implements Serializable {
         return this.intervals.size();
     }
 
-    public Interval getIntervalAt(int index)
+    public Interval getIntervalAt(final int index)
     {
         return this.intervals.get(index);
     }
