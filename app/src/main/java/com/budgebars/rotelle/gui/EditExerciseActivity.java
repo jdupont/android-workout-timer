@@ -91,7 +91,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
                     builder.setMessage("Cannot have an empty exercise title.")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                                public void onClick(DialogInterface dialog, int which) {
                                     // Do nothing -- just return to activity so the user can add a title.
                                 }
                             });
@@ -109,13 +109,13 @@ public class EditExerciseActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
                     builder.setMessage("An exercise with that name already exists. Overwrite?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                                public void onClick(DialogInterface dialog, int which) {
                                     fileManager.writeExerciseToFile(saveTarget, true);
                                     EditExerciseActivity.this.goBackToListingActivity();
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
+                                public void onClick(DialogInterface dialog, int which) {
                                     // Do nothing so user has a chance to change exercise name
                                 }
                             });

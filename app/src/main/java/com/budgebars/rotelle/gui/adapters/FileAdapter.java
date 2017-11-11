@@ -37,20 +37,20 @@ public class FileAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return this.exercise.get(i);
+    public Object getItem(int position) {
+        return this.exercise.get(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup container) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = this.parent.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.item_file_list, container, false);
+            convertView = inflater.inflate(R.layout.item_file_list, parent, false);
         }
 
         final ExerciseFile current = (ExerciseFile) this.getItem(position);

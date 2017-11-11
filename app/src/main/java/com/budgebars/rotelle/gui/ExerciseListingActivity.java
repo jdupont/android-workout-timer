@@ -51,10 +51,10 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
         listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.e(ExerciseListingActivity.TAG, "activated");
 
-                ExerciseFile exerciseFile = (ExerciseFile) adapterView.getItemAtPosition(position);
+                ExerciseFile exerciseFile = (ExerciseFile) parent.getItemAtPosition(position);
 
                 Intent intent = new Intent(ExerciseListingActivity.this, ExerciseActivity.class);
                 intent.putExtra(ExerciseListingActivity.EXERCISE_FILE, exerciseFile);

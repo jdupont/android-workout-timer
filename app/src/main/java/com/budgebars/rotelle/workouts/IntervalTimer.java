@@ -38,11 +38,11 @@ public class IntervalTimer {
         this.timer = new CountDownTimer(intervalLength.get(TimeUnit.MILLISECONDS),
                 IntervalTimer.NOTIFICATION_TICKS_MILLIS.get(TimeUnit.MILLISECONDS)) {
             @Override
-            public void onTick(final long milliseconds) {
+            public void onTick(final long millisUntilFinished) {
 
                 for (TimerUpdateConsumer consumer : IntervalTimer.this.onTickMethods)
                 {
-                    consumer.timerUpdate(Duration.fromMilliSeconds(milliseconds));
+                    consumer.timerUpdate(Duration.fromMilliSeconds(millisUntilFinished));
                 }
             }
 

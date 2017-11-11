@@ -78,8 +78,8 @@ public class InternalFileManager {
 
         File[] files = this.exercisesDirectory.listFiles(new FilenameFilter() {
             @Override
-            public boolean accept(File file, String s) {
-                return ExerciseFile.checkExerciseFileExtension(s);
+            public boolean accept(File dir, String name) {
+                return ExerciseFile.checkExerciseFileExtension(name);
             }
         });
 

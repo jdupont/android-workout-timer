@@ -53,7 +53,7 @@ public class Duration implements Serializable {
         );
     }
 
-    public static Duration ZERO()
+    public static Duration zero()
     {
         return new Duration(0, Duration.UNIT);
     }

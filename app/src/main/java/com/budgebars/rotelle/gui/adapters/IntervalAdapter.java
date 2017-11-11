@@ -35,20 +35,20 @@ public class IntervalAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
-        return this.exercise.getIntervalAt(i);
+    public Object getItem(int position) {
+        return this.exercise.getIntervalAt(position);
     }
 
     @Override
-    public long getItemId(int i) {
-        return i;
+    public long getItemId(int position) {
+        return position;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup container) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = this.parent.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.item_interval_list, container, false);
+            convertView = inflater.inflate(R.layout.item_interval_list, parent, false);
         }
 
         Interval current = (Interval) this.getItem(position);
