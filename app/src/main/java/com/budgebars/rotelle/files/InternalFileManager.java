@@ -112,9 +112,7 @@ public class InternalFileManager {
 
         JSONObject json = ExerciseParser.jsonFromExercise(exercise);
 
-        try {
-            FileOutputStream outputStream = new FileOutputStream(file);
-
+        try (FileOutputStream outputStream = new FileOutputStream(file)) {
             outputStream.write(json.toString().getBytes());
 
             outputStream.close();

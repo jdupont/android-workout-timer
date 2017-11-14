@@ -18,7 +18,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -168,29 +167,28 @@ public final class ExerciseParser {
 
     private static String streamToString(final InputStream stream)
     {
-        BufferedReader reader;
-
-        try {
-            reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8);
-        }
-        catch (UnsupportedEncodingException e)
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8))
         {
-            throw new RuntimeException(e);
-        }
+            StringBuilder sb = new StringBuilder();
 
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append(java.io.File.pathSeparator).append('n');
+            try {
+                String line = null;
+                while ((line = reader.readLine()) != null) {
+                    sb.append(line).append(java.io.File.pathSeparator).append('n');
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+
+            return sb.toString();
         }
-        catch(IOException e)
+        catch (java.io.UnsupportedEncodingException e)
         {
             throw new RuntimeException(e);
         }
-
-        return sb.toString();
+        catch (IOException e)
+        {
+            throw new RuntimeException(e);
+        }
     }
 }

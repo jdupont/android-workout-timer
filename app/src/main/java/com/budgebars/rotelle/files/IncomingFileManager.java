@@ -39,30 +39,24 @@ public class IncomingFileManager {
 
     private static String streamToString(final InputStream stream)
     {
-        BufferedReader reader;
+         try (BufferedReader reader =  new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8)) {
+             StringBuilder sb = new StringBuilder();
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8);
-        }
-        catch (UnsupportedEncodingException e)
+             String line = null;
+             while ((line = reader.readLine()) != null) {
+                 sb.append(line).append(java.io.File.pathSeparator).append('n');
+             }
+
+             return sb.toString();
+         }
+        catch(UnsupportedEncodingException e)
         {
             throw new RuntimeException(e);
         }
-
-        StringBuilder sb = new StringBuilder();
-
-        try {
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                sb.append(line).append(java.io.File.pathSeparator).append('n');
-            }
-        }
-        catch(IOException e)
+        catch (IOException e)
         {
             throw new RuntimeException(e);
         }
-
-        return sb.toString();
     }
 }
 
