@@ -10,7 +10,8 @@ import java.util.List;
 
 public class Exercise implements Serializable {
 
-    private final String name;
+	private static final long serialVersionUID = -8871430239563028072L;
+	private final String name;
 
     private final List<Interval> intervals;
 
@@ -66,9 +67,10 @@ public class Exercise implements Serializable {
     {
         List<Interval> intervals = new ArrayList<>();
 
-        intervals.add(new Interval("Warmup", Duration.fromSeconds(15)));
-        intervals.add(new Interval("Bench 1", Duration.fromSeconds(15)));
-        intervals.add(new Interval("Rest 1", Duration.fromSeconds(15)));
+        final int testIntervalLength = 15;
+        intervals.add(new Interval("Warmup", Duration.fromSeconds(testIntervalLength)));
+        intervals.add(new Interval("Bench 1", Duration.fromSeconds(testIntervalLength)));
+        intervals.add(new Interval("Rest 1", Duration.fromSeconds(testIntervalLength)));
 
         return new Exercise("Sample Bench Workout", intervals);
     }

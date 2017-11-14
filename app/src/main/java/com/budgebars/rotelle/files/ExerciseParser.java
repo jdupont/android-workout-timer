@@ -172,7 +172,7 @@ public final class ExerciseParser {
             StringBuilder sb = new StringBuilder();
 
             try {
-                String line = null;
+                String line;
                 while ((line = reader.readLine()) != null) {
                     sb.append(line).append(java.io.File.pathSeparator).append('n');
                 }
@@ -181,10 +181,6 @@ public final class ExerciseParser {
             }
 
             return sb.toString();
-        }
-        catch (java.io.UnsupportedEncodingException e)
-        {
-            throw new RuntimeException(e);
         }
         catch (IOException e)
         {

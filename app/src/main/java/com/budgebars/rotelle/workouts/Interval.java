@@ -8,7 +8,8 @@ import java.io.Serializable;
 
 public class Interval implements Serializable {
 
-    private final String name;
+	private static final long serialVersionUID = -2806873883004933748L;
+	private final String name;
 
     private final Duration length;
 

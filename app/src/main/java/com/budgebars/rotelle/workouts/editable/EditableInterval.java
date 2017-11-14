@@ -12,7 +12,11 @@ import java.util.concurrent.TimeUnit;
 
 public class EditableInterval implements Serializable {
 
-    private String name;
+	private static final long serialVersionUID = -7539378757342639929L;
+
+	private static final int DEFAULT_INTERVAL_LENGTH_SECONDS = 30;
+
+	private String name;
 
     private Duration length;
 
@@ -54,6 +58,6 @@ public class EditableInterval implements Serializable {
 
     public static EditableInterval getDefaultInterval()
     {
-        return new EditableInterval("New Interval", new Duration(30, TimeUnit.SECONDS));
+        return new EditableInterval("New Interval", new Duration(EditableInterval.DEFAULT_INTERVAL_LENGTH_SECONDS, TimeUnit.SECONDS));
     }
 }

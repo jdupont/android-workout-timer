@@ -262,7 +262,7 @@ public class ExerciseCoach {
         }
         else if (this.intervalIndex != this.exercise.numberOfIntervals())
         {
-            throw new IllegalStateException("The interval index does not indicate that the exercise" +
+            throw new IllegalStateException("The interval index does not indicate that the exercise " +
                     "has been run all the way through.");
         }
 

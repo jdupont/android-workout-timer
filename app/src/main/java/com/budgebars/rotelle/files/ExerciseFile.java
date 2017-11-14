@@ -14,6 +14,7 @@ import java.util.List;
 public class ExerciseFile implements Serializable {
 
     public static final String EXERCISE_FILE_EXTENSION = ".exercise";
+    private static final long serialVersionUID = 1688328007807640738L;
 
     private final File source;
 

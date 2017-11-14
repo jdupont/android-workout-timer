@@ -14,6 +14,7 @@ import java.util.List;
 
 public class EditableExercise implements Serializable {
 
+    private static final long serialVersionUID = -5369871572648213687L;
     private String name;
 
     private final List<EditableInterval> intervals;

@@ -73,7 +73,7 @@ public class ExerciseActivity extends AppCompatActivity {
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
 
         File requestFile = this.exerciseFile.source();
-        Uri fileUri = null;
+        Uri fileUri;
         try {
             fileUri = FileProvider.getUriForFile(this, "com.budgebars.rotelle.fileprovider", requestFile);
         } catch (IllegalArgumentException e) {

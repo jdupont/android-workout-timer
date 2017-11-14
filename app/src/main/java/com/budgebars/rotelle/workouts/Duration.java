@@ -1,6 +1,7 @@
 package com.budgebars.rotelle.workouts;
 
 import java.io.Serializable;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -10,12 +11,13 @@ import java.util.concurrent.TimeUnit;
 public class Duration implements Serializable {
 
     private static final TimeUnit UNIT = TimeUnit.MILLISECONDS;
+	private static final long serialVersionUID = 5229438907976239730L;
 
-    private final long milliseconds;
+	private final long milliseconds;
 
     public Duration(final long value, final TimeUnit unit)
     {
-        this.milliseconds = Duration.UNIT.MILLISECONDS.convert(value, unit);
+        this.milliseconds = TimeUnit.MILLISECONDS.convert(value, unit);
     }
 
     public Duration add(final Duration other)
@@ -30,23 +32,23 @@ public class Duration implements Serializable {
 
     private boolean hasHours()
     {
-        return (Duration.this.UNIT.toHours(this.milliseconds) > 0);
+        return (Duration.UNIT.toHours(this.milliseconds) > 0);
     }
 
     private boolean hasMinutes()
     {
-        return (Duration.this.UNIT.toMinutes(this.milliseconds) > 0);
+        return (Duration.UNIT.toMinutes(this.milliseconds) > 0);
     }
 
     private boolean hasSeconds()
     {
-        return (Duration.this.UNIT.toSeconds(this.milliseconds) > 0);
+        return (Duration.UNIT.toSeconds(this.milliseconds) > 0);
     }
 
     @Override
     public String toString()
     {
-        return String.format("%02dm%02ds",
+        return String.format(Locale.US,"%02dm%02ds",
                 Duration.UNIT.toMinutes(this.milliseconds),
                 Duration.UNIT.toSeconds(this.milliseconds) -
                         TimeUnit.MINUTES.toSeconds(Duration.UNIT.toMinutes(this.milliseconds))

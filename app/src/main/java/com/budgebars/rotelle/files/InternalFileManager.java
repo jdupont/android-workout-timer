@@ -8,7 +8,6 @@ import com.budgebars.rotelle.workouts.Exercise;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
@@ -18,8 +17,8 @@ import java.io.IOException;
  */
 
 public class InternalFileManager {
-
-    private static final String EXERCISE_FILE_DIRECTORY = java.io.File.pathSeparator + "exercises" + java.io.File.pathSeparator;
+    @SuppressWarnings("StringConcatenationMissingWhitespace")
+    private static final String EXERCISE_FILE_DIRECTORY = java.io.File.pathSeparatorChar + "exercises" + java.io.File.pathSeparatorChar;
 
     private final File exercisesDirectory;
 
@@ -92,6 +91,7 @@ public class InternalFileManager {
         InternalFileManager.writeExerciseToFile(exercise, file, overwrite);
     }
 
+
     private File getFileForExerciseName(final String exerciseName)
     {
         if (exerciseName.trim().isEmpty())
@@ -99,6 +99,7 @@ public class InternalFileManager {
             throw new IllegalArgumentException("Cannot have a blank exercise name");
         }
 
+        //noinspection StringConcatenationMissingWhitespace
         return new File(this.exercisesDirectory,
                 exerciseName + ExerciseFile.EXERCISE_FILE_EXTENSION);
     }
@@ -116,10 +117,6 @@ public class InternalFileManager {
             outputStream.write(json.toString().getBytes());
 
             outputStream.close();
-        }
-        catch (FileNotFoundException e)
-        {
-            throw new RuntimeException(e);
         }
         catch (IOException e)
         {

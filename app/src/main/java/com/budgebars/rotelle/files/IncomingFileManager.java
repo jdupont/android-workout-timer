@@ -9,7 +9,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Created by Jules on 10/26/2017.
@@ -27,7 +26,7 @@ public class IncomingFileManager {
     public Exercise fromUri(final Uri uri)
     {
         try {
-            String json = this.streamToString(this.context.getContentResolver().openInputStream(uri));
+            String json = IncomingFileManager.streamToString(this.context.getContentResolver().openInputStream(uri));
 
             return ExerciseParser.parse(json);
         }
@@ -42,17 +41,13 @@ public class IncomingFileManager {
          try (BufferedReader reader =  new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8)) {
              StringBuilder sb = new StringBuilder();
 
-             String line = null;
+             String line;
              while ((line = reader.readLine()) != null) {
                  sb.append(line).append(java.io.File.pathSeparator).append('n');
              }
 
              return sb.toString();
          }
-        catch(UnsupportedEncodingException e)
-        {
-            throw new RuntimeException(e);
-        }
         catch (IOException e)
         {
             throw new RuntimeException(e);

@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * Created by Jules on 10/16/2017.
  */
 
-public class EditIntervalAdapter  extends BaseAdapter {
+public class EditIntervalAdapter extends BaseAdapter {
 
     private final EditableExercise exercise;
 
@@ -39,7 +39,9 @@ public class EditIntervalAdapter  extends BaseAdapter {
         this.activity = parent;
 
         this.exercise.addExerciseEditedConsumer(new ExerciseEditedConsumer() {
-            @Override
+			private static final long serialVersionUID = 6635431096435142076L;
+
+			@Override
             public void exerciseEdited(final EditAction action) {
 
                 if (action != EditAction.TITLE_EDITED)
