@@ -112,14 +112,14 @@ public class EditableExercise implements Serializable {
 
     public Exercise toExercise()
     {
-        List<Interval> intervals = new ArrayList<>();
+        List<Interval> editableIntervals = new ArrayList<>();
 
         for (EditableInterval editable : this.intervals)
         {
-            intervals.add(editable.toInterval());
+            editableIntervals.add(editable.toInterval());
         }
 
-        Exercise exercise = new Exercise(this.name(), intervals);
+        Exercise exercise = new Exercise(this.name(), editableIntervals);
 
         return exercise;
     }

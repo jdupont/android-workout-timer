@@ -21,14 +21,14 @@ public class FileAdapter extends BaseAdapter {
 
     private final List<ExerciseFile> exercise;
 
-    private final Activity parent;
+    private final Activity activity;
 
     public FileAdapter(final List<ExerciseFile> exercise, final Activity parent)
     {
         super();
 
         this.exercise = exercise;
-        this.parent = parent;
+        this.activity = parent;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class FileAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = this.parent.getLayoutInflater();
+            LayoutInflater inflater = this.activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.item_file_list, parent, false);
         }
 

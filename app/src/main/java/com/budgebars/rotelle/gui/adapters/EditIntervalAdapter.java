@@ -27,7 +27,7 @@ public class EditIntervalAdapter  extends BaseAdapter {
 
     private final EditableExercise exercise;
 
-    private final Activity parent;
+    private final Activity activity;
 
     private final List<IntervalAddedConsumer> intervalAddedConsumers = new ArrayList<>();
 
@@ -36,7 +36,7 @@ public class EditIntervalAdapter  extends BaseAdapter {
         super();
 
         this.exercise = exercise;
-        this.parent = parent;
+        this.activity = parent;
 
         this.exercise.addExerciseEditedConsumer(new ExerciseEditedConsumer() {
             @Override
@@ -80,7 +80,7 @@ public class EditIntervalAdapter  extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = this.parent.getLayoutInflater();
+            LayoutInflater inflater = this.activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.item_interval_list_edit, parent, false);
         }
 

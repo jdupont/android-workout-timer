@@ -19,14 +19,14 @@ public class IntervalAdapter extends BaseAdapter {
 
     private final Exercise exercise;
 
-    private final Activity parent;
+    private final Activity activity;
 
     public IntervalAdapter(final Exercise exercise, final Activity parent)
     {
         super();
 
         this.exercise = exercise;
-        this.parent = parent;
+        this.activity = parent;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class IntervalAdapter extends BaseAdapter {
     @Override
     public View getView(final int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
-            LayoutInflater inflater = this.parent.getLayoutInflater();
+            LayoutInflater inflater = this.activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.item_interval_list, parent, false);
         }
 
