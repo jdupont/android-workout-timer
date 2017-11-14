@@ -12,6 +12,6 @@ public interface ExerciseEditedConsumer {
         ADD_INTERVAL,
         MOVE_INTERVAL,
         DELETE_INTERVAL,
-        TITLE_EDITED;
+        TITLE_EDITED
     }
 }

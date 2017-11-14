@@ -24,8 +24,8 @@ public class InternalFileManager {
 
     public InternalFileManager(final Activity context)
     {
-        this.exercisesDirectory = new File(context.getFilesDir(), InternalFileManager.EXERCISE_FILE_DIRECTORY);;
-    }
+        this.exercisesDirectory = new File(context.getFilesDir(), InternalFileManager.EXERCISE_FILE_DIRECTORY);
+	}
 
     /**
      * Creates the exercises directory inside the directory that was passed to the constructor of this class

@@ -34,7 +34,7 @@ public class ExerciseCoach {
 
     private final Exercise exercise;
 
-    private final List<TimerUpdateConsumer> timerUpdateConsumers  = new ArrayList<>();;
+    private final List<TimerUpdateConsumer> timerUpdateConsumers  = new ArrayList<>();
 
     private final List<IntervalFinishedConsumer> intervalFinishedConsumers = new ArrayList<>();
 
@@ -92,13 +92,13 @@ public class ExerciseCoach {
         return this.currentInterval.getLength();
     }
 
-    public void addTimerUpdateConsumer(final TimerUpdateConsumer consumer)
+    public final void addTimerUpdateConsumer(final TimerUpdateConsumer consumer)
     {
         this.timerUpdateConsumers.add(consumer);
         this.currentTimer.addUpdateConsumer(consumer);
     }
 
-    public void addIntervalFinishedConsumer(final IntervalFinishedConsumer consumer)
+    public final void addIntervalFinishedConsumer(final IntervalFinishedConsumer consumer)
     {
         this.intervalFinishedConsumers.add(consumer);
         this.currentTimer.addFinishedConsumer(consumer);
@@ -188,7 +188,7 @@ public class ExerciseCoach {
     {
         if (!this.isReady())
         {
-            throw new IllegalStateException("Not ready. Cannot start. Current state: " + this.state.toString());
+            throw new IllegalStateException("Not ready. Cannot start. Current state: " + this.state);
         }
 
         this.notifyExerciseStarted();
@@ -205,7 +205,7 @@ public class ExerciseCoach {
     {
         if (!this.isRunning())
         {
-            throw new IllegalStateException("Not currently running. Current state: " + this.state.toString());
+            throw new IllegalStateException("Not currently running. Current state: " + this.state);
         }
 
         this.notifyExercisePaused();
@@ -221,7 +221,7 @@ public class ExerciseCoach {
     {
         if (!this.isPaused())
         {
-            throw new IllegalStateException("Not currently paused. Current state: " + this.state.toString());
+            throw new IllegalStateException("Not currently paused. Current state: " + this.state);
         }
 
         this.notifyExerciseResumed();

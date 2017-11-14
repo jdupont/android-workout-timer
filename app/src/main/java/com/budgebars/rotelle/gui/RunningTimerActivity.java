@@ -24,8 +24,6 @@ import java.util.concurrent.TimeUnit;
 
 public class RunningTimerActivity extends AppCompatActivity {
 
-    private Exercise exercise;
-
     private ExerciseCoach coach;
 
     private MediaPlayer openingBell;
@@ -37,8 +35,8 @@ public class RunningTimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_running_timer_activty);
 
-        this.exercise = (Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN);
-        this.coach = new ExerciseCoach(this.exercise);
+        Exercise exercise = (Exercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_TO_RUN);
+        this.coach = new ExerciseCoach(exercise);
 
         this.openingBell = MediaPlayer.create(this, R.raw.opening_bell_trimmed);
         this.closingBell = MediaPlayer.create(this, R.raw.closing_bell_trimmed);

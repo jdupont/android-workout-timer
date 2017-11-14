@@ -31,7 +31,8 @@ public class EditExerciseActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_edit_exercise);
 
         Intent intent = this.getIntent();
-        if (intent.getScheme() != null && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+        if ((intent.getScheme() != null) &&
+                intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
             this.setTitle("Import Exercise");
 
             this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
@@ -71,7 +72,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         Button addIntervalButton = (Button) this.findViewById(R.id.AddIntervalButton);
         addIntervalButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 EditExerciseActivity.this.editableExercise.addInterval();
             }
         });
@@ -79,7 +80,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         final Button saveButton = (Button) this.findViewById(R.id.SaveExerciseButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
 
                 // Make sure focus comes off of edit views so that all changes are committed
                 //EditExerciseActivity.this.commitAllChanges();
@@ -91,7 +92,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
                     builder.setMessage("Cannot have an empty exercise title.")
                             .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(final DialogInterface dialog, final int which) {
                                     // Do nothing -- just return to activity so the user can add a title.
                                 }
                             });
@@ -109,13 +110,13 @@ public class EditExerciseActivity extends AppCompatActivity {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
                     builder.setMessage("An exercise with that name already exists. Overwrite?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(final DialogInterface dialog, final int which) {
                                     fileManager.writeExerciseToFile(saveTarget, true);
                                     EditExerciseActivity.this.goBackToListingActivity();
                                 }
                             })
                             .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int which) {
+                                public void onClick(final DialogInterface dialog, final int which) {
                                     // Do nothing so user has a chance to change exercise name
                                 }
                             });

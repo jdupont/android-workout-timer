@@ -65,11 +65,11 @@ public class EditableExercise implements Serializable {
 
     public void moveInterval(final int from, final int to)
     {
-        if (from < 0 || from >= this.intervals.size())
+        if ((from < 0) || (from >= this.intervals.size()))
         {
             throw new IndexOutOfBoundsException("From index was out of bounds: " + from);
         }
-        else if (to < 0 || to >= this.intervals.size())
+        else if ((to < 0) || (to >= this.intervals.size()))
         {
             throw new IndexOutOfBoundsException("To index was out of bounds: " + from);
         }

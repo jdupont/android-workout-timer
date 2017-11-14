@@ -70,12 +70,12 @@ public class EditIntervalAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(final int position) {
         return this.exercise.getIntervalAt(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(final int position) {
         return position;
     }
 
@@ -92,7 +92,7 @@ public class EditIntervalAdapter extends BaseAdapter {
         nameView.setText(current.name());
         nameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean hasFocus) {
+            public void onFocusChange(final View view, final boolean hasFocus) {
 
                 if (!hasFocus) {
                     EditText editor = (EditText) view;
@@ -105,7 +105,7 @@ public class EditIntervalAdapter extends BaseAdapter {
         lengthView.setText(Long.toString(current.length().get(TimeUnit.SECONDS)));
         lengthView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onFocusChange(View view, boolean hasFocus) {
+            public void onFocusChange(final View view, final boolean hasFocus) {
 
                 if (!hasFocus) {
                     EditText editor = (EditText) view;
@@ -117,7 +117,7 @@ public class EditIntervalAdapter extends BaseAdapter {
         ImageButton upButton = convertView.findViewById(R.id.UpIntervalButton);
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 EditIntervalAdapter.this.exercise.moveInterval(position, position - 1);
             }
         });
@@ -126,16 +126,16 @@ public class EditIntervalAdapter extends BaseAdapter {
         ImageButton downButton = convertView.findViewById(R.id.DownIntervalButton);
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 EditIntervalAdapter.this.exercise.moveInterval(position, position + 1);
             }
         });
-        downButton.setEnabled(position != this.getCount() - 1);
+        downButton.setEnabled(position != (this.getCount() - 1));
 
         ImageButton deleteButton = convertView.findViewById(R.id.DeleteIntervalButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 EditIntervalAdapter.this.exercise.removeInterval(position);
             }
         });

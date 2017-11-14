@@ -27,19 +27,22 @@
             android:id="@+id/UpIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@android:drawable/arrow_up_float"/>
+            android:src="@android:drawable/arrow_up_float"
+            android:contentDescription="Moves up one interval." />
 
         <ImageButton
             android:id="@+id/DownIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@android:drawable/arrow_down_float"/>
+            android:src="@android:drawable/arrow_down_float"
+            android:contentDescription="Moves down one interval." />
 
         <ImageButton
             android:id="@+id/DeleteIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@android:drawable/ic_menu_delete"/>
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="Deletes this interval." />
 
     </LinearLayout>
 

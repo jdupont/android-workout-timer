@@ -37,17 +37,17 @@ public class FileAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public Object getItem(final int position) {
         return this.exercise.get(position);
     }
 
     @Override
-    public long getItemId(int position) {
+    public long getItemId(final int position) {
         return position;
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         if (convertView == null) {
             LayoutInflater inflater = this.activity.getLayoutInflater();
             convertView = inflater.inflate(R.layout.item_file_list, parent, false);
@@ -61,7 +61,7 @@ public class FileAdapter extends BaseAdapter {
         ImageButton deleteButton = convertView.findViewById(R.id.DeleteExerciseFileButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 current.delete();
                 FileAdapter.this.exercise.remove(position);
                 FileAdapter.this.notifyDataSetChanged();
@@ -71,7 +71,7 @@ public class FileAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void updateFileList(List<ExerciseFile> exerciseFiles)
+    public void updateFileList(final List<ExerciseFile> exerciseFiles)
     {
         this.exercise.clear();
         this.exercise.addAll(exerciseFiles);
