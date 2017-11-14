@@ -183,7 +183,7 @@ public final class ExerciseParser {
         try {
             String line = null;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + java.io.File.pathSeparator + "n");
+                sb.append(line).append(java.io.File.pathSeparator).append('n');
             }
         }
         catch(IOException e)

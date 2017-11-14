@@ -32,7 +32,7 @@ public class ExerciseActivity extends AppCompatActivity {
         this.exerciseFile = (ExerciseFile) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
         this.exercise = this.exerciseFile.getExercise();
 
-        this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ")");
+        this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ')');
 
         ListView list = (ListView) this.findViewById(R.id.ExerciseDisplayView);
         list.setAdapter(new IntervalAdapter(this.exercise, this));
