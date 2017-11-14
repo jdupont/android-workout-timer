@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class InternalFileManager {
 
-    private static final String EXERCISE_FILE_DIRECTORY = "/exercises/";
+    private static final String EXERCISE_FILE_DIRECTORY = java.io.File.pathSeparator + "exercises" + java.io.File.pathSeparator;
 
     private final File exercisesDirectory;
 
