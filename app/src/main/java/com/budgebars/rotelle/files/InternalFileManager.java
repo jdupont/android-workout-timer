@@ -2,7 +2,6 @@ package com.budgebars.rotelle.files;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 
 import com.budgebars.rotelle.workouts.Exercise;
 
@@ -19,6 +18,10 @@ import java.io.IOException;
 
 public class InternalFileManager {
     private static final String TAG = InternalFileManager.class.getName();
+
+    private static final String CHARSET = "UTF-8";
+
+    private static final String SAMPLE_FILE_NAME = "sample";
 
 	@SuppressWarnings("StringConcatenationMissingWhitespace")
     private static final String EXERCISE_FILE_DIRECTORY = java.io.File.pathSeparatorChar + "exercises" + java.io.File.pathSeparatorChar;
@@ -56,8 +59,7 @@ public class InternalFileManager {
         }
 
         Exercise sample = ExerciseParser.readSampleExercise(context);
-		Log.e(InternalFileManager.TAG, "Sample read: " + sample.name());
-		InternalFileManager.writeExerciseToFile(sample, this.getFileForExerciseName("sample"), false);
+		InternalFileManager.writeExerciseToFile(sample, this.getFileForExerciseName(InternalFileManager.SAMPLE_FILE_NAME), false);
     }
 
     public boolean hasExercisesDirectory()
@@ -120,7 +122,7 @@ public class InternalFileManager {
         JSONObject json = ExerciseParser.jsonFromExercise(exercise);
 
         try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            outputStream.write(json.toString().getBytes());
+            outputStream.write(json.toString().getBytes(InternalFileManager.CHARSET));
 
             outputStream.close();
         }

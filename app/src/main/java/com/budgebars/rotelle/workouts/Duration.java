@@ -10,7 +10,10 @@ import java.util.concurrent.TimeUnit;
 public class Duration implements Serializable {
 
     private static final TimeUnit UNIT = TimeUnit.MILLISECONDS;
+
 	private static final long serialVersionUID = 5229438907976239730L;
+
+	private static final String DURATION_FORMAT_STRING = "%02dm%02ds";
 
 	private final long milliseconds;
 
@@ -47,7 +50,7 @@ public class Duration implements Serializable {
     @Override
     public String toString()
     {
-        return String.format(Locale.US,"%02dm%02ds",
+        return String.format(Locale.US,Duration.DURATION_FORMAT_STRING,
                 Duration.UNIT.toMinutes(this.milliseconds),
                 Duration.UNIT.toSeconds(this.milliseconds) -
                         TimeUnit.MINUTES.toSeconds(Duration.UNIT.toMinutes(this.milliseconds))

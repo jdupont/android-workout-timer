@@ -20,6 +20,14 @@ import java.io.File;
 
 public class ExerciseActivity extends AppCompatActivity {
 
+    private static final String INTENT_TYPE = "text/plain";
+
+    private static final String FILE_PROVIDER_AUTHORITY = "com.budgebars.rotelle.fileprovider";
+
+    private static final String INTENT_TITLE = "Share exercise file:";
+
+    private static final String NO_APP_MESSAGE = "No sharing app found.";
+
     private ExerciseFile exerciseFile;
 
     private Exercise exercise;
@@ -69,13 +77,13 @@ public class ExerciseActivity extends AppCompatActivity {
     private void startEmailIntent()
     {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("text/plain");
+        emailIntent.setType(ExerciseActivity.INTENT_TYPE);
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
 
         File requestFile = this.exerciseFile.source();
         Uri fileUri;
         try {
-            fileUri = FileProvider.getUriForFile(this, "com.budgebars.rotelle.fileprovider", requestFile);
+            fileUri = FileProvider.getUriForFile(this, ExerciseActivity.FILE_PROVIDER_AUTHORITY, requestFile);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException(e);
         }
@@ -83,15 +91,14 @@ public class ExerciseActivity extends AppCompatActivity {
         emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri); //, this.getContentResolver().getType(fileUri));
 
-        String title = "Share exercise file:";
-        Intent chooser = Intent.createChooser(emailIntent, title);
+        Intent chooser = Intent.createChooser(emailIntent, ExerciseActivity.INTENT_TITLE);
 
         if (emailIntent.resolveActivity(this.getPackageManager()) != null) {
             this.startActivity(chooser);
         }
         else
         {
-            Toast.makeText(this, "No sharing app found.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ExerciseActivity.NO_APP_MESSAGE, Toast.LENGTH_SHORT).show();
         }
     }
 }

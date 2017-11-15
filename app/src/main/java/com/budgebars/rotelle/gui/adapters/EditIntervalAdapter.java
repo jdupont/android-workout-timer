@@ -26,6 +26,8 @@ import java.util.concurrent.TimeUnit;
 
 public class EditIntervalAdapter extends BaseAdapter {
 
+    private static final String SECONDS_FORMAT = "%d";
+
     private final EditableExercise exercise;
 
     private final Activity activity;
@@ -104,7 +106,7 @@ public class EditIntervalAdapter extends BaseAdapter {
         });
 
         TextView lengthView = inflated.findViewById(R.id.IntervalLengthEdit);
-        lengthView.setText(String.format(Locale.US, "%d", current.length().get(TimeUnit.SECONDS)));
+        lengthView.setText(String.format(Locale.US, EditIntervalAdapter.SECONDS_FORMAT, current.length().get(TimeUnit.SECONDS)));
         lengthView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View view, final boolean hasFocus) {

@@ -16,6 +16,8 @@ public class EditableInterval implements Serializable {
 
 	private static final int DEFAULT_INTERVAL_LENGTH_SECONDS = 30;
 
+	private static final String DEFAULT_INTERVAL_NAME = "New Interval";
+
 	private String name;
 
     private Duration length;
@@ -58,6 +60,6 @@ public class EditableInterval implements Serializable {
 
     public static EditableInterval getDefaultInterval()
     {
-        return new EditableInterval("New Interval", new Duration(EditableInterval.DEFAULT_INTERVAL_LENGTH_SECONDS, TimeUnit.SECONDS));
+        return new EditableInterval(EditableInterval.DEFAULT_INTERVAL_NAME, new Duration(EditableInterval.DEFAULT_INTERVAL_LENGTH_SECONDS, TimeUnit.SECONDS));
     }
 }

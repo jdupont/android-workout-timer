@@ -1,7 +1,6 @@
 package com.budgebars.rotelle.workouts;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class Exercise implements Serializable {
         }
         else if (name.trim().isEmpty())
         {
-            throw new IllegalArgumentException("Cannot have an empty name.");
+            throw new IllegalArgumentException("Cannot have an empty exercise name.");
         }
 
         this.name = name;
@@ -61,17 +60,5 @@ public class Exercise implements Serializable {
     public String toString()
     {
         return this.name;
-    }
-
-    public static Exercise createMockExercise()
-    {
-        List<Interval> intervals = new ArrayList<>();
-
-        final int testIntervalLength = 15;
-        intervals.add(new Interval("Warmup", Duration.fromSeconds(testIntervalLength)));
-        intervals.add(new Interval("Bench 1", Duration.fromSeconds(testIntervalLength)));
-        intervals.add(new Interval("Rest 1", Duration.fromSeconds(testIntervalLength)));
-
-        return new Exercise("Sample Bench Workout", intervals);
     }
 }

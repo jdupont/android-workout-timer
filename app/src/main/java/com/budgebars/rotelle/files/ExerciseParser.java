@@ -1,7 +1,6 @@
 package com.budgebars.rotelle.files;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.budgebars.rotelle.R;
 import com.budgebars.rotelle.workouts.Duration;
@@ -28,6 +27,10 @@ import java.util.concurrent.TimeUnit;
 public final class ExerciseParser {
 
     private static final String TAG = ExerciseParser.class.getName();
+
+    private static final String CHARSET = "UTF-8";
+
+    private static final String DELIMITER = "\\A";
 
     private static final String EXERCISE_TAG = "exercise";
 
@@ -138,7 +141,6 @@ public final class ExerciseParser {
             return new Exercise(exerciseName, intervals);
         }
         catch (JSONException e) {
-            Log.e(ExerciseParser.TAG, "Couldn't read sample exercise.");
             throw new RuntimeException(e);
         }
     }
@@ -168,7 +170,7 @@ public final class ExerciseParser {
     }
 
     private static String streamToString(final InputStream stream) {
-		try (Scanner scanner = new Scanner(stream).useDelimiter("\\A")) {
+		try (Scanner scanner = new Scanner(stream, ExerciseParser.CHARSET).useDelimiter(ExerciseParser.DELIMITER)) {
 			return scanner.hasNext() ? scanner.next() : "";
 		}
 	}

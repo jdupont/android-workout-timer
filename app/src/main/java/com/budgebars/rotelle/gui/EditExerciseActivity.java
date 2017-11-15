@@ -21,6 +21,18 @@ import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
+    private static final String IMPORT_TITLE = "Import Exercise";
+
+    private static final String EDIT_TITLE = "Edit Exercise";
+
+    private static final String EMPTY_TITLE_MESSAGE = "Cannot have an empty exercise title.";
+
+    private static final String DUPLICATE_TITLE_MESSAGE = "An exercise with that name already exists. Overwrite?";
+
+    private static final String PROCEED_LABEL = "Ok";
+
+    private static final String CANCEL_LABEL = "Cancel";
+
     private EditableExercise editableExercise;
 
     private EditIntervalAdapter adapter;
@@ -33,12 +45,12 @@ public class EditExerciseActivity extends AppCompatActivity {
         Intent intent = this.getIntent();
         if ((intent.getScheme() != null) &&
                 intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
-            this.setTitle("Import Exercise");
+            this.setTitle(EditExerciseActivity.IMPORT_TITLE);
 
             this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
         }
         else {
-            this.setTitle("Edit Exercise");
+            this.setTitle(EditExerciseActivity.EDIT_TITLE);
             this.editableExercise = (EditableExercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
         }
 
@@ -90,8 +102,8 @@ public class EditExerciseActivity extends AppCompatActivity {
                 if (EditExerciseActivity.this.isTitleEmpty())
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
-                    builder.setMessage("Cannot have an empty exercise title.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    builder.setMessage(EditExerciseActivity.EMPTY_TITLE_MESSAGE)
+                            .setPositiveButton(EditExerciseActivity.PROCEED_LABEL, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, final int which) {
                                     // Do nothing -- just return to activity so the user can add a title.
                                 }
@@ -108,14 +120,14 @@ public class EditExerciseActivity extends AppCompatActivity {
                 if (fileManager.hasFileForExerciseName(saveTarget.name()))
                 {
                     AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
-                    builder.setMessage("An exercise with that name already exists. Overwrite?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    builder.setMessage(EditExerciseActivity.DUPLICATE_TITLE_MESSAGE)
+                            .setPositiveButton(EditExerciseActivity.PROCEED_LABEL, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, final int which) {
                                     fileManager.writeExerciseToFile(saveTarget, true);
                                     EditExerciseActivity.this.goBackToListingActivity();
                                 }
                             })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            .setNegativeButton(EditExerciseActivity.CANCEL_LABEL, new DialogInterface.OnClickListener() {
                                 public void onClick(final DialogInterface dialog, final int which) {
                                     // Do nothing so user has a chance to change exercise name
                                 }

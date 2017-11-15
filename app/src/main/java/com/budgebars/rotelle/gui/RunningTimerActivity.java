@@ -25,6 +25,8 @@ import java.util.concurrent.TimeUnit;
 
 public class RunningTimerActivity extends AppCompatActivity {
 
+    private static final String SECONDS_FORMATTER = "%d";
+
     private ExerciseCoach coach;
 
     private MediaPlayer openingBell;
@@ -121,13 +123,13 @@ public class RunningTimerActivity extends AppCompatActivity {
     private void updateTextTimerTo(final Duration remaining)
     {
         TextView secondsText = this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(String.format(Locale.US, "%d", remaining.get(TimeUnit.SECONDS)));
+        secondsText.setText(String.format(Locale.US, RunningTimerActivity.SECONDS_FORMATTER, remaining.get(TimeUnit.SECONDS)));
     }
 
     private void intervalChangedUpdate(final String intervalName, final Duration totalLength)
     {
         TextView secondsText = this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(String.format(Locale.US, "%d", totalLength.get(TimeUnit.SECONDS)));
+        secondsText.setText(String.format(Locale.US, RunningTimerActivity.SECONDS_FORMATTER, totalLength.get(TimeUnit.SECONDS)));
 
         TextView exerciseNameText = this.findViewById(R.id.CurrentIntervalName);
         exerciseNameText.setText(intervalName);
@@ -136,7 +138,7 @@ public class RunningTimerActivity extends AppCompatActivity {
     private void exerciseDone()
     {
         TextView secondsText = this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(String.format(Locale.US, "%d", 0));
+        secondsText.setText(String.format(Locale.US, RunningTimerActivity.SECONDS_FORMATTER, 0));
 
         TextView exerciseNameText = this.findViewById(R.id.CurrentIntervalName);
         exerciseNameText.setText(R.string.timer_finished_label);

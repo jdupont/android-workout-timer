@@ -15,6 +15,10 @@ import java.util.Scanner;
 
 public class IncomingFileManager {
 
+    private static final String DELIMITER = "\\A";
+
+    private static final String CHARSET = "UTF-8";
+
     private final Context context;
 
     public IncomingFileManager(final Context context)
@@ -36,7 +40,7 @@ public class IncomingFileManager {
 
 
     private static String streamToString(final InputStream stream) {
-        try (Scanner scanner = new Scanner(stream).useDelimiter("\\A")) {
+        try (Scanner scanner = new Scanner(stream, IncomingFileManager.CHARSET).useDelimiter(IncomingFileManager.DELIMITER)) {
             return scanner.hasNext() ? scanner.next() : "";
         }
     }

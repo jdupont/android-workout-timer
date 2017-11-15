@@ -17,7 +17,7 @@ public class Interval implements Serializable {
     {
         if (name.trim().isEmpty())
         {
-            throw new IllegalArgumentException("Cannot have an empty name.");
+            throw new IllegalArgumentException("Cannot have an empty interval name.");
         }
 
         this.name = name;
