@@ -21,19 +21,19 @@
             android:id="@+id/EditExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Edit"/>
+            android:text="@string/edit_exercise_label"/>
 
         <Button
             android:id="@+id/StartExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Start"/>
+            android:text="@string/start_exercise_label"/>
 
         <Button
             android:id="@+id/EmailExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Email"/>
+            android:text="@string/email_label"/>
 
     </LinearLayout>
 

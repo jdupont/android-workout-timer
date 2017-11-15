@@ -10,6 +10,7 @@
         android:id="@+id/EditTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/edit_exercise_title_hint"
         android:textSize="24sp"/>
 
     <ListView
@@ -28,13 +29,13 @@
             android:id="@+id/AddIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Add Interval"/>
+            android:text="@string/add_interval_label"/>
 
         <Button
             android:id="@+id/SaveExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Save"/>
+            android:text="@string/save_label"/>
 
     </LinearLayout>
 

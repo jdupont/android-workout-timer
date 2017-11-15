@@ -9,8 +9,9 @@
         android:id="@+id/IntervalNameEdit"
         android:layout_alignParentStart="true"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    </EditText>
+        android:layout_height="wrap_content"
+        android:hint="@string/interval_name_label"
+        />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -21,28 +22,29 @@
             android:id="@+id/IntervalLengthEdit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="number"/>
+            android:inputType="number"
+            android:hint="@string/interval_length_label"/>
 
         <ImageButton
             android:id="@+id/UpIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@android:drawable/arrow_up_float"
-            android:contentDescription="Moves up one interval." />
+            android:contentDescription="@string/move_up_content_description" />
 
         <ImageButton
             android:id="@+id/DownIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@android:drawable/arrow_down_float"
-            android:contentDescription="Moves down one interval." />
+            android:contentDescription="@string/move_down_content_description" />
 
         <ImageButton
             android:id="@+id/DeleteIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@android:drawable/ic_menu_delete"
-            android:contentDescription="Deletes this interval." />
+            android:contentDescription="@string/delete_file_content_description" />
 
     </LinearLayout>
 

@@ -15,8 +15,8 @@ import java.util.List;
 
 /**
  * Created by Jules on 10/18/2017.
+ *
  */
-
 public class FileAdapter extends BaseAdapter {
 
     private final List<ExerciseFile> exercise;
