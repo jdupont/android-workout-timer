@@ -80,20 +80,8 @@ public class EditableExercise implements Serializable {
 
         EditableInterval moving = this.getIntervalAt(from);
 
-        if (to < from)
-        {
-            // From greater than to so removing from will not affect position of to
-            this.intervals.remove(from);
-            this.intervals.add(to, moving);
-        }
-        else
-        {
-            // To is greater than from. So, if we remove from, we're going to affect the position of
-            // to making the requested operation wrong.
-            // So, remove, then subtract
-            this.intervals.remove(from);
-            this.intervals.add(to, moving);
-        }
+        this.intervals.remove(from);
+        this.intervals.add(to, moving);
 
         this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.MOVE_INTERVAL);
     }
@@ -120,9 +108,7 @@ public class EditableExercise implements Serializable {
             editableIntervals.add(editable.toInterval());
         }
 
-        Exercise exercise = new Exercise(this.name(), editableIntervals);
-
-        return exercise;
+        return new Exercise(this.name(), editableIntervals);
     }
 
     public void addExerciseEditedConsumer(final ExerciseEditedConsumer consumer)

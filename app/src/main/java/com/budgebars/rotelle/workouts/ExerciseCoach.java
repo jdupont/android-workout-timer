@@ -98,7 +98,7 @@ public class ExerciseCoach {
         this.currentTimer.addUpdateConsumer(consumer);
     }
 
-    public final void addIntervalFinishedConsumer(final IntervalFinishedConsumer consumer)
+    private void addIntervalFinishedConsumer(final IntervalFinishedConsumer consumer)
     {
         this.intervalFinishedConsumers.add(consumer);
         this.currentTimer.addFinishedConsumer(consumer);

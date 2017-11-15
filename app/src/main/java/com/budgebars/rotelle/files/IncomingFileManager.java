@@ -5,10 +5,9 @@ import android.net.Uri;
 
 import com.budgebars.rotelle.workouts.Exercise;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 /**
  * Created by Jules on 10/26/2017.
@@ -30,27 +29,15 @@ public class IncomingFileManager {
 
             return ExerciseParser.parse(json);
         }
-        catch (IOException e) {
+        catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
 
-    private static String streamToString(final InputStream stream)
-    {
-         try (BufferedReader reader =  new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8)) {
-             StringBuilder sb = new StringBuilder();
-
-             String line;
-             while ((line = reader.readLine()) != null) {
-                 sb.append(line).append(java.io.File.pathSeparator).append('n');
-             }
-
-             return sb.toString();
-         }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
+    private static String streamToString(final InputStream stream) {
+        try (Scanner scanner = new Scanner(stream).useDelimiter("\\A")) {
+            return scanner.hasNext() ? scanner.next() : "";
         }
     }
 }

@@ -7,7 +7,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Jules on 10/16/2017.
  */
-
 public class Duration implements Serializable {
 
     private static final TimeUnit UNIT = TimeUnit.MILLISECONDS;

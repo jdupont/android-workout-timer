@@ -29,13 +29,15 @@
             android:id="@+id/AddIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/add_interval_label"/>
+            android:text="@string/add_interval_label"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:id="@+id/SaveExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="@string/save_label"/>
+            android:text="@string/save_label"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 

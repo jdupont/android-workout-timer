@@ -17,6 +17,7 @@ import com.budgebars.rotelle.workouts.editable.EditableInterval;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -80,15 +81,16 @@ public class EditIntervalAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-        if (convertView == null) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
+    	View inflated = convertView;
+        if (inflated == null) {
             LayoutInflater inflater = this.activity.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.item_interval_list_edit, parent, false);
+			inflated = inflater.inflate(R.layout.item_interval_list_edit, parent, false);
         }
 
         final EditableInterval current = (EditableInterval) this.getItem(position);
 
-        final EditText nameView = convertView.findViewById(R.id.IntervalNameEdit);
+        final EditText nameView = inflated.findViewById(R.id.IntervalNameEdit);
         nameView.setText(current.name());
         nameView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -101,8 +103,8 @@ public class EditIntervalAdapter extends BaseAdapter {
             }
         });
 
-        TextView lengthView = convertView.findViewById(R.id.IntervalLengthEdit);
-        lengthView.setText(Long.toString(current.length().get(TimeUnit.SECONDS)));
+        TextView lengthView = inflated.findViewById(R.id.IntervalLengthEdit);
+        lengthView.setText(String.format(Locale.US, "%d", current.length().get(TimeUnit.SECONDS)));
         lengthView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(final View view, final boolean hasFocus) {
@@ -114,7 +116,7 @@ public class EditIntervalAdapter extends BaseAdapter {
             }
         });
 
-        ImageButton upButton = convertView.findViewById(R.id.UpIntervalButton);
+        ImageButton upButton = inflated.findViewById(R.id.UpIntervalButton);
         upButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -123,7 +125,7 @@ public class EditIntervalAdapter extends BaseAdapter {
         });
         upButton.setEnabled(position != 0); // Can move up unless its the first item
 
-        ImageButton downButton = convertView.findViewById(R.id.DownIntervalButton);
+        ImageButton downButton = inflated.findViewById(R.id.DownIntervalButton);
         downButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -132,7 +134,7 @@ public class EditIntervalAdapter extends BaseAdapter {
         });
         downButton.setEnabled(position != (this.getCount() - 1));
 
-        ImageButton deleteButton = convertView.findViewById(R.id.DeleteIntervalButton);
+        ImageButton deleteButton = inflated.findViewById(R.id.DeleteIntervalButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -140,7 +142,7 @@ public class EditIntervalAdapter extends BaseAdapter {
             }
         });
 
-        return convertView;
+        return inflated;
     }
 
     private void notifyIntervalAdded()

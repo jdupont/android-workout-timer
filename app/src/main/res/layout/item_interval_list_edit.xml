@@ -11,9 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="@string/interval_name_label"
+        android:layout_toStartOf="@+id/IntervalPropertyEditControls"
         />
 
     <LinearLayout
+        android:id="@+id/IntervalPropertyEditControls"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentEnd="true">

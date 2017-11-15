@@ -20,6 +20,7 @@ import com.budgebars.rotelle.workouts.consumers.IntervalChangedConsumer;
 import com.budgebars.rotelle.workouts.consumers.IntervalStartedConsumer;
 import com.budgebars.rotelle.workouts.consumers.TimerUpdateConsumer;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class RunningTimerActivity extends AppCompatActivity {
@@ -94,7 +95,7 @@ public class RunningTimerActivity extends AppCompatActivity {
 
         this.intervalChangedUpdate(this.coach.currentIntervalName(), this.coach.currentIntervalLength());
 
-        Button resetButton = (Button) this.findViewById(R.id.ResetTimerButton);
+        Button resetButton = this.findViewById(R.id.ResetTimerButton);
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -119,26 +120,26 @@ public class RunningTimerActivity extends AppCompatActivity {
 
     private void updateTextTimerTo(final Duration remaining)
     {
-        TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(Long.toString(remaining.get(TimeUnit.SECONDS)));
+        TextView secondsText = this.findViewById(R.id.TimerDisplay);
+        secondsText.setText(String.format(Locale.US, "%d", remaining.get(TimeUnit.SECONDS)));
     }
 
     private void intervalChangedUpdate(final String intervalName, final Duration totalLength)
     {
-        TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(Long.toString(totalLength.get(TimeUnit.SECONDS)));
+        TextView secondsText = this.findViewById(R.id.TimerDisplay);
+        secondsText.setText(String.format(Locale.US, "%d", totalLength.get(TimeUnit.SECONDS)));
 
-        TextView exerciseNameText = (TextView) this.findViewById(R.id.CurrentIntervalName);
+        TextView exerciseNameText = this.findViewById(R.id.CurrentIntervalName);
         exerciseNameText.setText(intervalName);
     }
 
     private void exerciseDone()
     {
-        TextView secondsText = (TextView) this.findViewById(R.id.TimerDisplay);
-        secondsText.setText(Long.toString(0));
+        TextView secondsText = this.findViewById(R.id.TimerDisplay);
+        secondsText.setText(String.format(Locale.US, "%d", 0));
 
-        TextView exerciseNameText = (TextView) this.findViewById(R.id.CurrentIntervalName);
-        exerciseNameText.setText("Done.");
+        TextView exerciseNameText = this.findViewById(R.id.CurrentIntervalName);
+        exerciseNameText.setText(R.string.timer_finished_label);
 
         this.setDoneConfiguration();
 
@@ -152,7 +153,7 @@ public class RunningTimerActivity extends AppCompatActivity {
 
     private void setReadyConfiguration()
     {
-        Button startPauseResumeButton = (Button) this.findViewById(R.id.StartPauseResumeButton);
+        Button startPauseResumeButton = this.findViewById(R.id.StartPauseResumeButton);
         this.enableButton(startPauseResumeButton);
         startPauseResumeButton.setText(R.string.start_timer_label);
         startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
@@ -167,7 +168,7 @@ public class RunningTimerActivity extends AppCompatActivity {
 
     private void setRunningConfiguration()
     {
-        Button startPauseResumeButton = (Button) this.findViewById(R.id.StartPauseResumeButton);
+        Button startPauseResumeButton = this.findViewById(R.id.StartPauseResumeButton);
         this.enableButton(startPauseResumeButton);
         startPauseResumeButton.setText(R.string.pause_timer_label);
         startPauseResumeButton.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +183,7 @@ public class RunningTimerActivity extends AppCompatActivity {
 
     private void setPausedConfiguration()
     {
-        Button startPauseResumeButton = (Button) this.findViewById(R.id.StartPauseResumeButton);
+        Button startPauseResumeButton = this.findViewById(R.id.StartPauseResumeButton);
         this.enableButton(startPauseResumeButton);
         startPauseResumeButton.setText(R.string.resume_timer_label);
         startPauseResumeButton.setOnClickListener(new View.OnClickListener() {

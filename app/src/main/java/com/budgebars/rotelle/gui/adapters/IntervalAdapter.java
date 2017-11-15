@@ -45,21 +45,22 @@ public class IntervalAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
+    public View getView(final int position, final View convertView, final ViewGroup parent) {
+        View inflated = convertView;
         if (convertView == null) {
             LayoutInflater inflater = this.activity.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.item_interval_list, parent, false);
+			inflated = inflater.inflate(R.layout.item_interval_list, parent, false);
         }
 
         Interval current = (Interval) this.getItem(position);
 
-        TextView nameView = convertView.findViewById(R.id.IntervalListName);
+        TextView nameView = inflated.findViewById(R.id.IntervalListName);
         nameView.setText(current.getName());
 
-        TextView lengthView = convertView.findViewById(R.id.IntervalListLength);
+        TextView lengthView = inflated.findViewById(R.id.IntervalListLength);
         lengthView.setText(current.getLength().toString());
 
-        return convertView;
+        return inflated;
     }
 
 }

@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ExerciseListingActivity extends AppCompatActivity {
 
-    public static final String TAG = ExerciseListingActivity.class.getName();
+    private static final String TAG = ExerciseListingActivity.class.getName();
 
     public static final String EXERCISE_FILE = "EXERCISE_FILE";
 
@@ -52,7 +52,7 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
 		Log.e(ExerciseListingActivity.TAG, "About to display exercises: " + exerciseFiles.length);
 
-        ListView listing = (ListView) this.findViewById(R.id.FileListView);
+        ListView listing = this.findViewById(R.id.FileListView);
         this.adapter = new FileAdapter(exercises, this);
         listing.setAdapter(this.adapter);
 
@@ -69,7 +69,7 @@ public class ExerciseListingActivity extends AppCompatActivity {
             }
         });
 
-        Button createButton = (Button) this.findViewById(R.id.CreateExerciseButton);
+        Button createButton = this.findViewById(R.id.CreateExerciseButton);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {

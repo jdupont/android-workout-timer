@@ -12,15 +12,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -107,8 +106,7 @@ public final class ExerciseParser {
         try
         {
             String asString = ExerciseParser.streamToString(stream);
-            Exercise exercise = ExerciseParser.parse(asString);
-            return exercise;
+			return ExerciseParser.parse(asString);
         }
         finally
         {
@@ -169,27 +167,9 @@ public final class ExerciseParser {
         return intervals;
     }
 
-    private static String streamToString(final InputStream stream)
-    {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(stream, "UTF-8"), 8))
-        {
-			final char separatingCharacter = ' ';
-            StringBuilder sb = new StringBuilder();
-
-            try {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line).append(separatingCharacter);
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            return sb.toString();
-        }
-        catch (IOException e)
-        {
-            throw new RuntimeException(e);
-        }
-    }
+    private static String streamToString(final InputStream stream) {
+		try (Scanner scanner = new Scanner(stream).useDelimiter("\\A")) {
+			return scanner.hasNext() ? scanner.next() : "";
+		}
+	}
 }

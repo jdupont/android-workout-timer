@@ -42,7 +42,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             this.editableExercise = (EditableExercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
         }
 
-        EditText titleEditor = (EditText) this.findViewById(R.id.EditTitleView);
+        EditText titleEditor = this.findViewById(R.id.EditTitleView);
         titleEditor.setText(this.editableExercise.name());
         titleEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -56,7 +56,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
         });
 
-        final ListView list = (ListView) this.findViewById(R.id.IntervalListView);
+        final ListView list = this.findViewById(R.id.IntervalListView);
         list.setItemsCanFocus(true);
 
         this.adapter = new EditIntervalAdapter(this.editableExercise, this);
@@ -69,7 +69,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
         });
 
-        Button addIntervalButton = (Button) this.findViewById(R.id.AddIntervalButton);
+        Button addIntervalButton = this.findViewById(R.id.AddIntervalButton);
         addIntervalButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -77,7 +77,7 @@ public class EditExerciseActivity extends AppCompatActivity {
             }
         });
 
-        final Button saveButton = (Button) this.findViewById(R.id.SaveExerciseButton);
+        final Button saveButton = this.findViewById(R.id.SaveExerciseButton);
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -140,7 +140,7 @@ public class EditExerciseActivity extends AppCompatActivity {
 
     private boolean isTitleEmpty()
     {
-        EditText titleText = (EditText) this.findViewById(R.id.EditTitleView);
+        EditText titleText = this.findViewById(R.id.EditTitleView);
         return titleText.getText().toString().trim().isEmpty();
     }
 
@@ -149,8 +149,7 @@ public class EditExerciseActivity extends AppCompatActivity {
         Uri uri = intent.getData();
 
         IncomingFileManager manager = new IncomingFileManager(this);
-        Exercise exercise = manager.fromUri(uri);
 
-        return exercise;
+        return manager.fromUri(uri);
     }
 }

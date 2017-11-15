@@ -6,12 +6,13 @@ import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by Jules on 10/17/2017.
  */
 
-public class ExerciseFile implements Serializable {
+public final class ExerciseFile implements Serializable {
 
     public static final String EXERCISE_FILE_EXTENSION = ".exercise";
     private static final long serialVersionUID = 1688328007807640738L;
@@ -20,18 +21,11 @@ public class ExerciseFile implements Serializable {
 
     private final Exercise exercise;
 
-    public ExerciseFile(final File file)
+    private ExerciseFile(final File file)
     {
         this.source = file;
 
-        if (this.source.exists())
-        {
-            this.exercise = this.getExercise(this.source);
-        }
-        else
-        {
-            this.exercise = null;
-        }
+        this.exercise = this.source.exists() ? this.getExercise(this.source) : null;
     }
 
     private Exercise getExercise(final File file) {
@@ -86,6 +80,6 @@ public class ExerciseFile implements Serializable {
 
     public static boolean checkExerciseFileExtension(final String file)
     {
-        return file.toLowerCase().endsWith(ExerciseFile.EXERCISE_FILE_EXTENSION);
+        return file.toLowerCase(Locale.US).endsWith(ExerciseFile.EXERCISE_FILE_EXTENSION);
     }
 }

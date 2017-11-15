@@ -65,14 +65,8 @@ public class InternalFileManager {
         return this.exercisesDirectory.exists();
     }
 
-    public boolean hasExercises()
-	{
-		if (!this.hasExercisesDirectory())
-		{
-			return false;
-		}
-
-		return this.getExerciseFiles().length > 0;
+    public boolean hasExercises() {
+		return this.hasExercisesDirectory() && (this.getExerciseFiles().length > 0);
 	}
 
     public boolean hasFileForExerciseName(final String exerciseName)
@@ -89,14 +83,12 @@ public class InternalFileManager {
             throw new IllegalArgumentException("No exercises directory so cannot get exercise files.");
         }
 
-        File[] files = this.exercisesDirectory.listFiles(new FilenameFilter() {
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return ExerciseFile.checkExerciseFileExtension(name);
-            }
-        });
-
-        return files;
+		return this.exercisesDirectory.listFiles(new FilenameFilter() {
+			@Override
+			public boolean accept(final File dir, final String name) {
+				return ExerciseFile.checkExerciseFileExtension(name);
+			}
+		});
     }
 
     public void writeExerciseToFile(final Exercise exercise, final boolean overwrite)

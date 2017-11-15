@@ -16,4 +16,5 @@
     <string name="interval_length_label">Interval Length Here</string>
     <string name="move_up_content_description">Moves up one interval.</string>
     <string name="move_down_content_description">Moves down one interval.</string>
+    <string name="timer_finished_label">Done.</string>
 </resources>

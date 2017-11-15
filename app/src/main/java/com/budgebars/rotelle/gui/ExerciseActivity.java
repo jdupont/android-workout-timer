@@ -34,10 +34,10 @@ public class ExerciseActivity extends AppCompatActivity {
 
         this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ')');
 
-        ListView list = (ListView) this.findViewById(R.id.ExerciseDisplayView);
+        ListView list = this.findViewById(R.id.ExerciseDisplayView);
         list.setAdapter(new IntervalAdapter(this.exercise, this));
 
-        Button startExerciseButton = (Button) this.findViewById(R.id.StartExerciseButton);
+        Button startExerciseButton = this.findViewById(R.id.StartExerciseButton);
         startExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -47,7 +47,7 @@ public class ExerciseActivity extends AppCompatActivity {
             }
         });
 
-        Button editExerciseButton = (Button) this.findViewById(R.id.EditExerciseButton);
+        Button editExerciseButton = this.findViewById(R.id.EditExerciseButton);
         editExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
@@ -57,7 +57,7 @@ public class ExerciseActivity extends AppCompatActivity {
             }
         });
 
-        Button emailExerciseButton = (Button) this.findViewById(R.id.EmailExerciseButton);
+        Button emailExerciseButton = this.findViewById(R.id.EmailExerciseButton);
         emailExerciseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
