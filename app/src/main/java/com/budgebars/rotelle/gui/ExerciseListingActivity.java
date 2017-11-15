@@ -20,7 +20,7 @@ import java.util.List;
 
 public class ExerciseListingActivity extends AppCompatActivity {
 
-    public static final String TAG = "TestingTag";
+    public static final String TAG = ExerciseListingActivity.class.getName();
 
     public static final String EXERCISE_FILE = "EXERCISE_FILE";
 
@@ -37,13 +37,20 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
         InternalFileManager files = new InternalFileManager(this);
         if (!files.hasExercisesDirectory())
-        {
-            files.createExercisesDirectory();
-            files.addSampleExerciseFile(this);
-        }
+		{
+			files.createExercisesDirectory();
+		}
+
+		if (!files.hasExercises())
+		{
+			Log.e(ExerciseListingActivity.TAG, "Creating sample exercise.");
+			files.addSampleExerciseFile(this);
+		}
 
         File[] exerciseFiles = files.getExerciseFiles();
         final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
+
+		Log.e(ExerciseListingActivity.TAG, "About to display exercises: " + exerciseFiles.length);
 
         ListView listing = (ListView) this.findViewById(R.id.FileListView);
         this.adapter = new FileAdapter(exercises, this);
