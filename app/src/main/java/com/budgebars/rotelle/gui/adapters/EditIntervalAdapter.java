@@ -42,8 +42,6 @@ public class EditIntervalAdapter extends BaseAdapter {
         this.activity = parent;
 
         this.exercise.addExerciseEditedConsumer(new ExerciseEditedConsumer() {
-			private static final long serialVersionUID = 6635431096435142076L;
-
 			@Override
             public void exerciseEdited(final EditAction action) {
 
