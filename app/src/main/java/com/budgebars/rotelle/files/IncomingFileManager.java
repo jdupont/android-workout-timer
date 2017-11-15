@@ -15,7 +15,8 @@ import java.util.Scanner;
 
 public class IncomingFileManager {
 
-    private static final String DELIMITER = "\\A";
+    @SuppressWarnings("HardcodedFileSeparator")
+	private static final String DELIMITER = "\\A";
 
     private static final String CHARSET = "UTF-8";
 

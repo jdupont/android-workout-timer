@@ -37,6 +37,6 @@ public class Interval implements Serializable {
     @Override
     public String toString()
     {
-        return this.name + " (" + this.length + ')';
+        return this.name + " (" + this.length + ") ";
     }
 }

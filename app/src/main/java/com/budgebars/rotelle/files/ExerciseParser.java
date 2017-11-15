@@ -30,7 +30,8 @@ public final class ExerciseParser {
 
     private static final String CHARSET = "UTF-8";
 
-    private static final String DELIMITER = "\\A";
+    @SuppressWarnings("HardcodedFileSeparator")
+	private static final String DELIMITER = "\\A";
 
     private static final String EXERCISE_TAG = "exercise";
 
