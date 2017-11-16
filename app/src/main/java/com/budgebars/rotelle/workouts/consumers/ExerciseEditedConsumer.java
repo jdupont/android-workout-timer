@@ -5,13 +5,12 @@ package com.budgebars.rotelle.workouts.consumers;
  */
 
 public interface ExerciseEditedConsumer {
-    public void exerciseEdited(final EditAction action);
+  public void exerciseEdited(final EditAction action);
 
-    public enum EditAction
-    {
-        ADD_INTERVAL,
-        MOVE_INTERVAL,
-        DELETE_INTERVAL,
-        TITLE_EDITED
-    }
+  public enum EditAction {
+      ADD_INTERVAL,
+      MOVE_INTERVAL,
+      DELETE_INTERVAL,
+      TITLE_EDITED
+  }
 }

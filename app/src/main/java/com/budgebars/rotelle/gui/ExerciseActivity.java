@@ -19,86 +19,87 @@ import com.budgebars.rotelle.workouts.editable.EditableExercise;
 import java.io.File;
 
 public class ExerciseActivity extends AppCompatActivity {
+  private static final String INTENT_TYPE = "text/plain";
 
-    private static final String INTENT_TYPE = "text/plain";
+  private static final String FILE_PROVIDER_AUTHORITY = "com.budgebars.rotelle.fileprovider";
 
-    private static final String FILE_PROVIDER_AUTHORITY = "com.budgebars.rotelle.fileprovider";
+  private static final String INTENT_TITLE = "Share exercise file:";
 
-    private static final String INTENT_TITLE = "Share exercise file:";
+  private static final String NO_APP_MESSAGE = "No sharing app found.";
 
-    private static final String NO_APP_MESSAGE = "No sharing app found.";
+  private ExerciseFile exerciseFile;
 
-    private ExerciseFile exerciseFile;
+  private Exercise exercise;
 
-    private Exercise exercise;
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.activity_exercise);
+    this.setContentView(R.layout.activity_exercise);
 
-        this.exerciseFile = (ExerciseFile) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
-        this.exercise = this.exerciseFile.getExercise();
+    this.exerciseFile = (ExerciseFile)
+        this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
+    this.exercise = this.exerciseFile.getExercise();
 
-        this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ") ");
+    this.setTitle(this.exercise.name() + " (" + this.exercise.totalLength() + ") ");
 
-        ListView list = this.findViewById(R.id.ExerciseDisplayView);
-        list.setAdapter(new IntervalAdapter(this.exercise, this));
+    ListView list = this.findViewById(R.id.ExerciseDisplayView);
+    list.setAdapter(new IntervalAdapter(this.exercise, this));
 
-        Button startExerciseButton = this.findViewById(R.id.StartExerciseButton);
-        startExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                Intent intent = new Intent(ExerciseActivity.this, RunningTimerActivity.class);
-                intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
-				com.budgebars.rotelle.gui.ExerciseActivity.this.startActivity(intent);
-            }
-        });
+    Button startExerciseButton = this.findViewById(R.id.StartExerciseButton);
+    startExerciseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(final View view) {
+        Intent intent = new Intent(ExerciseActivity.this, RunningTimerActivity.class);
+        intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
+          ExerciseActivity.this.startActivity(intent);
+      }
+    });
 
-        Button editExerciseButton = this.findViewById(R.id.EditExerciseButton);
-        editExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                Intent intent = new Intent(ExerciseActivity.this, EditExerciseActivity.class);
-                intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, new EditableExercise(ExerciseActivity.this.exercise));
-				com.budgebars.rotelle.gui.ExerciseActivity.this.startActivity(intent);
-            }
-        });
+    Button editExerciseButton = this.findViewById(R.id.EditExerciseButton);
+    editExerciseButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+          Intent intent =
+              new Intent(ExerciseActivity.this, EditExerciseActivity.class);
+          intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE,
+              new EditableExercise(ExerciseActivity.this.exercise));
+          ExerciseActivity.this.startActivity(intent);
+        }
+    });
 
-        Button emailExerciseButton = this.findViewById(R.id.EmailExerciseButton);
-        emailExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                ExerciseActivity.this.startEmailIntent();
-            }
-        });
+    Button emailExerciseButton = this.findViewById(R.id.EmailExerciseButton);
+    emailExerciseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(final View view) {
+        ExerciseActivity.this.startEmailIntent();
+      }
+    });
+  }
+
+  private void startEmailIntent() {
+    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    emailIntent.setType(ExerciseActivity.INTENT_TYPE);
+    emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
+
+    File requestFile = this.exerciseFile.source();
+    Uri fileUri;
+    try {
+      fileUri = FileProvider.getUriForFile(this,
+          ExerciseActivity.FILE_PROVIDER_AUTHORITY, requestFile);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(e);
     }
 
-    private void startEmailIntent()
-    {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType(ExerciseActivity.INTENT_TYPE);
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
+    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
 
-        File requestFile = this.exerciseFile.source();
-        Uri fileUri;
-        try {
-            fileUri = FileProvider.getUriForFile(this, ExerciseActivity.FILE_PROVIDER_AUTHORITY, requestFile);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
+    Intent chooser = Intent.createChooser(emailIntent, ExerciseActivity.INTENT_TITLE);
 
-        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri); //, this.getContentResolver().getType(fileUri));
-
-        Intent chooser = Intent.createChooser(emailIntent, ExerciseActivity.INTENT_TITLE);
-
-        if (emailIntent.resolveActivity(this.getPackageManager()) != null) {
-            this.startActivity(chooser);
-        }
-        else
-        {
-            Toast.makeText(this, ExerciseActivity.NO_APP_MESSAGE, Toast.LENGTH_SHORT).show();
-        }
+    if (emailIntent.resolveActivity(this.getPackageManager()) != null) {
+      this.startActivity(chooser);
+    } else {
+      Toast.makeText(this, ExerciseActivity.NO_APP_MESSAGE, Toast.LENGTH_SHORT).show();
     }
+  }
 }

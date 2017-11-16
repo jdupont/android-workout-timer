@@ -18,82 +18,79 @@ import java.io.File;
 import java.util.List;
 
 public class ExerciseListingActivity extends AppCompatActivity {
+  private static final String TAG = ExerciseListingActivity.class.getName();
 
-    private static final String TAG = ExerciseListingActivity.class.getName();
+  public static final String EXERCISE_FILE = "EXERCISE_FILE";
 
-    public static final String EXERCISE_FILE = "EXERCISE_FILE";
+  public static final String EDITABLE_EXERCISE = "EDITABLE_EXTRA";
 
-    public static final String EDITABLE_EXERCISE = "EDITABLE_EXTRA";
+  public static final String EXERCISE_TO_RUN = "EXERCISE_TO_RUN";
 
-    public static final String EXERCISE_TO_RUN = "EXERCISE_TO_RUN";
+  private FileAdapter adapter;
 
-    private FileAdapter adapter;
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.setContentView(R.layout.activity_exercise_listing);
 
-    @Override
-    protected void onCreate(final Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.setContentView(R.layout.activity_exercise_listing);
-
-        InternalFileManager files = new InternalFileManager(this);
-        if (!files.hasExercisesDirectory())
-		{
-			files.createExercisesDirectory();
-		}
-
-		if (!files.hasExercises())
-		{
-			files.addSampleExerciseFile(this);
-		}
-
-        File[] exerciseFiles = files.getExerciseFiles();
-        final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
-
-        ListView listing = this.findViewById(R.id.FileListView);
-        this.adapter = new FileAdapter(exercises, this);
-        listing.setAdapter(this.adapter);
-
-        listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
-                ExerciseFile exerciseFile = (ExerciseFile) parent.getItemAtPosition(position);
-                Intent intent = new Intent(ExerciseListingActivity.this, ExerciseActivity.class);
-                intent.putExtra(ExerciseListingActivity.EXERCISE_FILE, exerciseFile);
-                com.budgebars.rotelle.gui.ExerciseListingActivity.this.startActivity(intent);
-            }
-        });
-
-        Button createButton = this.findViewById(R.id.CreateExerciseButton);
-        createButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                ExerciseListingActivity.this.createExercise();
-            }
-        });
+    InternalFileManager files = new InternalFileManager(this);
+    if (!files.hasExercisesDirectory()) {
+      files.createExercisesDirectory();
     }
 
-    @Override
-    protected void onResume()
-    {
-        super.onResume();
-        this.populateExerciseListing();
+    if (!files.hasExercises()) {
+      files.addSampleExerciseFile(this);
     }
 
-    private void populateExerciseListing()
-    {
-        InternalFileManager files = new InternalFileManager(this);
+    File[] exerciseFiles = files.getExerciseFiles();
+    final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
 
-        File[] exerciseFiles = files.getExerciseFiles();
-        final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
+    ListView listing = this.findViewById(R.id.FileListView);
+    this.adapter = new FileAdapter(exercises, this);
+    listing.setAdapter(this.adapter);
 
-        this.adapter.updateFileList(exercises);
-    }
+    listing.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(final AdapterView<?> parent,
+                                final View view,
+                                final int position,
+                                final long id) {
+            ExerciseFile exerciseFile = (ExerciseFile) parent.getItemAtPosition(position);
+            Intent intent = new Intent(ExerciseListingActivity.this, ExerciseActivity.class);
+            intent.putExtra(ExerciseListingActivity.EXERCISE_FILE, exerciseFile);
+            com.budgebars.rotelle.gui.ExerciseListingActivity.this.startActivity(intent);
+        }
+    });
 
-    private void createExercise()
-    {
-        EditableExercise blank = EditableExercise.blankEditableExercise();
+    Button createButton = this.findViewById(R.id.CreateExerciseButton);
+    createButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+            ExerciseListingActivity.this.createExercise();
+        }
+    });
+  }
 
-        Intent intent = new Intent(ExerciseListingActivity.this, EditExerciseActivity.class);
-        intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, blank);
-        this.startActivity(intent);
-    }
+  @Override
+  protected void onResume() {
+    super.onResume();
+    this.populateExerciseListing();
+  }
+
+  private void populateExerciseListing() {
+    InternalFileManager files = new InternalFileManager(this);
+
+    File[] exerciseFiles = files.getExerciseFiles();
+    final List<ExerciseFile> exercises = ExerciseFile.fromFiles(exerciseFiles);
+
+    this.adapter.updateFileList(exercises);
+  }
+
+  private void createExercise() {
+    EditableExercise blank = EditableExercise.blankEditableExercise();
+
+    Intent intent = new Intent(ExerciseListingActivity.this, EditExerciseActivity.class);
+    intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, blank);
+    this.startActivity(intent);
+  }
 }

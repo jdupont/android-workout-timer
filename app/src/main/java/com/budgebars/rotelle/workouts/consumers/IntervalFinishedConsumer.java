@@ -5,7 +5,6 @@ package com.budgebars.rotelle.workouts.consumers;
  */
 
 
-public interface IntervalFinishedConsumer
-{
-    public void intervalFinished();
+public interface IntervalFinishedConsumer {
+  public void intervalFinished();
 }

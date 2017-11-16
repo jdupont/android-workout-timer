@@ -5,6 +5,5 @@ package com.budgebars.rotelle.workouts.consumers;
  */
 
 public interface ExerciseTitleEditedConsumer {
-
-    public void exerciseTitleEdited();
+  public void exerciseTitleEdited();
 }

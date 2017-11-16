@@ -14,36 +14,33 @@ import java.util.Scanner;
  */
 
 public class IncomingFileManager {
+  @SuppressWarnings("HardcodedFileSeparator")
+  private static final String DELIMITER = "\\A";
 
-    @SuppressWarnings("HardcodedFileSeparator")
-	private static final String DELIMITER = "\\A";
+  private static final String CHARSET = "UTF-8";
 
-    private static final String CHARSET = "UTF-8";
+  private final Context context;
 
-    private final Context context;
+  public IncomingFileManager(final Context context) {
+    this.context = context;
+  }
 
-    public IncomingFileManager(final Context context)
-    {
-        this.context = context;
+  public Exercise fromUri(final Uri uri) {
+    try {
+      String json = IncomingFileManager.streamToString(
+          this.context.getContentResolver().openInputStream(uri));
+      return ExerciseParser.parse(json);
+    } catch (FileNotFoundException e) {
+      throw new RuntimeException(e);
     }
+  }
 
-    public Exercise fromUri(final Uri uri)
-    {
-        try {
-            String json = IncomingFileManager.streamToString(this.context.getContentResolver().openInputStream(uri));
 
-            return ExerciseParser.parse(json);
-        }
-        catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+  private static String streamToString(final InputStream stream) {
+    try (Scanner scanner = new Scanner(stream,
+        IncomingFileManager.CHARSET).useDelimiter(IncomingFileManager.DELIMITER)) {
+      return scanner.hasNext() ? scanner.next() : "";
     }
-
-
-    private static String streamToString(final InputStream stream) {
-        try (Scanner scanner = new Scanner(stream, IncomingFileManager.CHARSET).useDelimiter(IncomingFileManager.DELIMITER)) {
-            return scanner.hasNext() ? scanner.next() : "";
-        }
-    }
+  }
 }
 

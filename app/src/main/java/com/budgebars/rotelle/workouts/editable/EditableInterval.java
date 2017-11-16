@@ -11,55 +11,47 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class EditableInterval implements Serializable {
+  private static final long serialVersionUID = -7539378757342639929L;
 
-	private static final long serialVersionUID = -7539378757342639929L;
+  private static final int DEFAULT_INTERVAL_LENGTH_SECONDS = 30;
 
-	private static final int DEFAULT_INTERVAL_LENGTH_SECONDS = 30;
+  private static final String DEFAULT_INTERVAL_NAME = "New Interval";
 
-	private static final String DEFAULT_INTERVAL_NAME = "New Interval";
+  private String name;
 
-	private String name;
+  private Duration length;
 
-    private Duration length;
+  public EditableInterval(final Interval interval) {
+    this(interval.getName(), interval.getLength());
+  }
 
-    public EditableInterval(final Interval interval)
-    {
-        this(interval.getName(), interval.getLength());
-    }
+  private EditableInterval(final String name, final Duration length) {
+    this.name = name;
+    this.length = length;
+  }
 
-    private EditableInterval(final String name, final Duration length)
-    {
-        this.name = name;
-        this.length = length;
-    }
+  public String name() {
+    return this.name;
+  }
 
-    public String name()
-    {
-        return this.name;
-    }
+  public Duration length() {
+    return this.length;
+  }
 
-    public Duration length()
-    {
-        return this.length;
-    }
+  public void changeName(final String updated) {
+    this.name = updated;
+  }
 
-    public void changeName(final String updated)
-    {
-        this.name = updated;
-    }
+  public void changeDuration(final Duration updated) {
+    this.length = updated;
+  }
 
-    public void changeDuration(final Duration updated)
-    {
-        this.length = updated;
-    }
+  public Interval toInterval() {
+    return new Interval(this.name(), this.length());
+  }
 
-    public Interval toInterval()
-    {
-        return new Interval(this.name(), this.length());
-    }
-
-    public static EditableInterval getDefaultInterval()
-    {
-        return new EditableInterval(EditableInterval.DEFAULT_INTERVAL_NAME, new Duration(EditableInterval.DEFAULT_INTERVAL_LENGTH_SECONDS, TimeUnit.SECONDS));
-    }
+  public static EditableInterval getDefaultInterval() {
+    return new EditableInterval(EditableInterval.DEFAULT_INTERVAL_NAME,
+        new Duration(EditableInterval.DEFAULT_INTERVAL_LENGTH_SECONDS, TimeUnit.SECONDS));
+  }
 }

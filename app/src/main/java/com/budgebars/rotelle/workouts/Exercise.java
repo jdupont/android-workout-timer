@@ -8,57 +8,47 @@ import java.util.List;
  */
 
 public class Exercise implements Serializable {
+  private static final long serialVersionUID = -8871430239563028072L;
 
-	private static final long serialVersionUID = -8871430239563028072L;
-	private final String name;
+  private final String name;
 
-    private final List<Interval> intervals;
+  private final List<Interval> intervals;
 
-    public Exercise(final String name, final List<Interval> intervals)
-    {
-        if (intervals.isEmpty())
-        {
-            throw new IllegalArgumentException("Cannot create an exercise with no intervals.");
-        }
-        else if (name.trim().isEmpty())
-        {
-            throw new IllegalArgumentException("Cannot have an empty exercise name.");
-        }
-
-        this.name = name;
-        this.intervals = intervals;
+  public Exercise(final String name, final List<Interval> intervals) {
+    if (intervals.isEmpty()) {
+      throw new IllegalArgumentException("Cannot create an exercise with no intervals.");
+    } else if (name.trim().isEmpty()) {
+      throw new IllegalArgumentException("Cannot have an empty exercise name.");
     }
 
-    public Duration totalLength()
-    {
-        Duration total = Duration.zero();
+    this.name = name;
+    this.intervals = intervals;
+  }
 
-        for (Interval interval : this.intervals)
-        {
-            total = total.add(interval.getLength());
-        }
+  public Duration totalLength() {
+    Duration total = Duration.zero();
 
-        return total;
+    for (Interval interval : this.intervals) {
+      total = total.add(interval.getLength());
     }
 
-    public String name()
-    {
-        return this.name;
-    }
+    return total;
+  }
 
-    public int numberOfIntervals()
-    {
-        return this.intervals.size();
-    }
+  public String name() {
+    return this.name;
+  }
 
-    public Interval getIntervalAt(final int index)
-    {
-        return this.intervals.get(index);
-    }
+  public int numberOfIntervals() {
+    return this.intervals.size();
+  }
 
-    @Override
-    public String toString()
-    {
-        return this.name;
-    }
+  public Interval getIntervalAt(final int index) {
+    return this.intervals.get(index);
+  }
+
+  @Override
+  public String toString() {
+    return this.name;
+  }
 }

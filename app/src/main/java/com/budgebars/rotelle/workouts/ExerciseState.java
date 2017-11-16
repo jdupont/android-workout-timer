@@ -5,20 +5,18 @@ package com.budgebars.rotelle.workouts;
  */
 
 public enum ExerciseState {
-    READY("Ready"),
-    RUNNING("Running"),
-    PAUSED("Paused"),
-    DONE("Done");
+  READY("Ready"),
+  RUNNING("Running"),
+  PAUSED("Paused"),
+  DONE("Done");
 
-    private final String description;
+  private final String description;
 
-    private ExerciseState(final String description)
-    {
-        this.description = description;
-    }
+  private ExerciseState(final String description) {
+    this.description = description;
+  }
 
-    public String toString()
-    {
-        return this.description;
-    }
+  public String toString() {
+    return this.description;
+  }
 }
