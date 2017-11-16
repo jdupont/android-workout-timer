@@ -7,10 +7,6 @@ import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.Interval;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Jules on 10/13/2017.
@@ -55,6 +55,11 @@ public final class ExerciseParser {
     // Prevent instantiation of utility class.
   }
 
+  /**
+   * Creates a JSON object representing the provided exercise.
+   * @param exercise The exercise to convert to json.
+   * @return A JSON object containing all of the information in the provided exercise.
+   */
   public static JSONObject jsonFromExercise(final Exercise exercise) {
     try {
       JSONObject json = new JSONObject();
@@ -89,6 +94,11 @@ public final class ExerciseParser {
     return ExerciseParser.readExerciseFromStream(stream);
   }
 
+  /**
+   * Reads an exercise from an exercise file.
+   * @param file A file containing a JSON exercise.
+   * @return The exercise, parsed out of the file.
+   */
   public static Exercise readExerciseFromFile(final File file) {
     try {
       FileInputStream stream = new FileInputStream(file);
@@ -115,6 +125,11 @@ public final class ExerciseParser {
     return context.getResources().openRawResource(R.raw.sample_exercise);
   }
 
+  /**
+   * Parses an exercise from a string containing the json representation of that exercise.
+   * @param jsonAsString The json representation of the exercise.
+   * @return The parsed exercise.
+   */
   public static Exercise parse(final String jsonAsString) {
     try {
       JSONObject json = new JSONObject(jsonAsString).getJSONObject(ExerciseParser.EXERCISE_TAG);

@@ -14,6 +14,11 @@ public class Exercise implements Serializable {
 
   private final List<Interval> intervals;
 
+  /**
+   * Creates an exercise.
+   * @param name The name of the exercise.
+   * @param intervals The intervals to populate this exercise with.
+   */
   public Exercise(final String name, final List<Interval> intervals) {
     if (intervals.isEmpty()) {
       throw new IllegalArgumentException("Cannot create an exercise with no intervals.");
@@ -25,6 +30,10 @@ public class Exercise implements Serializable {
     this.intervals = intervals;
   }
 
+  /**
+   * Gets the total length of all of the intervals in this exercise.
+   * @return The sum of the lengths of the intervals in this exercise.
+   */
   public Duration totalLength() {
     Duration total = Duration.zero();
 

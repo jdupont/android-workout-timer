@@ -22,6 +22,11 @@ public class FileAdapter extends BaseAdapter {
 
   private final Activity activity;
 
+  /**
+   * Creates an adapter that can display a list of exercise files.
+   * @param exercise The exercise files to display.
+   * @param parent The parent activity.
+   */
   public FileAdapter(final List<ExerciseFile> exercise, final Activity parent) {
     super();
 
@@ -70,6 +75,10 @@ public class FileAdapter extends BaseAdapter {
     return inflated;
   }
 
+  /**
+   * Updates the file list in this adapter to be the newly provided file list.
+   * @param exerciseFiles The new list to display.
+   */
   public void updateFileList(final List<ExerciseFile> exerciseFiles) {
     this.exercise.clear();
     this.exercise.addAll(exerciseFiles);

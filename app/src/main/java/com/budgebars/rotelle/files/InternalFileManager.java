@@ -5,12 +5,12 @@ import android.content.Context;
 
 import com.budgebars.rotelle.workouts.Exercise;
 
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
+
+import org.json.JSONObject;
 
 /**
  * Created by Jules on 10/17/2017.
@@ -48,6 +48,11 @@ public class InternalFileManager {
     }
   }
 
+  /**
+   * Adds the sample exercise file to the internal file location containing this user's
+   * saved exercises. Mainly useful so that a new user can have an example exercise to start with.
+   * @param context The context of the caller. Used to access the android file system.
+   */
   public void addSampleExerciseFile(final Context context) {
     if (!this.hasExercisesDirectory()) {
       throw new IllegalStateException("No exercises directory to place sample file into.");
@@ -72,6 +77,10 @@ public class InternalFileManager {
     return file.exists();
   }
 
+  /**
+   * Gets the exercise files this user has saved in the app's internal storage.
+   * @return The exercise files this user has saved in the app's internal storage.
+   */
   public File[] getExerciseFiles() {
     if (!this.hasExercisesDirectory()) {
       throw new IllegalArgumentException("No exercises directory so cannot get exercise files.");

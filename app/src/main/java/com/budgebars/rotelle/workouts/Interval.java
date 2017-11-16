@@ -13,6 +13,11 @@ public class Interval implements Serializable {
 
   private final Duration length;
 
+  /**
+   * Creates a new interval with the specified properties.
+   * @param name The name of the interval.
+   * @param length The length of the interval.
+   */
   public Interval(final String name, final Duration length) {
     if (name.trim().isEmpty()) {
       throw new IllegalArgumentException("Cannot have an empty interval name.");

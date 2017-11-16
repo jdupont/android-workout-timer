@@ -21,6 +21,12 @@ public class EditableExercise implements Serializable {
 
   private final List<ExerciseEditedConsumer> editedConsumers = new ArrayList<>();
 
+  /**
+   * Creates a new editable exercise with base values from the provided exercise. Exercises are
+   * immutable, so editable exercises provide the mechanism for editing a given exercise and
+   * creating a final immutable result.
+   * @param base The exercise with the information that the edit should start with.
+   */
   public EditableExercise(final Exercise base) {
     this.name = base.name();
 
@@ -44,6 +50,10 @@ public class EditableExercise implements Serializable {
     return this.name;
   }
 
+  /**
+   * The current number of intervals in this editable exercise.
+   * @return The current number of intervals.
+   */
   public int numberOfIntervals() {
     return this.intervals.size();
   }
@@ -52,12 +62,21 @@ public class EditableExercise implements Serializable {
     return this.intervals.get(i);
   }
 
+  /**
+   * Changes the name of this exercise.
+   * @param updated The new name for this exercise.
+   */
   public void changeName(final String updated) {
     this.name = updated;
 
     this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.TITLE_EDITED);
   }
 
+  /**
+   * Changes the orders of the intervals already in this editable exercise.
+   * @param from The index of the interval to move.
+   * @param to The index where the specified interval should be moved to.
+   */
   public void moveInterval(final int from, final int to) {
     if ((from < 0) || (from >= this.intervals.size())) {
       throw new IndexOutOfBoundsException("From index was out of bounds: " + from);
@@ -76,6 +95,10 @@ public class EditableExercise implements Serializable {
     this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.MOVE_INTERVAL);
   }
 
+  /**
+   * Removes an interval from this exercise.
+   * @param position The index specifying the interval to remove.
+   */
   public void removeInterval(final int position) {
     this.intervals.remove(position);
 
@@ -87,6 +110,10 @@ public class EditableExercise implements Serializable {
     this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.ADD_INTERVAL);
   }
 
+  /**
+   * Creates an immutable exercise from the information edited in this editable exercise.
+   * @return An immutable exercise object that can be run or saved.
+   */
   public Exercise toExercise() {
     List<Interval> editableIntervals = new ArrayList<>();
 

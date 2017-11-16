@@ -25,6 +25,11 @@ public class IncomingFileManager {
     this.context = context;
   }
 
+  /**
+   * Reads an exercise from a uniform resource indicator.
+   * @param uri A URI pointing to a file containing a json representation of the exercise to parse.
+   * @return The parsed exercise.
+   */
   public Exercise fromUri(final Uri uri) {
     try {
       String json = IncomingFileManager.streamToString(
@@ -34,7 +39,6 @@ public class IncomingFileManager {
       throw new RuntimeException(e);
     }
   }
-
 
   private static String streamToString(final InputStream stream) {
     try (Scanner scanner = new Scanner(stream,

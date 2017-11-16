@@ -20,6 +20,12 @@ public class IntervalAdapter extends BaseAdapter {
 
   private final Activity activity;
 
+  /**
+   * Creates an interval adapter that can display all of the intervals contained in the
+   * provided exercise.
+   * @param exercise The exercise containing the intervals to display.
+   * @param parent The parent activity.
+   */
   public IntervalAdapter(final Exercise exercise, final Activity parent) {
     super();
 

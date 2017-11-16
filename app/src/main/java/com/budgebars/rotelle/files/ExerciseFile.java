@@ -39,6 +39,9 @@ public final class ExerciseFile implements Serializable {
     return this.exercise.name();
   }
 
+  /**
+   * Deletes this exercise file from disk.
+   */
   public void delete() {
     if (!this.source.exists()) {
       throw new IllegalArgumentException("Cannot delete a nonexistent file.");
@@ -49,10 +52,20 @@ public final class ExerciseFile implements Serializable {
     }
   }
 
+  /**
+   * The file system file underlying this exercise file.
+   * @return A File object pointing to the file underlying this exercise file.
+   */
   public File source() {
     return this.source;
   }
 
+  /**
+   * Creates a list of exercise files from a list of file system files. Exercise files provide
+   * more functionality than file system files, such as parsing out an exercise.
+   * @param files The files to read exercise files from.
+   * @return A corresponding list of exercise files.
+   */
   public static List<ExerciseFile> fromFiles(final File[] files) {
     List<ExerciseFile> parsed = new ArrayList<>();
 

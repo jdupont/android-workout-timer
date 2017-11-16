@@ -33,6 +33,10 @@ public class IntervalTimer {
       this(interval.getLength());
   }
 
+  /**
+   * Creates an interval timer that can run a timer for the specified duration.
+   * @param intervalLength The length of the timer to run.
+   */
   public IntervalTimer(final Duration intervalLength) {
     this.timer = new CountDownTimer(intervalLength.get(TimeUnit.MILLISECONDS),
       IntervalTimer.NOTIFICATION_TICKS_MILLIS.get(TimeUnit.MILLISECONDS)) {
@@ -87,6 +91,9 @@ public class IntervalTimer {
     this.finishedMethods.addAll(consumers);
   }
 
+  /**
+   * Starts the execution of the timer.
+   */
   public void startTimer() {
     if (this.isRunning) {
       throw new IllegalStateException("Timer is already running");
@@ -100,6 +107,9 @@ public class IntervalTimer {
     }
   }
 
+  /**
+   * Stops the execution of the timer.
+   */
   public void stopTimer() {
     if (!this.isRunning) {
       throw new IllegalStateException("Timer is not running");

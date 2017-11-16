@@ -33,6 +33,12 @@ public class EditIntervalAdapter extends BaseAdapter {
 
   private final List<IntervalAddedConsumer> intervalAddedConsumers = new ArrayList<>();
 
+  /**
+   * Creates a new adapter that will take an editable exercise and display a form for editing all
+   * intervals and attributes of the exercise.
+   * @param exercise The exercise to edit.
+   * @param parent The parent activity.
+   */
   public EditIntervalAdapter(final EditableExercise exercise, final Activity parent) {
     super();
 

@@ -51,6 +51,10 @@ public class ExerciseCoach {
 
   private final List<ExerciseResetConsumer> exerciseResetConsumers = new ArrayList<>();
 
+  /**
+   * Creates an exercise coach, which can run the provided exercise in a timer.
+   * @param exercise The exercise to run.
+   */
   public ExerciseCoach(final Exercise exercise) {
     this.exercise = exercise;
     this.intervalIndex = 0;
