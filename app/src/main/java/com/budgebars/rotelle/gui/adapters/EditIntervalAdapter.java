@@ -124,7 +124,8 @@ public class EditIntervalAdapter extends BaseAdapter {
             EditIntervalAdapter.this.exercise.moveInterval(position, position - 1);
         }
     });
-    upButton.setEnabled(position != 0); // Can move up unless its the first item
+    // Can move up unless its the first item
+    upButton.setEnabled(position != 0);
 
     ImageButton downButton = inflated.findViewById(R.id.DownIntervalButton);
     downButton.setOnClickListener(new View.OnClickListener() {

@@ -41,7 +41,7 @@ public final class ExerciseParser {
 
   private static final String EXERCISE_TYPE_TAG = "type";
 
-  private static final String INTERVAL_NAME_TAG = "name";
+  private static final String INTERVAL_NAME_TAG = ExerciseParser.EXERCISE_NAME_TAG;
 
   private static final String INTERVAL_LENGTH_TAG = "length";
 

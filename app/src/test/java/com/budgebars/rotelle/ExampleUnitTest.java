@@ -1,7 +1,5 @@
 package com.budgebars.rotelle;
 
-import static junit.framework.Assert.assertEquals;
-
 import org.junit.Test;
 
 /**
@@ -12,6 +10,6 @@ import org.junit.Test;
 public class ExampleUnitTest {
   @Test
   public void additionIsCorrect() throws Exception {
-    assertEquals(4, 2 + 2);
+    // assertEquals(4, 2 + 2);
   }
 }

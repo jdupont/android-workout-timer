@@ -18,13 +18,14 @@ import java.io.File;
 import java.util.List;
 
 public class ExerciseListingActivity extends AppCompatActivity {
-  private static final String TAG = ExerciseListingActivity.class.getName();
 
   public static final String EXERCISE_FILE = "EXERCISE_FILE";
 
   public static final String EDITABLE_EXERCISE = "EDITABLE_EXTRA";
 
   public static final String EXERCISE_TO_RUN = "EXERCISE_TO_RUN";
+
+  private static final String TAG = ExerciseListingActivity.class.getName();
 
   private FileAdapter adapter;
 
