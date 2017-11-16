@@ -13,119 +13,101 @@ import java.util.List;
  */
 
 public class EditableExercise implements Serializable {
+  private static final long serialVersionUID = -5369871572648213687L;
 
-    private static final long serialVersionUID = -5369871572648213687L;
-    private String name;
+  private String name;
 
-    private final List<EditableInterval> intervals;
+  private final List<EditableInterval> intervals;
 
-    private final List<ExerciseEditedConsumer> editedConsumers = new ArrayList<>();
+  private final List<ExerciseEditedConsumer> editedConsumers = new ArrayList<>();
 
-    public EditableExercise(final Exercise base) {
-        this.name = base.name();
+  public EditableExercise(final Exercise base) {
+    this.name = base.name();
 
-        this.intervals = new ArrayList<>();
-        for (int i = 0; i < base.numberOfIntervals(); ++i) {
-            this.intervals.add(new EditableInterval(base.getIntervalAt(i)));
-        }
+    this.intervals = new ArrayList<>();
+
+    for (int i = 0; i < base.numberOfIntervals(); ++i) {
+      this.intervals.add(new EditableInterval(base.getIntervalAt(i)));
+    }
+  }
+
+  private EditableExercise() {
+    this.name = "";
+    this.intervals = new ArrayList<>();
+  }
+
+  public static EditableExercise blankEditableExercise() {
+    return new EditableExercise();
+  }
+
+  public String name() {
+    return this.name;
+  }
+
+  public int numberOfIntervals() {
+    return this.intervals.size();
+  }
+
+  public EditableInterval getIntervalAt(final int i) {
+    return this.intervals.get(i);
+  }
+
+  public void changeName(final String updated) {
+    this.name = updated;
+
+    this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.TITLE_EDITED);
+  }
+
+  public void moveInterval(final int from, final int to) {
+    if ((from < 0) || (from >= this.intervals.size())) {
+      throw new IndexOutOfBoundsException("From index was out of bounds: " + from);
+    } else if ((to < 0) || (to >= this.intervals.size())) {
+      throw new IndexOutOfBoundsException("To index was out of bounds: " + from);
+    } else if (to == from) {
+      throw new IllegalArgumentException(
+        "Why are you trying to move an interval back to the same place?");
     }
 
-    private EditableExercise()
-    {
-        this.name = "";
-        this.intervals = new ArrayList<>();
+    EditableInterval moving = this.getIntervalAt(from);
+
+    this.intervals.remove(from);
+    this.intervals.add(to, moving);
+
+    this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.MOVE_INTERVAL);
+  }
+
+  public void removeInterval(final int position) {
+    this.intervals.remove(position);
+
+    this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.DELETE_INTERVAL);
+  }
+
+  public void addInterval() {
+    this.intervals.add(EditableInterval.getDefaultInterval());
+    this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.ADD_INTERVAL);
+  }
+
+  public Exercise toExercise() {
+    List<Interval> editableIntervals = new ArrayList<>();
+
+    for (EditableInterval editable : this.intervals) {
+      editableIntervals.add(editable.toInterval());
     }
 
-    public static EditableExercise blankEditableExercise()
-    {
-        return new EditableExercise();
+    return new Exercise(this.name(), editableIntervals);
+  }
+
+  public void addExerciseEditedConsumer(final ExerciseEditedConsumer consumer) {
+    this.editedConsumers.add(consumer);
+  }
+
+  private void notifyExerciseEditConsumers(final ExerciseEditedConsumer.EditAction action) {
+    if (action == null) {
+      throw new IllegalArgumentException("Must be a valid EditAction");
     }
 
-    public String name()
-    {
-        return this.name;
+    for (ExerciseEditedConsumer consumers : this.editedConsumers) {
+      consumers.exerciseEdited(action);
     }
-
-    public int numberOfIntervals()
-    {
-        return this.intervals.size();
-    }
-
-    public EditableInterval getIntervalAt(final int i)
-    {
-        return this.intervals.get(i);
-    }
-
-    public void changeName(final String updated)
-    {
-        this.name = updated;
-
-        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.TITLE_EDITED);
-    }
-
-    public void moveInterval(final int from, final int to)
-    {
-        if ((from < 0) || (from >= this.intervals.size()))
-        {
-            throw new IndexOutOfBoundsException("From index was out of bounds: " + from);
-        }
-        else if ((to < 0) || (to >= this.intervals.size()))
-        {
-            throw new IndexOutOfBoundsException("To index was out of bounds: " + from);
-        }
-        else if (to == from)
-        {
-            throw new IllegalArgumentException("Why are you trying to move an interval back to the same place?");
-        }
-
-        EditableInterval moving = this.getIntervalAt(from);
-
-        this.intervals.remove(from);
-        this.intervals.add(to, moving);
-
-        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.MOVE_INTERVAL);
-    }
-
-    public void removeInterval(final int position)
-    {
-        this.intervals.remove(position);
-
-        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.DELETE_INTERVAL);
-    }
-
-    public void addInterval()
-    {
-        this.intervals.add(EditableInterval.getDefaultInterval());
-        this.notifyExerciseEditConsumers(ExerciseEditedConsumer.EditAction.ADD_INTERVAL);
-    }
-
-    public Exercise toExercise()
-    {
-        List<Interval> editableIntervals = new ArrayList<>();
-
-        for (EditableInterval editable : this.intervals)
-        {
-            editableIntervals.add(editable.toInterval());
-        }
-
-        return new Exercise(this.name(), editableIntervals);
-    }
-
-    public void addExerciseEditedConsumer(final ExerciseEditedConsumer consumer)
-    {
-        this.editedConsumers.add(consumer);
-    }
-
-    private void notifyExerciseEditConsumers(final ExerciseEditedConsumer.EditAction action)
-    {
-        if (action == null)
-        {
-            throw new IllegalArgumentException("Must be a valid EditAction");
-        }
-
-        for (ExerciseEditedConsumer consumers : this.editedConsumers)
-        {
-            consumers.exerciseEdited(action);
-        }
-    }
+  }
 }
