@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'pmd'
 
 android {
     compileSdkVersion 26
@@ -28,4 +29,22 @@ dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
+}
+
+task pmd (type: Pmd) {
+
+    description 'Run pmd'
+    group 'verification'
+
+    ruleSets = ["java-basic", "java-naming"]
+    source = fileTree('src')
+    include '**/*.java'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "$project.rootDir/reports/pmd/pmd.html"
+        }
+    }
 }

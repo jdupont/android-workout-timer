@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<ruleset name="PmdRuleset"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 http://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+  <description>
+  This ruleset checks my code for bad stuff.
+  </description>
+
+  <!-- Whole packages that should be reasonable -->
+  <rule ref="rulesets/java/basic.xml"/>
+  <rule ref="rulesets/java/braces.xml"/>
+  <rule ref="rulesets/java/imports.xml"/>
+  <rule ref="rulesets/java/junit.xml"/>
+  <rule ref="rulesets/java/unusedcode.xml"/>
+  <rule ref="rulesets/java/typeresolution.xml"/>
+
+  <!-- Not sure if value for my purposes but no harm either -->
+  <rule ref="rulesets/java/clone.xml"/>
+  <rule ref="rulesets/java/finalizers.xml"/>
+
+  <!-- Rules from the naming ruleset, some of which I've chosen to exclude -->
+  <rule ref="rulesets/java/naming.xml">
+    <exclude name="ShortClassName"/>
+
+    <exclude name="LongVariable"/>
+    <exclude name="AbstractNaming"/>
+    <exclude name="MethodWithSameNameAsEnclosingClass"/>
+    <exclude name="AvoidFieldNameMatchingTypeName"/>
+    <exclude name="AvoidFieldNameMatchingMethodName"/>
+  </rule>
+
+  <!-- Rules from the logging ruleset, some of which I've chosen to exclude -->
+  <rule ref="rulesets/java/logging-java.xml">
+    <exclude name="SystemPrintln"/>
+  </rule>
+
+  <!-- Rules from the optimization ruleset, some of which I've chosen to exclude -->
+  <rule ref="rulesets/java/optimizations.xml">
+    <exclude name="LocalVariableCouldBeFinal"/>
+    <exclude name="AvoidInstantiatingObjectsInLoops"/>
+    <exclude name="RedundantFieldInitializer"/>
+  </rule>
+
+  <!-- Rules from the strings ruleset, some of which I've chosen to exclude -->
+  <rule ref="rulesets/java/strings.xml">
+    <exclude name="InefficientEmptyStringCheck"/>
+    <exclude name="ConsecutiveAppendsShouldReuse"/>
+  </rule>
+
+  <!-- Rules from the controversial ruleset, some of which I've chosen to exclude -->
+  <rule ref="rulesets/java/controversial.xml">
+    <exclude name="NullAssignment"/>
+    <exclude name="OnlyOneReturn"/>
+    <exclude name="AtLeastOneConstructor"/>
+    <exclude name="UnnecessaryParentheses"/>
+    <exclude name="BooleanInversion"/>
+    <exclude name="AvoidFinalLocalVariable"/>    
+    <exclude name="UseConcurrentHashMap"/>
+    <exclude name="DataflowAnomalyAnalysis"/>
+    <exclude name="AvoidLiteralsInIfCondition"/>
+  </rule>
+
+  <!-- Rules from the strings ruleset, some of which I've chosen to exclude -->
+  <rule ref="rulesets/java/design.xml">
+    <exclude name="PositionLiteralsFirstInComparisons"/>
+    <exclude name="PositionLiteralsFirstInCaseInsensitiveComparisons"/>
+    <exclude name="UnsynchronizedStaticDateFormatter"/>
+    <exclude name="ConfusingTernary"/>
+    <exclude name="AbstractClassWithoutAbstractMethod"/>
+  </rule>
+
+  <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">
+    <properties>
+        <property name="violationSuppressRegex" value="^Found 'UR'-anomaly.*"/>
+    </properties>
+  </rule>
+
+</ruleset>
