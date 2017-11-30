@@ -20,7 +20,7 @@ public class Duration implements Serializable {
     this.milliseconds = TimeUnit.MILLISECONDS.convert(value, unit);
   }
 
-  public Duration add(final Duration other) {
+  public Duration plus(final Duration other) {
     return new Duration(this.milliseconds + other.milliseconds, Duration.UNIT);
   }
 

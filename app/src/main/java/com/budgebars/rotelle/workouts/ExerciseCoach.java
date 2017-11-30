@@ -74,10 +74,9 @@ public class ExerciseCoach {
     this.addIntervalFinishedConsumer(new IntervalFinishedConsumer() {
       @Override
       public void intervalFinished() {
-        if (!ExerciseCoach.this.isFinished()) {
-          if (ExerciseCoach.this.advanceToNextInterval()) {
+        if (!ExerciseCoach.this.isFinished() &&
+            ExerciseCoach.this.advanceToNextInterval()) {
               ExerciseCoach.this.currentTimer.startTimer();
-          }
         }
       }
     });
@@ -87,7 +86,7 @@ public class ExerciseCoach {
     return this.currentInterval.getName();
   }
 
-  public Duration currentIntervalLength() {
+  public final Duration currentIntervalLength() {
     return this.currentInterval.getLength();
   }
 
@@ -149,7 +148,7 @@ public class ExerciseCoach {
     }
   }
 
-  private IntervalTimer makeTimerForCurrentInterval() {
+  private final IntervalTimer makeTimerForCurrentInterval() {
     return this.makeTimerForCurrentInterval(this.currentIntervalLength());
   }
 

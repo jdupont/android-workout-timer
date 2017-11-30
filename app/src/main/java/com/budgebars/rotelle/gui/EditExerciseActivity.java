@@ -104,7 +104,7 @@ public class EditExerciseActivity extends AppCompatActivity {
                 .setPositiveButton(EditExerciseActivity.PROCEED_LABEL,
                   new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int which) {
-                      // Do nothing -- just return to activity so the user can add a title.
+                      // Do nothing -- just return to activity so the user can plus a title.
                     }
                   });
 

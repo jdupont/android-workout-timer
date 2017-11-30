@@ -38,7 +38,7 @@ public class Exercise implements Serializable {
     Duration total = Duration.zero();
 
     for (Interval interval : this.intervals) {
-      total = total.add(interval.getLength());
+      total = total.plus(interval.getLength());
     }
 
     return total;

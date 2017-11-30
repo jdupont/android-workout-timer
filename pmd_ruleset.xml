@@ -22,7 +22,7 @@
   <!-- Rules from the naming ruleset, some of which I've chosen to exclude -->
   <rule ref="rulesets/java/naming.xml">
     <exclude name="ShortClassName"/>
-
+    <exclude name="ShortVariable"/>
     <exclude name="LongVariable"/>
     <exclude name="AbstractNaming"/>
     <exclude name="MethodWithSameNameAsEnclosingClass"/>
@@ -68,6 +68,8 @@
     <exclude name="UnsynchronizedStaticDateFormatter"/>
     <exclude name="ConfusingTernary"/>
     <exclude name="AbstractClassWithoutAbstractMethod"/>
+    <exclude name="UseVarargs"/>
+    <exclude name="AccessorMethodGeneration"/>
   </rule>
 
   <rule ref="rulesets/java/controversial.xml/DataflowAnomalyAnalysis">

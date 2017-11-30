@@ -51,7 +51,7 @@ public class IntervalAdapter extends BaseAdapter {
   @Override
   public View getView(final int position, final View convertView, final ViewGroup parent) {
     View inflated = convertView;
-    if (convertView == null) {
+    if (inflated == null) {
       LayoutInflater inflater = this.activity.getLayoutInflater();
       inflated = inflater.inflate(R.layout.item_interval_list, parent, false);
     }

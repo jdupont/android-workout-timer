@@ -5,27 +5,25 @@ import android.content.Context;
 
 import com.budgebars.rotelle.workouts.Exercise;
 
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
-
-import org.json.JSONObject;
 
 /**
  * Created by Jules on 10/17/2017.
  */
 
 public class InternalFileManager {
-  private static final String TAG = InternalFileManager.class.getName();
-
   private static final String CHARSET = "UTF-8";
 
   private static final String SAMPLE_FILE_NAME = "sample";
 
   @SuppressWarnings("StringConcatenationMissingWhitespace")
   private static final String EXERCISE_FILE_DIRECTORY =
-      java.io.File.pathSeparatorChar + "exercises" + java.io.File.pathSeparatorChar;
+      File.pathSeparatorChar + "exercises" + File.pathSeparatorChar;
 
   private final File exercisesDirectory;
 

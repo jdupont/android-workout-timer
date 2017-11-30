@@ -25,8 +25,6 @@ public class ExerciseListingActivity extends AppCompatActivity {
 
   public static final String EXERCISE_TO_RUN = "EXERCISE_TO_RUN";
 
-  private static final String TAG = ExerciseListingActivity.class.getName();
-
   private FileAdapter adapter;
 
   @Override
