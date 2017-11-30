@@ -7,10 +7,6 @@ import com.budgebars.rotelle.workouts.Duration;
 import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.Interval;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -20,6 +16,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * Created by Jules on 10/13/2017.
