@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'pmd'
+apply plugin: 'com.github.spotbugs'
 
 android {
     compileSdkVersion 26
@@ -36,7 +37,8 @@ task pmd (type: Pmd) {
     description 'Run pmd'
     group 'verification'
 
-    ruleSets = ["java-basic", "java-naming"]
+    ruleSetFiles = files("${project.rootDir}/pmd_ruleset.xml")
+    ruleSets = []
     source = fileTree('src')
     include '**/*.java'
 
@@ -44,7 +46,19 @@ task pmd (type: Pmd) {
         xml.enabled = false
         html.enabled = true
         html {
-            destination "$project.rootDir/reports/pmd/pmd.html"
+            destination "$project.buildDir/reports/pmd/pmd.html"
+        }
+    }
+}
+
+task spotbugs (type: com.github.spotbugs.SpotBugsTask){
+    group 'verification'
+
+    reports {
+        xml.enabled = false
+        html.enabled = true
+        html {
+            destination "$project.buildDir/reports/spotbugs/spotbugs.html"
         }
     }
 }

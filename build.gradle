@@ -1,13 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-apply plugin: 'pmd'
 
 buildscript {
     repositories {
         jcenter()
         google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.0.1'
+        classpath "gradle.plugin.com.github.spotbugs:gradlePlugin:1.6.0"
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,22 +26,4 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
-}
-
-task pmd (type: Pmd) {
-
-    description 'Run pmd'
-    group 'verification'
-
-    ruleSets = ["basic", "braces", "strings", "design", "unusedcode", "naming", "randomcrap"]
-    source = fileTree('src')
-    include '**/*.java'
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        html {
-            destination "$project.rootDir/reports/pmd/pmd.html"
-        }
-    }
 }
