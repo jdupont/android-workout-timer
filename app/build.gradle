@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'pmd'
-apply plugin: 'com.github.spotbugs'
 
 android {
     compileSdkVersion 26
@@ -47,35 +46,6 @@ task pmd (type: Pmd) {
         html.enabled = true
         html {
             destination "$project.buildDir/reports/pmd/pmd.html"
-        }
-    }
-}
-
-task spotBugs (type: com.github.spotbugs.SpotBugsTask) {
-    description 'Run spotbugs'
-    group 'verification'
-
-    source = fileTree('src/main/java/')
-    classes = fileTree("$projectDir.absolutePath/build/intermediates/classes/")
-    classpath = files()
-
-    ignoreFailures = true
-    effort = "max"
-    reportLevel = "low"
-    visitors = ["FindSqlInjection", "SwitchFallthrough"]
-    omitVisitors = ["FindNonShortCircuit"]
-
-    // includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
-    // excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
-
-    reports {
-        xml.enabled = false
-        html.enabled = true
-        xml {
-            destination "$project.buildDir/reports/spotbugs/spotbugs.xml"
-        }
-        html {
-            destination "$project.buildDir/reports/spotbugs/spotbugs.html"
         }
     }
 }
