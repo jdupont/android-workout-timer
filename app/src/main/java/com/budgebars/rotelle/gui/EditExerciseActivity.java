@@ -94,8 +94,10 @@ public class EditExerciseActivity extends AppCompatActivity {
         @Override
         public void onClick(final View view) {
           // Make sure focus comes off of edit views so that all changes are committed
-          //EditExerciseActivity.this.commitAllChanges();
-          EditExerciseActivity.this.getCurrentFocus().clearFocus();
+          View currentFocus = EditExerciseActivity.this.getCurrentFocus();
+          if (currentFocus != null) {
+            currentFocus.clearFocus();
+          }
           saveButton.requestFocus();
 
           if (EditExerciseActivity.this.isTitleEmpty()) {
