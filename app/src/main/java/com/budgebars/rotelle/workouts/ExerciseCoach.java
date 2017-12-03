@@ -75,7 +75,8 @@ public class ExerciseCoach {
       @Override
       public void intervalFinished() {
         if (!ExerciseCoach.this.isFinished()
-            && ExerciseCoach.this.advanceToNextInterval()) {
+            && ExerciseCoach.this.shouldAdvanceToNextInterval()) {
+              ExerciseCoach.this.advanceToNextInterval();
               ExerciseCoach.this.currentTimer.startTimer();
         }
       }
@@ -129,7 +130,13 @@ public class ExerciseCoach {
     this.intervalChangedConsumers.add(consumer);
   }
 
-  private boolean advanceToNextInterval() {
+  private boolean shouldAdvanceToNextInterval() {
+    int nextIndex = this.intervalIndex + 1;
+
+    return nextIndex < this.exercise.numberOfIntervals();
+  }
+
+  private void advanceToNextInterval() {
     this.intervalIndex = this.intervalIndex + 1;
 
     if (this.intervalIndex < this.exercise.numberOfIntervals()) {
@@ -138,19 +145,14 @@ public class ExerciseCoach {
       this.timeRemainingInCurrentInterval = this.currentInterval.getLength();
 
       this.notifyIntervalChanged();
-
-      return true;
     } else if (this.intervalIndex == this.exercise.numberOfIntervals()) {
       this.done();
-      return false;
     } else {
       throw new ArrayIndexOutOfBoundsException("The requested interval does not exist");
     }
   }
 
   private IntervalTimer makeTimerForCurrentInterval() {
-    String test = new String("test");
-
     return this.makeTimerForCurrentInterval(this.currentIntervalLength());
   }
 
