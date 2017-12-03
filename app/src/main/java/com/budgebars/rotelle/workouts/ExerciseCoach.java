@@ -149,6 +149,8 @@ public class ExerciseCoach {
   }
 
   private IntervalTimer makeTimerForCurrentInterval() {
+    String test = new String("test");
+
     return this.makeTimerForCurrentInterval(this.currentIntervalLength());
   }
 

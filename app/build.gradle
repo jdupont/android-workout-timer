@@ -51,12 +51,29 @@ task pmd (type: Pmd) {
     }
 }
 
-task spotbugs (type: com.github.spotbugs.SpotBugsTask){
+task spotBugs (type: com.github.spotbugs.SpotBugsTask) {
+    description 'Run spotbugs'
     group 'verification'
+
+    source = fileTree('src/main/java/')
+    classes = fileTree("$projectDir.absolutePath/build/intermediates/classes/")
+    classpath = files()
+
+    ignoreFailures = true
+    effort = "max"
+    reportLevel = "low"
+    visitors = ["FindSqlInjection", "SwitchFallthrough"]
+    omitVisitors = ["FindNonShortCircuit"]
+
+    // includeFilter = file("$rootProject.projectDir/config/findbugs/includeFilter.xml")
+    // excludeFilter = file("$rootProject.projectDir/config/findbugs/excludeFilter.xml")
 
     reports {
         xml.enabled = false
         html.enabled = true
+        xml {
+            destination "$project.buildDir/reports/spotbugs/spotbugs.xml"
+        }
         html {
             destination "$project.buildDir/reports/spotbugs/spotbugs.html"
         }
