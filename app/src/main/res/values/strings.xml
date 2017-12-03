@@ -5,4 +5,16 @@
     <string name="pause_timer_label">Pause Exercise</string>
     <string name="resume_timer_label">Resume Exercise</string>
     <string name="reset_timer_label">Reset Timer</string>
+    <string name="edit_exercise_title_hint">Exercise Title</string>
+    <string name="add_interval_label">Add Interval</string>
+    <string name="save_label">Save</string>
+    <string name="edit_exercise_label">Edit</string>
+    <string name="start_exercise_label">Start</string>
+    <string name="email_label">Email</string>
+    <string name="delete_file_content_description">Delete.</string>
+    <string name="interval_name_label">Interval Name Here</string>
+    <string name="interval_length_label">Interval Length Here</string>
+    <string name="move_up_content_description">Moves up one interval.</string>
+    <string name="move_down_content_description">Moves down one interval.</string>
+    <string name="timer_finished_label">Done.</string>
 </resources>

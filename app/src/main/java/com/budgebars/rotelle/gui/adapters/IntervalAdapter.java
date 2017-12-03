@@ -16,50 +16,54 @@ import com.budgebars.rotelle.workouts.Interval;
  */
 
 public class IntervalAdapter extends BaseAdapter {
+  private final Exercise exercise;
 
-    private final Exercise exercise;
+  private final Activity activity;
 
-    private final Activity parent;
+  /**
+   * Creates an interval adapter that can display all of the intervals contained in the
+   * provided exercise.
+   * @param exercise The exercise containing the intervals to display.
+   * @param parent The parent activity.
+   */
+  public IntervalAdapter(final Exercise exercise, final Activity parent) {
+    super();
 
-    public IntervalAdapter(final Exercise exercise, final Activity parent)
-    {
-        super();
+    this.exercise = exercise;
+    this.activity = parent;
+  }
 
-        this.exercise = exercise;
-        this.parent = parent;
+  @Override
+  public int getCount() {
+    return this.exercise.numberOfIntervals();
+  }
+
+  @Override
+  public Object getItem(final int position) {
+    return this.exercise.getIntervalAt(position);
+  }
+
+  @Override
+  public long getItemId(final int position) {
+    return position;
+  }
+
+  @Override
+  public View getView(final int position, final View convertView, final ViewGroup parent) {
+    View inflated = convertView;
+    if (inflated == null) {
+      LayoutInflater inflater = this.activity.getLayoutInflater();
+      inflated = inflater.inflate(R.layout.item_interval_list, parent, false);
     }
 
-    @Override
-    public int getCount() {
-        return this.exercise.numberOfIntervals();
-    }
+    Interval current = (Interval) this.getItem(position);
 
-    @Override
-    public Object getItem(int i) {
-        return this.exercise.getIntervalAt(i);
-    }
+    TextView nameView = inflated.findViewById(R.id.IntervalListName);
+    nameView.setText(current.getName());
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+    TextView lengthView = inflated.findViewById(R.id.IntervalListLength);
+    lengthView.setText(current.getLength().toString());
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup container) {
-        if (convertView == null) {
-            LayoutInflater inflater = this.parent.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.item_interval_list, container, false);
-        }
-
-        Interval current = (Interval) this.getItem(position);
-
-        TextView nameView = convertView.findViewById(R.id.IntervalListName);
-        nameView.setText(current.getName());
-
-        TextView lengthView = convertView.findViewById(R.id.IntervalListLength);
-        lengthView.setText(current.getLength().toString());
-
-        return convertView;
-    }
-
+    return inflated;
+  }
 }

@@ -7,35 +7,36 @@ import java.io.Serializable;
  */
 
 public class Interval implements Serializable {
+  private static final long serialVersionUID = -2806873883004933748L;
 
-    private final String name;
+  private final String name;
 
-    private final Duration length;
+  private final Duration length;
 
-    public Interval(final String name, final Duration length)
-    {
-        if (name.trim().isEmpty())
-        {
-            throw new IllegalArgumentException("Cannot have an empty name.");
-        }
-
-        this.name = name;
-        this.length = length;
+  /**
+   * Creates a new interval with the specified properties.
+   * @param name The name of the interval.
+   * @param length The length of the interval.
+   */
+  public Interval(final String name, final Duration length) {
+    if (name.trim().isEmpty()) {
+      throw new IllegalArgumentException("Cannot have an empty interval name.");
     }
 
-    public Duration getLength()
-    {
-        return this.length;
-    }
+    this.name = name;
+    this.length = length;
+  }
 
-    public String getName()
-    {
-        return this.name;
-    }
+  public Duration getLength() {
+    return this.length;
+  }
 
-    @Override
-    public String toString()
-    {
-        return this.name + " (" + this.length + ")";
-    }
+  public String getName() {
+    return this.name;
+  }
+
+  @Override
+  public String toString() {
+    return this.name + " (" + this.length + ") ";
+  }
 }

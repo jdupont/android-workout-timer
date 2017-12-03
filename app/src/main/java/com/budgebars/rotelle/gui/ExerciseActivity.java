@@ -19,79 +19,87 @@ import com.budgebars.rotelle.workouts.editable.EditableExercise;
 import java.io.File;
 
 public class ExerciseActivity extends AppCompatActivity {
+  private static final String INTENT_TYPE = "text/plain";
 
-    private ExerciseFile exerciseFile;
+  private static final String FILE_PROVIDER_AUTHORITY = "com.budgebars.rotelle.fileprovider";
 
-    private Exercise exercise;
+  private static final String INTENT_TITLE = "Share exercise file:";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_exercise);
+  private static final String NO_APP_MESSAGE = "No sharing app found.";
 
-        this.exerciseFile = (ExerciseFile) this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
-        this.exercise = this.exerciseFile.getExercise();
+  private ExerciseFile exerciseFile;
 
-        this.setTitle(this.exercise.name()+ " (" + this.exercise.totalLength() + ")");
+  private Exercise exercise;
 
-        ListView list = (ListView) findViewById(R.id.ExerciseDisplayView);
-        list.setAdapter(new IntervalAdapter(this.exercise, this));
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
 
-        Button startExerciseButton = (Button) this.findViewById(R.id.StartExerciseButton);
-        startExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ExerciseActivity.this, RunningTimerActivity.class);
-                intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
-                startActivity(intent);
-            }
-        });
+    this.setContentView(R.layout.activity_exercise);
 
-        Button editExerciseButton = (Button) this.findViewById(R.id.EditExerciseButton);
-        editExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(ExerciseActivity.this, EditExerciseActivity.class);
-                intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE, new EditableExercise(ExerciseActivity.this.exercise));
-                startActivity(intent);
-            }
-        });
+    this.exerciseFile = (ExerciseFile)
+        this.getIntent().getSerializableExtra(ExerciseListingActivity.EXERCISE_FILE);
+    this.exercise = this.exerciseFile.getExercise();
 
-        Button emailExerciseButton = (Button) this.findViewById(R.id.EmailExerciseButton);
-        emailExerciseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ExerciseActivity.this.startEmailIntent();
-            }
-        });
+    this.setTitle(this.exercise.name() + " (" + this.exercise.totalLength() + ") ");
+
+    ListView list = this.findViewById(R.id.ExerciseDisplayView);
+    list.setAdapter(new IntervalAdapter(this.exercise, this));
+
+    Button startExerciseButton = this.findViewById(R.id.StartExerciseButton);
+    startExerciseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(final View view) {
+        Intent intent = new Intent(ExerciseActivity.this, RunningTimerActivity.class);
+        intent.putExtra(ExerciseListingActivity.EXERCISE_TO_RUN, ExerciseActivity.this.exercise);
+          ExerciseActivity.this.startActivity(intent);
+      }
+    });
+
+    Button editExerciseButton = this.findViewById(R.id.EditExerciseButton);
+    editExerciseButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+          Intent intent =
+              new Intent(ExerciseActivity.this, EditExerciseActivity.class);
+          intent.putExtra(ExerciseListingActivity.EDITABLE_EXERCISE,
+              new EditableExercise(ExerciseActivity.this.exercise));
+          ExerciseActivity.this.startActivity(intent);
+        }
+    });
+
+    Button emailExerciseButton = this.findViewById(R.id.EmailExerciseButton);
+    emailExerciseButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(final View view) {
+        ExerciseActivity.this.startEmailIntent();
+      }
+    });
+  }
+
+  private void startEmailIntent() {
+    Intent emailIntent = new Intent(Intent.ACTION_SEND);
+    emailIntent.setType(ExerciseActivity.INTENT_TYPE);
+    emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
+
+    File requestFile = this.exerciseFile.source();
+    Uri fileUri;
+    try {
+      fileUri = FileProvider.getUriForFile(this,
+          ExerciseActivity.FILE_PROVIDER_AUTHORITY, requestFile);
+    } catch (IllegalArgumentException e) {
+      throw new RuntimeException(e);
     }
 
-    private void startEmailIntent()
-    {
-        Intent emailIntent = new Intent(Intent.ACTION_SEND);
-        emailIntent.setType("text/plain");
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, this.exercise.name());
+    emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+    emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri);
 
-        File requestFile = this.exerciseFile.source();
-        Uri fileUri = null;
-        try {
-            fileUri = FileProvider.getUriForFile(this, "com.budgebars.rotelle.fileprovider", requestFile);
-        } catch (IllegalArgumentException e) {
-            throw new RuntimeException(e);
-        }
+    Intent chooser = Intent.createChooser(emailIntent, ExerciseActivity.INTENT_TITLE);
 
-        emailIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        emailIntent.putExtra(Intent.EXTRA_STREAM, fileUri); //, this.getContentResolver().getType(fileUri));
-
-        String title = "Share exercise file:";
-        Intent chooser = Intent.createChooser(emailIntent, title);
-
-        if (emailIntent.resolveActivity(getPackageManager()) != null) {
-            this.startActivity(chooser);
-        }
-        else
-        {
-            Toast.makeText(this, "No sharing app found.", Toast.LENGTH_SHORT).show();
-        }
+    if (emailIntent.resolveActivity(this.getPackageManager()) != null) {
+      this.startActivity(chooser);
+    } else {
+      Toast.makeText(this, ExerciseActivity.NO_APP_MESSAGE, Toast.LENGTH_SHORT).show();
     }
+  }
 }

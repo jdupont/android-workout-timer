@@ -5,5 +5,5 @@ package com.budgebars.rotelle.workouts.consumers;
  */
 
 public interface IntervalEditedConsumer {
-    public void intervalEdited();
+  public void intervalEdited();
 }

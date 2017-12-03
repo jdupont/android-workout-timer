@@ -21,135 +21,145 @@ import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
 public class EditExerciseActivity extends AppCompatActivity {
 
-    private EditableExercise editableExercise;
+  private static final String IMPORT_TITLE = "Import Exercise";
 
-    private EditIntervalAdapter adapter;
+  private static final String EDIT_TITLE = "Edit Exercise";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_exercise);
+  private static final String EMPTY_TITLE_MESSAGE = "Cannot have an empty exercise title.";
 
-        Intent intent = this.getIntent();
-        if (intent.getScheme() != null && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
-            this.setTitle("Import Exercise");
+  private static final String DUPLICATE_TITLE_MESSAGE =
+      "An exercise with that name already exists. Overwrite?";
 
-            this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
+  private static final String PROCEED_LABEL = "Ok";
+
+  private static final String CANCEL_LABEL = "Cancel";
+
+  private EditableExercise editableExercise;
+
+  private EditIntervalAdapter adapter;
+
+  @Override
+  protected void onCreate(final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    this.setContentView(R.layout.activity_edit_exercise);
+
+    Intent intent = this.getIntent();
+    if ((intent.getScheme() != null)
+        && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+      this.setTitle(EditExerciseActivity.IMPORT_TITLE);
+
+      this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
+    } else {
+      this.setTitle(EditExerciseActivity.EDIT_TITLE);
+      this.editableExercise = (EditableExercise)
+        this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
+    }
+
+    EditText titleEditor = this.findViewById(R.id.EditTitleView);
+    titleEditor.setText(this.editableExercise.name());
+    titleEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+      @Override
+      public void onFocusChange(final View view, final boolean hasFocus) {
+        if (!hasFocus) {
+          EditText titleText = (EditText) view;
+          String updated = titleText.getText().toString();
+          EditExerciseActivity.this.editableExercise.changeName(updated);
         }
-        else {
-            this.setTitle("Edit Exercise");
-            this.editableExercise = (EditableExercise) this.getIntent().getSerializableExtra(ExerciseListingActivity.EDITABLE_EXERCISE);
+      }
+    });
+
+    final ListView list = this.findViewById(R.id.IntervalListView);
+    list.setItemsCanFocus(true);
+
+    this.adapter = new EditIntervalAdapter(this.editableExercise, this);
+    list.setAdapter(this.adapter);
+
+    this.adapter.addItemAddedConsumer(new EditIntervalAdapter.IntervalAddedConsumer() {
+      @Override
+      public void intervalAddedToAdapter() {
+        list.setSelection(EditExerciseActivity.this.adapter.getCount() - 1);
+      }
+    });
+
+    Button addIntervalButton = this.findViewById(R.id.AddIntervalButton);
+    addIntervalButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(final View view) {
+        EditExerciseActivity.this.editableExercise.addInterval();
+      }
+    });
+
+    final Button saveButton = this.findViewById(R.id.SaveExerciseButton);
+    saveButton.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(final View view) {
+          // Make sure focus comes off of edit views so that all changes are committed
+          View currentFocus = EditExerciseActivity.this.getCurrentFocus();
+          if (currentFocus != null) {
+            currentFocus.clearFocus();
+          }
+          saveButton.requestFocus();
+
+          if (EditExerciseActivity.this.isTitleEmpty()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
+            builder.setMessage(EditExerciseActivity.EMPTY_TITLE_MESSAGE)
+                .setPositiveButton(EditExerciseActivity.PROCEED_LABEL,
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                      // Do nothing -- just return to activity so the user can plus a title.
+                    }
+                  });
+
+            builder.create().show();
+            return;
+          }
+
+          final Exercise saveTarget = EditExerciseActivity.this.editableExercise.toExercise();
+
+          final InternalFileManager fileManager =
+              new InternalFileManager(EditExerciseActivity.this);
+
+          if (fileManager.hasFileForExerciseName(saveTarget.name())) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
+            builder.setMessage(EditExerciseActivity.DUPLICATE_TITLE_MESSAGE)
+                .setPositiveButton(EditExerciseActivity.PROCEED_LABEL,
+                  new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, final int which) {
+                      fileManager.writeExerciseToFile(saveTarget, true);
+                      EditExerciseActivity.this.goBackToListingActivity();
+                    }
+                  })
+                .setNegativeButton(EditExerciseActivity.CANCEL_LABEL,
+                    new DialogInterface.OnClickListener() {
+                      public void onClick(final DialogInterface dialog, final int which) {
+                        // Do nothing so user has a chance to change exercise name
+                      }
+                  });
+
+              builder.create().show();
+          } else {
+            fileManager.writeExerciseToFile(saveTarget, false);
+            EditExerciseActivity.this.goBackToListingActivity();
+          }
         }
+    });
+  }
 
-        EditText titleEditor = (EditText) this.findViewById(R.id.EditTitleView);
-        titleEditor.setText(this.editableExercise.name());
-        titleEditor.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (!hasFocus)
-                {
-                    EditText titleText = (EditText) view;
-                    String updated = titleText.getText().toString();
-                    EditExerciseActivity.this.editableExercise.changeName(updated);
-                }
-            }
-        });
+  private void goBackToListingActivity() {
+    Intent intent = new Intent(this, ExerciseListingActivity.class);
+    this.startActivity(intent);
+  }
 
-        final ListView list = (ListView) findViewById(R.id.IntervalListView);
-        list.setItemsCanFocus(true);
+  private boolean isTitleEmpty() {
+    EditText titleText = this.findViewById(R.id.EditTitleView);
+    return titleText.getText().toString().trim().isEmpty();
+  }
 
-        this.adapter = new EditIntervalAdapter(this.editableExercise, this);
-        list.setAdapter(adapter);
+  private Exercise retrieveExerciseFromPassedDocument(final Intent intent) {
+    Uri uri = intent.getData();
 
-        adapter.addItemAddedConsumer(new EditIntervalAdapter.IntervalAddedConsumer() {
-            @Override
-            public void intervalAddedToAdapter() {
-                list.setSelection(adapter.getCount() - 1);
-            }
-        });
+    IncomingFileManager manager = new IncomingFileManager(this);
 
-        Button addIntervalButton = (Button) this.findViewById(R.id.AddIntervalButton);
-        addIntervalButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditExerciseActivity.this.editableExercise.addInterval();
-            }
-        });
-
-        final Button saveButton = (Button) this.findViewById(R.id.SaveExerciseButton);
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                // Make sure focus comes off of edit views so that all changes are committed
-                //EditExerciseActivity.this.commitAllChanges();
-                EditExerciseActivity.this.getCurrentFocus().clearFocus();
-                saveButton.requestFocus();
-
-                if (EditExerciseActivity.this.isTitleEmpty())
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
-                    builder.setMessage("Cannot have an empty exercise title.")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // Do nothing -- just return to activity so the user can add a title.
-                                }
-                            });
-
-                    builder.create().show();
-                    return;
-                }
-
-                final Exercise saveTarget = EditExerciseActivity.this.editableExercise.toExercise();
-
-                final InternalFileManager fileManager = new InternalFileManager(EditExerciseActivity.this);
-
-                if (fileManager.hasFileForExerciseName(saveTarget.name()))
-                {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(EditExerciseActivity.this);
-                    builder.setMessage("An exercise with that name already exists. Overwrite?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    fileManager.writeExerciseToFile(saveTarget, true);
-                                    EditExerciseActivity.this.goBackToListingActivity();
-                                }
-                            })
-                            .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    // Do nothing so user has a chance to change exercise name
-                                }
-                            });
-
-                    builder.create().show();
-                }
-                else
-                {
-                    fileManager.writeExerciseToFile(saveTarget, false);
-                    EditExerciseActivity.this.goBackToListingActivity();
-                }
-            }
-        });
-    }
-
-    private void goBackToListingActivity()
-    {
-        Intent intent = new Intent(this, ExerciseListingActivity.class);
-        startActivity(intent);
-    }
-
-    private boolean isTitleEmpty()
-    {
-        EditText titleText = (EditText) this.findViewById(R.id.EditTitleView);
-        return titleText.getText().toString().trim().isEmpty();
-    }
-
-    private Exercise retrieveExerciseFromPassedDocument(final Intent intent)
-    {
-        Uri uri = intent.getData();
-
-        IncomingFileManager manager = new IncomingFileManager(this);
-        Exercise exercise = manager.fromUri(uri);
-
-        return exercise;
-    }
+    return manager.fromUri(uri);
+  }
 }

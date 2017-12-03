@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.budgebars.rotelle.gui.ExerciseActivity"
-    >
+    tools:context="com.budgebars.rotelle.gui.ExerciseActivity">
 
     <EditText
         android:id="@+id/EditTitleView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:hint="@string/edit_exercise_title_hint"
         android:textSize="24sp"/>
 
     <ListView
@@ -30,13 +29,15 @@
             android:id="@+id/AddIntervalButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Add Interval"/>
+            android:text="@string/add_interval_label"
+            style="?android:attr/buttonBarButtonStyle"/>
 
         <Button
             android:id="@+id/SaveExerciseButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Save"/>
+            android:text="@string/save_label"
+            style="?android:attr/buttonBarButtonStyle"/>
 
     </LinearLayout>
 

@@ -15,67 +15,74 @@ import java.util.List;
 
 /**
  * Created by Jules on 10/18/2017.
+ *
  */
-
 public class FileAdapter extends BaseAdapter {
+  private final List<ExerciseFile> exercise;
 
-    private final List<ExerciseFile> exercise;
+  private final Activity activity;
 
-    private final Activity parent;
+  /**
+   * Creates an adapter that can display a list of exercise files.
+   * @param exercise The exercise files to display.
+   * @param parent The parent activity.
+   */
+  public FileAdapter(final List<ExerciseFile> exercise, final Activity parent) {
+    super();
 
-    public FileAdapter(final List<ExerciseFile> exercise, final Activity parent)
-    {
-        super();
+    this.exercise = exercise;
+    this.activity = parent;
+  }
 
-        this.exercise = exercise;
-        this.parent = parent;
+  @Override
+  public int getCount() {
+    return this.exercise.size();
+  }
+
+  @Override
+  public Object getItem(final int position) {
+    return this.exercise.get(position);
+  }
+
+  @Override
+  public long getItemId(final int position) {
+    return position;
+  }
+
+  @Override
+  public View getView(final int position, final View convertView, final ViewGroup parent) {
+    View inflated = convertView;
+    if (inflated == null) {
+      LayoutInflater inflater = this.activity.getLayoutInflater();
+      inflated = inflater.inflate(R.layout.item_file_list, parent, false);
     }
 
-    @Override
-    public int getCount() {
-        return this.exercise.size();
-    }
+    final ExerciseFile current = (ExerciseFile) this.getItem(position);
 
-    @Override
-    public Object getItem(int i) {
-        return this.exercise.get(i);
-    }
+    TextView nameView = inflated.findViewById(R.id.ExerciseFileName);
+    nameView.setText(current.name());
 
-    @Override
-    public long getItemId(int i) {
-        return i;
-    }
+    ImageButton deleteButton = inflated.findViewById(R.id.DeleteExerciseFileButton);
+    deleteButton.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(final View view) {
+        current.delete();
+        FileAdapter.this.exercise.remove(position);
+        FileAdapter.this.notifyDataSetChanged();
+      }
+    });
 
-    @Override
-    public View getView(final int position, View convertView, ViewGroup container) {
-        if (convertView == null) {
-            LayoutInflater inflater = this.parent.getLayoutInflater();
-            convertView = inflater.inflate(R.layout.item_file_list, container, false);
-        }
+    return inflated;
+  }
 
-        final ExerciseFile current = (ExerciseFile) this.getItem(position);
+  /**
+   * Updates the file list in this adapter to be the newly provided file list.
+   * @param exerciseFiles The new list to display.
+   */
+  public void updateFileList(final List<ExerciseFile> exerciseFiles) {
+    this.exercise.clear();
+    this.exercise.addAll(exerciseFiles);
 
-        TextView nameView = convertView.findViewById(R.id.ExerciseFileName);
-        nameView.setText(current.name());
-
-        ImageButton deleteButton = convertView.findViewById(R.id.DeleteExerciseFileButton);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                current.delete();
-                FileAdapter.this.exercise.remove(position);
-                FileAdapter.this.notifyDataSetChanged();
-            }
-        });
-
-        return convertView;
-    }
-
-    public void updateFileList(List<ExerciseFile> exerciseFiles)
-    {
-        this.exercise.clear();
-        this.exercise.addAll(exerciseFiles);
-
-        this.notifyDataSetChanged();
-    }
+    this.notifyDataSetChanged();
+  }
 }

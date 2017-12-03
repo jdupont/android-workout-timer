@@ -21,7 +21,8 @@
             android:id="@+id/DeleteExerciseFileButton"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:src="@android:drawable/ic_menu_delete" />
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="@string/delete_file_content_description" />
 
     </LinearLayout>
 </RelativeLayout>
