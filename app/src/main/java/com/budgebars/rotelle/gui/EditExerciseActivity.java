@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ import com.budgebars.rotelle.workouts.Exercise;
 import com.budgebars.rotelle.workouts.editable.EditableExercise;
 
 public class EditExerciseActivity extends AppCompatActivity {
+
+  private static final String TAG = EditExerciseActivity.class.getName();
 
   private static final String IMPORT_TITLE = "Import Exercise";
 
@@ -44,11 +47,15 @@ public class EditExerciseActivity extends AppCompatActivity {
     this.setContentView(R.layout.activity_edit_exercise);
 
     Intent intent = this.getIntent();
-    if ((intent.getScheme() != null)
-        && intent.getScheme().equals(ContentResolver.SCHEME_FILE)) {
+    if (intent.getScheme() != null) {
       this.setTitle(EditExerciseActivity.IMPORT_TITLE);
 
-      this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
+      if (intent.getScheme().equals(ContentResolver.SCHEME_FILE)
+          || intent.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+        this.editableExercise = new EditableExercise(this.retrieveExerciseFromPassedDocument(intent));
+      } else {
+        Log.e(EditExerciseActivity.TAG, "Unrecognized content scheme: " + intent.getScheme());
+      }
     } else {
       this.setTitle(EditExerciseActivity.EDIT_TITLE);
       this.editableExercise = (EditableExercise)
